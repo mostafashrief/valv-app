@@ -8,6 +8,19 @@
     "cancel": "Cancel",
     "loading": "One sec..."
   },
+  "auth": {
+    "phoneTitle": "What's your number?",
+    "phoneSubtitle": "I'll text you a code — no password to remember.",
+    "phonePlaceholder": "10 123 4567",
+    "sendCode": "Send code",
+    "invalidPhone": "That doesn't look like an Egyptian mobile number.",
+    "verifyTitle": "Check your texts! 📱",
+    "verifySubtitle": "Enter the code I sent to {{phone}}",
+    "codePlaceholder": "6-digit code",
+    "verify": "Verify",
+    "resend": "Resend code",
+    "wrongNumber": "Wrong number?"
+  },
   "onboarding": {
     "welcomeTitle": "Hey there! 👋",
     "welcomeSubtitle": "I'm VALV. I remember everything about your car so you don't have to.",

@@ -8,6 +8,19 @@
     "cancel": "إلغاء",
     "loading": "لحظة..."
   },
+  "auth": {
+    "phoneTitle": "رقمك إيه؟",
+    "phoneSubtitle": "هبعتلك كود على رسالة، مفيش باسورد تتذكره.",
+    "phonePlaceholder": "10 123 4567",
+    "sendCode": "ابعت الكود",
+    "invalidPhone": "الرقم ده مش شكله رقم موبايل مصري.",
+    "verifyTitle": "افتح الرسايل! 📱",
+    "verifySubtitle": "اكتب الكود اللي بعتناه على {{phone}}",
+    "codePlaceholder": "الكود المكون من 6 أرقام",
+    "verify": "تأكيد",
+    "resend": "إعادة إرسال الكود",
+    "wrongNumber": "الرقم غلط؟"
+  },
   "onboarding": {
     "welcomeTitle": "أهلاً بيك! 👋",
     "welcomeSubtitle": "أنا VALV. هفتكر كل شيء عن عربيتك بدل ما تتعب نفسك.",
