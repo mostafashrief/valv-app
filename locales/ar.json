@@ -1,0 +1,44 @@
+{
+  "common": {
+    "next": "التالي",
+    "back": "رجوع",
+    "skip": "تخطي",
+    "getStarted": "يلا بينا! 🚗",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "loading": "لحظة..."
+  },
+  "onboarding": {
+    "welcomeTitle": "أهلاً بيك! 👋",
+    "welcomeSubtitle": "أنا VALV. هفتكر كل شيء عن عربيتك بدل ما تتعب نفسك.",
+    "brandTitle": "عربيتك ماركة إيه؟",
+    "brandSubtitle": "اختار ماركة عربيتك",
+    "modelTitle": "الموديل إيه؟",
+    "yearTitle": "موديل سنة كام؟",
+    "mileageTitle": "العداد واقف على كام دلوقتي؟",
+    "mileageSubtitle": "اكتب الرقم بس، وأنا أتولى الباقي.",
+    "mileagePlaceholder": "مثلاً 45000",
+    "doneTitle": "تمام! 🎉",
+    "doneSubtitle": "بظبط خطة الصيانة الخاصة بعربيتك دلوقتي."
+  },
+  "home": {
+    "greeting": "أهلاً {{name}} 👋",
+    "nextUp": "الجاي دلوقتي",
+    "allGood": "كل حاجة تمام! مفيش حاجة مستحقة قريب. 🌟",
+    "logMileage": "سجّل العداد",
+    "overdue": "متأخر",
+    "dueSoon": "قريب الاستحقاق",
+    "healthy": "تمام"
+  },
+  "mileage": {
+    "promptTitle": "تحديث سريع!",
+    "promptSubtitle": "العداد بكام كيلو دلوقتي؟",
+    "streak": "{{count}} تسجيل متتالي 🔥"
+  },
+  "notifications": {
+    "oilDueTitle": "العربية محتاجة زيت 🛢️",
+    "oilDueBody": "تغيير الزيت قرّب لعربيتك {{model}}. تحب تحجز الأسبوع ده؟",
+    "mileageCheckTitle": "تساعدني؟",
+    "mileageCheckBody": "قولي عداد عربيتك عشان أظبط لك التذكيرات صح."
+  }
+}

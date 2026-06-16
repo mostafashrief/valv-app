@@ -1,15 +1,19 @@
 {
   "expo": {
-    "name": "VALV-app",
-    "slug": "VALV-app",
+    "name": "VALV",
+    "slug": "valv-app",
+    "scheme": "valv",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
+    "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.valv.app"
     },
     "android": {
+      "package": "com.valv.app",
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/android-icon-foreground.png",
@@ -20,6 +24,21 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-status-bar",
+      "expo-localization",
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/icon.png",
+          "color": "#2E6BFF"
+        }
+      ]
+    ],
+    "extra": {
+      "router": {}
     }
   }
 }

@@ -1,0 +1,44 @@
+{
+  "common": {
+    "next": "Next",
+    "back": "Back",
+    "skip": "Skip",
+    "getStarted": "Let's go! 🚗",
+    "save": "Save",
+    "cancel": "Cancel",
+    "loading": "One sec..."
+  },
+  "onboarding": {
+    "welcomeTitle": "Hey there! 👋",
+    "welcomeSubtitle": "I'm VALV. I remember everything about your car so you don't have to.",
+    "brandTitle": "Who made your car?",
+    "brandSubtitle": "Pick your car's brand",
+    "modelTitle": "Which model?",
+    "yearTitle": "What year is it?",
+    "mileageTitle": "What's on the odometer right now?",
+    "mileageSubtitle": "Just the number — I'll handle the math from here.",
+    "mileagePlaceholder": "e.g. 45000",
+    "doneTitle": "All set! 🎉",
+    "doneSubtitle": "I'm building your car's maintenance plan now."
+  },
+  "home": {
+    "greeting": "Hey {{name}} 👋",
+    "nextUp": "Next up",
+    "allGood": "Everything looks great! Nothing due soon. 🌟",
+    "logMileage": "Log mileage",
+    "overdue": "Overdue",
+    "dueSoon": "Due soon",
+    "healthy": "Healthy"
+  },
+  "mileage": {
+    "promptTitle": "Quick check-in!",
+    "promptSubtitle": "How many km is your car at today?",
+    "streak": "{{count}} check-ins in a row 🔥"
+  },
+  "notifications": {
+    "oilDueTitle": "Your engine is getting thirsty 🛢️",
+    "oilDueBody": "Oil change is coming up for your {{model}}. Want to book it this week?",
+    "mileageCheckTitle": "Quick favor?",
+    "mileageCheckBody": "Tell me your car's mileage so I can keep your reminders on point."
+  }
+}
