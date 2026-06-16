@@ -25,10 +25,7 @@ export default function PhoneStep() {
     const e164 = toE164(localNumber);
     const { error: signInError } = await signInWithPhone(e164);
     setLoading(false);
-    if (signInError) {
-      setError(signInError);
-      return;
-    }
+    if (signInError) { setError(signInError); return; }
     router.push({ pathname: '/auth/verify', params: { phone: e164 } });
   };
 
@@ -46,10 +43,7 @@ export default function PhoneStep() {
             placeholder={t('auth.phonePlaceholder')}
             placeholderTextColor={colors.textMuted}
             value={localNumber}
-            onChangeText={(text) => {
-              setLocalNumber(text);
-              setError(null);
-            }}
+            onChangeText={(v) => { setLocalNumber(v); setError(null); }}
             autoFocus
             maxLength={11}
           />

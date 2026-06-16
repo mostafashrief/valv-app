@@ -9,6 +9,20 @@
     "loading": "One sec..."
   },
   "auth": {
+    "choiceTitle": "How do you want to sign in?",
+    "choiceSubtitle": "Pick whichever feels easier.",
+    "withEmail": "Continue with email",
+    "withPhone": "Continue with phone number",
+    "signUpTitle": "Create your account",
+    "signInTitle": "Welcome back! 👋",
+    "emailPlaceholder": "your@email.com",
+    "passwordPlaceholder": "Password (min. 6 characters)",
+    "signUp": "Create account",
+    "signIn": "Sign in",
+    "switchToSignIn": "Already have an account? Sign in",
+    "switchToSignUp": "No account yet? Create one",
+    "errorInvalidEmail": "That doesn't look like a valid email.",
+    "errorShortPassword": "Password must be at least 6 characters.",
     "phoneTitle": "What's your number?",
     "phoneSubtitle": "I'll text you a code — no password to remember.",
     "phonePlaceholder": "10 123 4567",
@@ -18,8 +32,7 @@
     "verifySubtitle": "Enter the code I sent to {{phone}}",
     "codePlaceholder": "6-digit code",
     "verify": "Verify",
-    "resend": "Resend code",
-    "wrongNumber": "Wrong number?"
+    "resend": "Resend code"
   },
   "onboarding": {
     "welcomeTitle": "Hey there! 👋",

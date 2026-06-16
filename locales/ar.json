@@ -9,6 +9,20 @@
     "loading": "لحظة..."
   },
   "auth": {
+    "choiceTitle": "هتسجّل إزاي؟",
+    "choiceSubtitle": "اختار اللي بيريّحك.",
+    "withEmail": "استمر بالبريد الإلكتروني",
+    "withPhone": "استمر برقم الموبايل",
+    "signUpTitle": "إنشاء حساب",
+    "signInTitle": "أهلاً بعودتك! 👋",
+    "emailPlaceholder": "بريدك الإلكتروني",
+    "passwordPlaceholder": "كلمة المرور (6 أحرف على الأقل)",
+    "signUp": "إنشاء حساب",
+    "signIn": "تسجيل الدخول",
+    "switchToSignIn": "عندك حساب بالفعل؟ سجّل دخولك",
+    "switchToSignUp": "مفيش حساب؟ اعمل واحد",
+    "errorInvalidEmail": "البريد الإلكتروني ده مش صح.",
+    "errorShortPassword": "كلمة المرور لازم تكون 6 أحرف على الأقل.",
     "phoneTitle": "رقمك إيه؟",
     "phoneSubtitle": "هبعتلك كود على رسالة، مفيش باسورد تتذكره.",
     "phonePlaceholder": "10 123 4567",
@@ -18,8 +32,7 @@
     "verifySubtitle": "اكتب الكود اللي بعتناه على {{phone}}",
     "codePlaceholder": "الكود المكون من 6 أرقام",
     "verify": "تأكيد",
-    "resend": "إعادة إرسال الكود",
-    "wrongNumber": "الرقم غلط؟"
+    "resend": "إعادة إرسال الكود"
   },
   "onboarding": {
     "welcomeTitle": "أهلاً بيك! 👋",

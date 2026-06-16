@@ -17,7 +17,7 @@ export default function Welcome() {
         <Text style={styles.subtitle}>{t('onboarding.welcomeSubtitle')}</Text>
       </View>
       <View style={styles.footer}>
-        <Button label={t('common.getStarted')} onPress={() => router.push('/auth/phone')} />
+        <Button label={t('common.getStarted')} onPress={() => router.push('/auth')} />
       </View>
     </SafeAreaView>
   );

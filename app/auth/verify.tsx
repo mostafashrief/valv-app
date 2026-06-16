@@ -22,10 +22,7 @@ export default function VerifyStep() {
     setLoading(true);
     const { error: verifyError } = await verifyOtp(phone, code);
     setLoading(false);
-    if (verifyError) {
-      setError(verifyError);
-      return;
-    }
+    if (verifyError) { setError(verifyError); return; }
     router.replace('/onboarding/brand');
   };
 
@@ -48,10 +45,7 @@ export default function VerifyStep() {
           placeholder={t('auth.codePlaceholder')}
           placeholderTextColor={colors.textMuted}
           value={code}
-          onChangeText={(text) => {
-            setCode(text);
-            setError(null);
-          }}
+          onChangeText={(v) => { setCode(v); setError(null); }}
           autoFocus
           maxLength={6}
         />
