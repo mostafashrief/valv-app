@@ -1,16 +1,14 @@
 import React from 'react';
 import { FlatList, Pressable, Text, StyleSheet } from 'react-native';
 import { router } from 'expo-router';
-import { useTranslation } from 'react-i18next';
 import { OnboardingShell } from '../../components/OnboardingShell';
 import { useOnboarding } from '../../lib/onboarding-context';
 import { colors, radii, spacing, typography } from '../../constants/theme';
 
 const CURRENT_YEAR = new Date().getFullYear();
-const YEARS = Array.from({ length: 25 }, (_, i) => CURRENT_YEAR + 1 - i); // next year down to ~25 back
+const YEARS = Array.from({ length: 25 }, (_, i) => CURRENT_YEAR + 1 - i);
 
 export default function YearStep() {
-  const { t } = useTranslation();
   const { setDraft } = useOnboarding();
 
   const handleSelect = (year: number) => {
@@ -19,7 +17,7 @@ export default function YearStep() {
   };
 
   return (
-    <OnboardingShell step={3} totalSteps={4} title={t('onboarding.yearTitle')}>
+    <OnboardingShell step={3} totalSteps={4} title="What year is it?">
       <FlatList
         data={YEARS}
         keyExtractor={(item) => String(item)}

@@ -7,7 +7,7 @@ interface ButtonProps {
   onPress: () => void;
   disabled?: boolean;
   loading?: boolean;
-  variant?: 'primary' | 'secondary';
+  variant?: 'primary' | 'secondary' | 'ghost';
   style?: ViewStyle;
 }
 
@@ -19,23 +19,29 @@ export function Button({
   variant = 'primary',
   style,
 }: ButtonProps) {
-  const isPrimary = variant === 'primary';
   return (
     <Pressable
       onPress={onPress}
       disabled={disabled || loading}
       style={({ pressed }) => [
         styles.base,
-        isPrimary ? styles.primary : styles.secondary,
+        variant === 'primary' && styles.primary,
+        variant === 'secondary' && styles.secondary,
+        variant === 'ghost' && styles.ghost,
         (disabled || loading) && styles.disabled,
         pressed && !disabled && styles.pressed,
         style,
       ]}
     >
       {loading ? (
-        <ActivityIndicator color={isPrimary ? '#fff' : colors.primary} />
+        <ActivityIndicator color={variant === 'primary' ? colors.espresso : colors.orange} />
       ) : (
-        <Text style={[styles.label, isPrimary ? styles.labelPrimary : styles.labelSecondary]}>
+        <Text style={[
+          styles.label,
+          variant === 'primary' && styles.labelPrimary,
+          variant === 'secondary' && styles.labelSecondary,
+          variant === 'ghost' && styles.labelGhost,
+        ]}>
           {label}
         </Text>
       )}
@@ -51,21 +57,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  primary: {
-    backgroundColor: colors.primary,
-  },
+  primary: { backgroundColor: colors.orange },
   secondary: {
-    backgroundColor: colors.surface,
-    borderWidth: 1,
-    borderColor: colors.border,
+    backgroundColor: 'transparent',
+    borderWidth: 1.5,
+    borderColor: colors.orange,
   },
-  pressed: {
-    opacity: 0.85,
-  },
-  disabled: {
-    opacity: 0.5,
-  },
+  ghost: { backgroundColor: 'transparent' },
+  pressed: { opacity: 0.8 },
+  disabled: { opacity: 0.4 },
   label: { ...typography.button },
-  labelPrimary: { color: '#fff' },
-  labelSecondary: { color: colors.text },
+  labelPrimary: { color: colors.espresso },
+  labelSecondary: { color: colors.orange },
+  labelGhost: { color: colors.orange },
 });

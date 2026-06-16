@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
-import { useTranslation } from 'react-i18next';
 import { Button } from '../../components/Button';
 import { useAuth } from '../../lib/auth-context';
 import { useOnboarding } from '../../lib/onboarding-context';
@@ -11,7 +10,6 @@ import { DEFAULT_MAINTENANCE_ITEMS } from '../../data/default-maintenance-items'
 import { colors, spacing, typography } from '../../constants/theme';
 
 export default function DoneStep() {
-  const { t } = useTranslation();
   const { draft } = useOnboarding();
   const { session } = useAuth();
   const [loading, setLoading] = useState(false);
@@ -40,7 +38,7 @@ export default function DoneStep() {
 
     if (carError || !car) {
       setLoading(false);
-      setError(carError?.message ?? 'Could not save your car. Please try again.');
+      setError(carError?.message ?? 'Could not save your car. Try again.');
       return;
     }
 
@@ -55,10 +53,7 @@ export default function DoneStep() {
     );
 
     setLoading(false);
-    if (itemsError) {
-      setError(itemsError.message);
-      return;
-    }
+    if (itemsError) { setError(itemsError.message); return; }
 
     router.replace('/(tabs)');
   };
@@ -66,33 +61,32 @@ export default function DoneStep() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
-        <Text style={styles.emoji}>🎉</Text>
-        <Text style={styles.title}>{t('onboarding.doneTitle')}</Text>
-        <Text style={styles.subtitle}>{t('onboarding.doneSubtitle')}</Text>
-        <Text style={styles.summary}>
-          {draft.brand} {draft.model} · {draft.year} · {draft.mileageKm} km
+        <Text style={styles.label}>All set.</Text>
+        <Text style={styles.title}>Your maintenance plan is ready.</Text>
+        <Text style={styles.carSummary}>
+          {draft.brand} {draft.model} · {draft.year}
         </Text>
+        <Text style={styles.mileage}>{draft.mileageKm?.toLocaleString()} km</Text>
         {error ? <Text style={styles.error}>{error}</Text> : null}
       </View>
       <View style={styles.footer}>
-        <Button label={t('common.getStarted')} onPress={handleFinish} loading={loading} />
+        <Button label="Open my plan" onPress={handleFinish} loading={loading} />
       </View>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.background, justifyContent: 'space-between' },
-  content: { flex: 1, justifyContent: 'center', alignItems: 'center', paddingHorizontal: spacing.xl },
-  emoji: { fontSize: 64, marginBottom: spacing.lg },
-  title: { ...typography.title, color: colors.text, textAlign: 'center' },
-  subtitle: {
-    ...typography.subtitle,
-    color: colors.textMuted,
-    textAlign: 'center',
-    marginTop: spacing.md,
+  container: { flex: 1, backgroundColor: colors.espresso, justifyContent: 'space-between' },
+  content: { flex: 1, justifyContent: 'center', paddingHorizontal: spacing.lg },
+  label: { ...typography.label, color: colors.orange, marginBottom: spacing.sm },
+  title: { ...typography.title, color: colors.textLight },
+  carSummary: { ...typography.body, color: colors.textMutedDark, marginTop: spacing.lg },
+  mileage: {
+    ...typography.monoLarge,
+    color: colors.textLight,
+    marginTop: spacing.xs,
   },
-  summary: { ...typography.body, color: colors.text, marginTop: spacing.xl, fontWeight: '600' },
-  error: { ...typography.body, color: colors.overdue, marginTop: spacing.md, textAlign: 'center' },
-  footer: { padding: spacing.lg },
+  error: { ...typography.body, color: colors.overdue, marginTop: spacing.md },
+  footer: { paddingHorizontal: spacing.lg, paddingBottom: spacing.xl },
 });

@@ -1,14 +1,12 @@
 import React from 'react';
 import { FlatList, Pressable, Text, StyleSheet } from 'react-native';
 import { router } from 'expo-router';
-import { useTranslation } from 'react-i18next';
 import { OnboardingShell } from '../../components/OnboardingShell';
 import { useOnboarding } from '../../lib/onboarding-context';
 import { CAR_BRANDS_SEED } from '../../data/cars-seed';
 import { colors, radii, spacing, typography } from '../../constants/theme';
 
 export default function BrandStep() {
-  const { t } = useTranslation();
   const { setDraft } = useOnboarding();
 
   const handleSelect = (brand: string) => {
@@ -17,12 +15,7 @@ export default function BrandStep() {
   };
 
   return (
-    <OnboardingShell
-      step={1}
-      totalSteps={4}
-      title={t('onboarding.brandTitle')}
-      subtitle={t('onboarding.brandSubtitle')}
-    >
+    <OnboardingShell step={1} totalSteps={4} title="Who made your car?">
       <FlatList
         data={CAR_BRANDS_SEED}
         keyExtractor={(item) => item.brand}

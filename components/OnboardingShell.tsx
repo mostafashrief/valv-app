@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors, radii, spacing, typography } from '../constants/theme';
 
 interface OnboardingShellProps {
-  step: number; // 1-based
+  step: number;
   totalSteps: number;
   title: string;
   subtitle?: string;
@@ -31,6 +31,7 @@ export function OnboardingShell({
         />
       </View>
       <View style={styles.content}>
+        <Text style={styles.stepLabel}>{step} / {totalSteps}</Text>
         <Text style={styles.title}>{title}</Text>
         {subtitle ? <Text style={styles.subtitle}>{subtitle}</Text> : null}
         <View style={styles.body}>{children}</View>
@@ -41,23 +42,24 @@ export function OnboardingShell({
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.background },
+  container: { flex: 1, backgroundColor: colors.cream },
   progressTrack: {
-    height: 6,
+    height: 3,
     backgroundColor: colors.border,
-    borderRadius: radii.pill,
     marginHorizontal: spacing.lg,
     marginTop: spacing.sm,
+    borderRadius: radii.pill,
     overflow: 'hidden',
   },
   progressFill: {
     height: '100%',
-    backgroundColor: colors.primary,
+    backgroundColor: colors.orange,
     borderRadius: radii.pill,
   },
   content: { flex: 1, paddingHorizontal: spacing.lg, paddingTop: spacing.xl },
+  stepLabel: { ...typography.label, color: colors.orange, marginBottom: spacing.sm },
   title: { ...typography.title, color: colors.text },
-  subtitle: { ...typography.subtitle, color: colors.textMuted, marginTop: spacing.sm },
+  subtitle: { ...typography.body, color: colors.textMuted, marginTop: spacing.sm },
   body: { marginTop: spacing.xl, flex: 1 },
   footer: { padding: spacing.lg },
 });

@@ -2,37 +2,41 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
-import { useTranslation } from 'react-i18next';
 import { Button } from '../components/Button';
 import { colors, spacing, typography } from '../constants/theme';
 
 export default function Welcome() {
-  const { t } = useTranslation();
-
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
-        <Text style={styles.emoji}>🚗💨</Text>
-        <Text style={styles.title}>{t('onboarding.welcomeTitle')}</Text>
-        <Text style={styles.subtitle}>{t('onboarding.welcomeSubtitle')}</Text>
+        <Text style={styles.wordmark}>Valv</Text>
+        <Text style={styles.tagline}>Car maintenance,{'\n'}on schedule.</Text>
       </View>
       <View style={styles.footer}>
-        <Button label={t('common.getStarted')} onPress={() => router.push('/auth')} />
+        <Text style={styles.sub}>Your car finally has someone paying attention.</Text>
+        <Button label="Get started" onPress={() => router.push('/auth')} style={styles.btn} />
       </View>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.background, justifyContent: 'space-between' },
-  content: { flex: 1, justifyContent: 'center', alignItems: 'center', paddingHorizontal: spacing.xl },
-  emoji: { fontSize: 64, marginBottom: spacing.lg },
-  title: { ...typography.title, color: colors.text, textAlign: 'center' },
-  subtitle: {
-    ...typography.subtitle,
-    color: colors.textMuted,
-    textAlign: 'center',
-    marginTop: spacing.md,
+  container: { flex: 1, backgroundColor: colors.espresso, justifyContent: 'space-between' },
+  content: { flex: 1, justifyContent: 'center', paddingHorizontal: spacing.lg },
+  wordmark: {
+    fontSize: 48,
+    fontWeight: '700',
+    color: colors.orange,
+    letterSpacing: -1,
   },
-  footer: { padding: spacing.lg },
+  tagline: {
+    ...typography.title,
+    fontSize: 36,
+    color: colors.textLight,
+    marginTop: spacing.sm,
+    lineHeight: 42,
+  },
+  footer: { paddingHorizontal: spacing.lg, paddingBottom: spacing.xl, gap: spacing.md },
+  sub: { ...typography.body, color: colors.textMutedDark },
+  btn: { marginTop: spacing.xs },
 });

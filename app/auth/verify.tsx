@@ -2,13 +2,11 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Pressable, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router, useLocalSearchParams } from 'expo-router';
-import { useTranslation } from 'react-i18next';
 import { Button } from '../../components/Button';
 import { useAuth } from '../../lib/auth-context';
-import { colors, spacing, typography } from '../../constants/theme';
+import { colors, radii, spacing, typography } from '../../constants/theme';
 
 export default function VerifyStep() {
-  const { t } = useTranslation();
   const { verifyOtp, signInWithPhone } = useAuth();
   const { phone } = useLocalSearchParams<{ phone: string }>();
   const [code, setCode] = useState('');
@@ -36,14 +34,14 @@ export default function VerifyStep() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
-        <Text style={styles.title}>{t('auth.verifyTitle')}</Text>
-        <Text style={styles.subtitle}>{t('auth.verifySubtitle', { phone })}</Text>
+        <Text style={styles.title}>Check your texts.</Text>
+        <Text style={styles.subtitle}>Code sent to {phone}.</Text>
 
         <TextInput
           style={styles.input}
           keyboardType="number-pad"
-          placeholder={t('auth.codePlaceholder')}
-          placeholderTextColor={colors.textMuted}
+          placeholder="6-digit code"
+          placeholderTextColor={colors.textMutedDark}
           value={code}
           onChangeText={(v) => { setCode(v); setError(null); }}
           autoFocus
@@ -52,35 +50,38 @@ export default function VerifyStep() {
         {error ? <Text style={styles.error}>{error}</Text> : null}
 
         <Pressable onPress={handleResend} disabled={resending} style={styles.resendRow}>
-          <Text style={styles.resendText}>{t('auth.resend')}</Text>
+          <Text style={styles.resendText}>
+            {resending ? 'Sending...' : 'Resend code.'}
+          </Text>
         </Pressable>
       </View>
       <View style={styles.footer}>
-        <Button label={t('auth.verify')} onPress={handleVerify} loading={loading} />
+        <Button label="Verify" onPress={handleVerify} loading={loading} />
       </View>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.background, justifyContent: 'space-between' },
+  container: { flex: 1, backgroundColor: colors.espresso, justifyContent: 'space-between' },
   content: { flex: 1, paddingHorizontal: spacing.lg, paddingTop: spacing.xl },
-  title: { ...typography.title, color: colors.text },
-  subtitle: { ...typography.subtitle, color: colors.textMuted, marginTop: spacing.sm },
+  title: { ...typography.title, color: colors.textLight },
+  subtitle: { ...typography.body, color: colors.textMutedDark, marginTop: spacing.sm },
   input: {
     marginTop: spacing.xl,
-    backgroundColor: colors.surface,
-    borderRadius: 16,
+    backgroundColor: colors.surfaceDark,
+    borderRadius: radii.md,
     borderWidth: 1,
-    borderColor: colors.border,
+    borderColor: colors.borderDark,
     paddingVertical: spacing.md,
     paddingHorizontal: spacing.lg,
-    fontSize: 24,
-    letterSpacing: 4,
-    color: colors.text,
+    fontSize: 28,
+    letterSpacing: 6,
+    color: colors.textLight,
+    fontFamily: 'Courier New',
   },
   error: { ...typography.body, color: colors.overdue, marginTop: spacing.sm },
-  resendRow: { marginTop: spacing.lg, alignSelf: 'center' },
-  resendText: { ...typography.body, color: colors.primary, fontWeight: '600' },
-  footer: { padding: spacing.lg },
+  resendRow: { marginTop: spacing.lg },
+  resendText: { ...typography.body, color: colors.orange },
+  footer: { paddingHorizontal: spacing.lg, paddingBottom: spacing.xl },
 });

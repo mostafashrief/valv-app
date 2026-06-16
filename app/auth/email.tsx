@@ -2,13 +2,11 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Pressable, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
-import { useTranslation } from 'react-i18next';
 import { Button } from '../../components/Button';
 import { useAuth } from '../../lib/auth-context';
 import { colors, radii, spacing, typography } from '../../constants/theme';
 
 export default function EmailAuth() {
-  const { t } = useTranslation();
   const { signUp, signIn } = useAuth();
   const [mode, setMode] = useState<'signup' | 'signin'>('signup');
   const [email, setEmail] = useState('');
@@ -19,16 +17,14 @@ export default function EmailAuth() {
   const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
   const handleSubmit = async () => {
-    if (!isEmailValid) { setError(t('auth.errorInvalidEmail')); return; }
-    if (password.length < 6) { setError(t('auth.errorShortPassword')); return; }
-
+    if (!isEmailValid) { setError("That doesn't look like a valid email."); return; }
+    if (password.length < 6) { setError('Password must be at least 6 characters.'); return; }
     setError(null);
     setLoading(true);
     const { error: authError } = mode === 'signup'
       ? await signUp(email, password)
       : await signIn(email, password);
     setLoading(false);
-
     if (authError) { setError(authError); return; }
     router.replace('/onboarding/brand');
   };
@@ -37,13 +33,13 @@ export default function EmailAuth() {
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
         <Text style={styles.title}>
-          {mode === 'signup' ? t('auth.signUpTitle') : t('auth.signInTitle')}
+          {mode === 'signup' ? 'Create your account.' : 'Welcome back.'}
         </Text>
 
         <TextInput
           style={styles.input}
-          placeholder={t('auth.emailPlaceholder')}
-          placeholderTextColor={colors.textMuted}
+          placeholder="your@email.com"
+          placeholderTextColor={colors.textMutedDark}
           value={email}
           onChangeText={(v) => { setEmail(v); setError(null); }}
           keyboardType="email-address"
@@ -52,8 +48,8 @@ export default function EmailAuth() {
         />
         <TextInput
           style={[styles.input, { marginTop: spacing.sm }]}
-          placeholder={t('auth.passwordPlaceholder')}
-          placeholderTextColor={colors.textMuted}
+          placeholder="Password (min. 6 characters)"
+          placeholderTextColor={colors.textMutedDark}
           value={password}
           onChangeText={(v) => { setPassword(v); setError(null); }}
           secureTextEntry
@@ -65,14 +61,14 @@ export default function EmailAuth() {
           style={styles.switchRow}
         >
           <Text style={styles.switchText}>
-            {mode === 'signup' ? t('auth.switchToSignIn') : t('auth.switchToSignUp')}
+            {mode === 'signup' ? 'Already have an account? Sign in.' : 'No account yet. Create one.'}
           </Text>
         </Pressable>
       </View>
 
       <View style={styles.footer}>
         <Button
-          label={mode === 'signup' ? t('auth.signUp') : t('auth.signIn')}
+          label={mode === 'signup' ? 'Create account' : 'Sign in'}
           onPress={handleSubmit}
           loading={loading}
         />
@@ -82,21 +78,21 @@ export default function EmailAuth() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.background, justifyContent: 'space-between' },
+  container: { flex: 1, backgroundColor: colors.espresso, justifyContent: 'space-between' },
   content: { flex: 1, paddingHorizontal: spacing.lg, paddingTop: spacing.xl },
-  title: { ...typography.title, color: colors.text, marginBottom: spacing.xl },
+  title: { ...typography.title, color: colors.textLight, marginBottom: spacing.xl },
   input: {
-    backgroundColor: colors.surface,
+    backgroundColor: colors.surfaceDark,
     borderRadius: radii.md,
     borderWidth: 1,
-    borderColor: colors.border,
+    borderColor: colors.borderDark,
     paddingVertical: spacing.md,
     paddingHorizontal: spacing.lg,
     fontSize: 16,
-    color: colors.text,
+    color: colors.textLight,
   },
   error: { ...typography.body, color: colors.overdue, marginTop: spacing.sm },
-  switchRow: { marginTop: spacing.lg, alignSelf: 'center' },
-  switchText: { ...typography.body, color: colors.primary, fontWeight: '600' },
-  footer: { padding: spacing.lg },
+  switchRow: { marginTop: spacing.lg },
+  switchText: { ...typography.body, color: colors.orange },
+  footer: { paddingHorizontal: spacing.lg, paddingBottom: spacing.xl },
 });

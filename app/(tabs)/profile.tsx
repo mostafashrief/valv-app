@@ -7,10 +7,10 @@ export default function Profile() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
+        <Text style={styles.label}>Account</Text>
         <Text style={styles.title}>Profile</Text>
-        <Text style={styles.subtitle}>
-          Account, language switcher, subscription status, and notification preferences will
-          live here.
+        <Text style={styles.sub}>
+          Language, subscription, and notification settings coming here.
         </Text>
       </View>
     </SafeAreaView>
@@ -18,8 +18,9 @@ export default function Profile() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.background, padding: spacing.lg },
+  container: { flex: 1, backgroundColor: colors.cream, paddingHorizontal: spacing.lg },
   content: { flex: 1, justifyContent: 'center' },
-  title: { ...typography.title, color: colors.text },
-  subtitle: { ...typography.body, color: colors.textMuted, marginTop: spacing.md },
+  label: { ...typography.label, color: colors.orange },
+  title: { ...typography.title, color: colors.text, marginTop: spacing.xs },
+  sub: { ...typography.body, color: colors.textMuted, marginTop: spacing.md },
 });
