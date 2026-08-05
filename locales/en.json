@@ -2,69 +2,248 @@
   "common": {
     "next": "Next",
     "back": "Back",
-    "skip": "Skip",
-    "getStarted": "Let's go! 🚗",
+    "skip": "Skip for now",
     "save": "Save",
     "cancel": "Cancel",
-    "loading": "One sec..."
+    "loading": "Loading...",
+    "edit": "Edit",
+    "tryAgain": "Try again",
+    "delete": "Delete"
   },
   "auth": {
     "choiceTitle": "How do you want to sign in?",
-    "choiceSubtitle": "Pick whichever feels easier.",
     "withEmail": "Continue with email",
     "withPhone": "Continue with phone number",
-    "signUpTitle": "Create your account",
-    "signInTitle": "Welcome back! 👋",
+    "signUpTitle": "Create your account.",
+    "signInTitle": "Welcome back.",
     "emailPlaceholder": "your@email.com",
     "passwordPlaceholder": "Password (min. 6 characters)",
     "signUp": "Create account",
     "signIn": "Sign in",
-    "switchToSignIn": "Already have an account? Sign in",
-    "switchToSignUp": "No account yet? Create one",
+    "switchToSignIn": "Already have an account? Sign in.",
+    "switchToSignUp": "No account yet? Create one.",
     "errorInvalidEmail": "That doesn't look like a valid email.",
     "errorShortPassword": "Password must be at least 6 characters.",
     "phoneTitle": "What's your number?",
-    "phoneSubtitle": "I'll text you a code — no password to remember.",
-    "phonePlaceholder": "10 123 4567",
+    "phoneSubtitle": "We'll send you a one-time code.",
+    "phonePlaceholder": "010 1234 5678",
     "sendCode": "Send code",
     "invalidPhone": "That doesn't look like an Egyptian mobile number.",
-    "verifyTitle": "Check your texts! 📱",
-    "verifySubtitle": "Enter the code I sent to {{phone}}",
+    "verifyTitle": "Enter your code.",
+    "verifySubtitle": "We sent a code to {{phone}}.",
     "codePlaceholder": "6-digit code",
     "verify": "Verify",
     "resend": "Resend code"
   },
   "onboarding": {
-    "welcomeTitle": "Hey there! 👋",
-    "welcomeSubtitle": "I'm VALV. I remember everything about your car so you don't have to.",
-    "brandTitle": "Who made your car?",
-    "brandSubtitle": "Pick your car's brand",
+    "welcomeHeadline": "Your car's past and future, documented and planned.",
+    "welcomeSubheadline": "Track every maintenance. Get smart reminders. Protect your resale value.",
+    "welcomeCta": "Let's get started",
+    "welcomeSkip": "Skip for now",
+
+    "brandStep": "Who made your car?",
+    "brandTitle": "Let's add your car.",
+    "brandSubtitle": "We'll show you exactly when your car needs service.",
+
     "modelTitle": "Which model?",
+
     "yearTitle": "What year is it?",
-    "mileageTitle": "What's on the odometer right now?",
-    "mileageSubtitle": "Just the number — I'll handle the math from here.",
-    "mileagePlaceholder": "e.g. 45000",
-    "doneTitle": "All set! 🎉",
-    "doneSubtitle": "I'm building your car's maintenance plan now."
+
+    "mileageTitle": "What's on the odometer?",
+    "mileageSubtitle": "We'll use this to calculate your service schedule.",
+    "mileagePlaceholder": "e.g., 125,000",
+    "mileageError": "We need your car's info to get started.",
+
+    "notificationsTitle": "Never miss a service.",
+    "notificationsSubtitle": "Get alerts when your car needs maintenance — by mileage or time.",
+    "notificationsPermission": "Carvalv needs notification permission to send you reminders.",
+    "notificationsEnable": "Enable notifications",
+    "notificationsSkip": "Skip",
+    "notificationsNote": "You can change this anytime in Settings.",
+
+    "doneTitle": "You're all set.",
+    "doneSubtitle": "Your maintenance schedule is ready. We'll remind you when something's due."
   },
   "home": {
-    "greeting": "Hey {{name}} 👋",
-    "nextUp": "Next up",
-    "allGood": "Everything looks great! Nothing due soon. 🌟",
-    "logMileage": "Log mileage",
-    "overdue": "Overdue",
-    "dueSoon": "Due soon",
-    "healthy": "Healthy"
+    "title": "Your car's status",
+    "car": "{{brand}} {{model}} · {{year}}",
+    "logKm": "Log km",
+
+    "statusGood": "Good",
+    "statusDueSoon": "Due soon",
+    "statusOverdue": "Overdue",
+    "statusOk": "OK",
+
+    "dueIn": "Due in {{km}} km",
+    "dueInDays": "Estimated: {{days}} days from now",
+    "overdueByKm": "Overdue by {{km}} km",
+    "overdueByDays": "Overdue by {{days}} days",
+    "overdueUrgency": "Don't wait — protect your brakes",
+    "actionNow": "Take action now",
+    "scheduleNow": "Schedule now",
+
+    "overdueCount": "{{count}} overdue",
+    "dueSoonCount": "{{count}} due soon",
+    "allClear": "All clear.",
+    "noCar": "No car found. Complete onboarding first.",
+
+    "addCustomItem": "+ Add custom item",
+    "addCustomTitle": "Add maintenance item",
+    "addCustomSubtitle": "Track anything — tire pressure, AC gas, custom parts.",
+    "addCustomName": "Item name",
+    "addCustomNamePlaceholder": "e.g., Tire pressure check",
+    "addCustomKm": "Every X km (optional)",
+    "addCustomKmPlaceholder": "e.g., 5000",
+    "addCustomDays": "Every X days (optional)",
+    "addCustomDaysPlaceholder": "e.g., 90",
+    "addCustomIntervalError": "Add at least one interval (km or days).",
+    "addCustomNameError": "Name required.",
+    "addCustomCta": "Add",
+
+    "tapToLog": "Tap to log →",
+    "estimatedInterval": "Estimated interval",
+
+    "updateMileageTitle": "Update mileage",
+    "updateMileageCurrent": "Current: {{mileage}} km",
+    "updateMileagePlaceholder": "New odometer reading",
+    "updateMileageSave": "Save",
+    "mileageDownError": "Mileage can't go down",
+    "mileageDownMessage": "Current is {{mileage}} km.",
+    "mileageInvalid": "Enter a valid number."
   },
-  "mileage": {
-    "promptTitle": "Quick check-in!",
-    "promptSubtitle": "How many km is your car at today?",
-    "streak": "{{count}} check-ins in a row 🔥"
+  "history": {
+    "title": "Your maintenance history",
+    "subtitle": "Every service you've done on your car. All in one place.",
+
+    "emptyTitle": "Your car's story starts here.",
+    "emptySubtitle": "Add past services to build your complete maintenance record. This helps prove care when you sell.",
+    "emptyCta": "Add your first service",
+    "emptySkip": "Skip for now",
+    "emptySecondary": "This helps prove maintenance when you sell your car.",
+
+    "totalSpent": "Total spent: {{amount}} EGP",
+    "intervalKm": "Every {{km}} km",
+    "intervalDays": "Every {{days}} days",
+    "noLogsYet": "No services logged yet.",
+    "logService": "+ Log service"
+  },
+  "upcoming": {
+    "title": "Your upcoming services",
+    "subtitle": "Stay ahead of what your car needs.",
+    "label": "Timeline",
+
+    "sectionOverdue": "Overdue",
+    "sectionDueSoon": "Due soon",
+    "sectionOnSchedule": "Up to date",
+
+    "emptyTitle": "Your car is all set!",
+    "emptySubtitle": "No services due right now. We'll alert you when something's coming up.",
+    "nextAlert": "Next service in {{days}} days (estimated)"
+  },
+  "addService": {
+    "title": "Add a service",
+    "subtitle": "Document your maintenance. Build your car's complete history.",
+    "logTitle": "Log a service",
+
+    "labelService": "What service did you do?",
+    "placeholderService": "e.g., Oil change, Tire rotation",
+    "labelDate": "When was it done?",
+    "placeholderDate": "YYYY-MM-DD",
+    "labelMileage": "Mileage at service",
+    "placeholderMileage": "Odometer reading",
+    "labelCost": "Cost (optional)",
+    "placeholderCost": "0",
+    "labelWhere": "Where? (optional)",
+    "placeholderWhere": "e.g., Ahmed's Auto Shop",
+    "labelNotes": "Notes (optional)",
+    "placeholderNotes": "What was done, parts used…",
+
+    "saveButton": "Save service",
+    "cancelButton": "Cancel",
+    "errorEmpty": "Please fill in the service name and date.",
+    "success": "Your service has been saved!",
+
+    "receiptUpload": "📎 Upload receipt — AI will fill the fields",
+    "receiptParsing": "Reading your receipt..."
+  },
+  "itemDetail": {
+    "upToDate": "Up to date.",
+    "serviceHistory": "Service history",
+    "noHistory": "No services logged yet.",
+    "logService": "+ Log service",
+    "logTitle": "Log a service",
+    "doneAtKm": "Done at (km)",
+    "doneAtDate": "Date",
+    "cost": "Cost (EGP)",
+    "notes": "Notes",
+    "odometerPlaceholder": "Odometer reading",
+    "datePlaceholder": "YYYY-MM-DD",
+    "costPlaceholder": "0",
+    "notesPlaceholder": "What was done, parts used…"
+  },
+  "profile": {
+    "label": "Account",
+    "title": "Profile",
+    "emailLabel": "Email",
+    "myCars": "My cars",
+    "activeBadge": "Active",
+    "addCar": "+ Add another car",
+    "signOut": "Sign out",
+    "signOutTitle": "Sign out",
+    "signOutMessage": "You sure?",
+    "signOutConfirm": "Sign out",
+    "signOutCancel": "Cancel"
+  },
+  "settings": {
+    "carTitle": "Your car",
+    "vehicleInfo": "Vehicle info",
+    "updateMileage": "Update mileage",
+    "editCar": "Edit car details",
+    "removeCar": "Remove this car",
+
+    "notificationsTitle": "Notifications",
+    "alertsDueSoon": "Due soon alerts",
+    "alertTwoWeeks": "Get alerts 2 weeks before",
+    "alert1000km": "Get alerts 1,000 km before",
+    "alertsOverdue": "Overdue alerts",
+    "alertOverdue": "Alert me if overdue",
+    "reminders": "Reminders",
+    "reminderFrequency": "Send reminders every",
+    "weekly": "Weekly",
+    "biweekly": "Bi-weekly",
+    "monthly": "Monthly",
+
+    "aboutTitle": "About Carvalv",
+    "version": "App version: {{version}}",
+    "helpSection": "Need help?",
+    "contactSupport": "Contact support",
+    "faq": "FAQ",
+    "howTo": "How to use",
+    "legalSection": "Legal",
+    "privacy": "Privacy policy",
+    "terms": "Terms of service"
   },
   "notifications": {
-    "oilDueTitle": "Your engine is getting thirsty 🛢️",
-    "oilDueBody": "Oil change is coming up for your {{model}}. Want to book it this week?",
-    "mileageCheckTitle": "Quick favor?",
-    "mileageCheckBody": "Tell me your car's mileage so I can keep your reminders on point."
+    "dueSoonTitle": "Your {{service}} is coming up",
+    "dueSoonBody": "Due in {{km}} km. Don't wait until it's overdue.",
+    "overdueTitle": "⚠️ Your {{service}} is overdue",
+    "overdueBody": "Overdue by {{km}} km. Protect your car today.",
+    "serviceLoggedTitle": "Your {{service}} is logged",
+    "serviceLoggedBody": "One more service documented. Your car's value is protected.",
+    "serviceLoggedCta": "View updated schedule"
+  },
+  "errors": {
+    "noInternet": "No internet connection",
+    "noInternetSubtitle": "Your car's data is saved locally. Reconnect to sync.",
+    "noInternetCta": "Try again",
+
+    "serviceNotFound": "Service not in manufacturer schedule",
+    "serviceNotFoundSubtitle": "No problem. You can still log it and it will be saved to your car's history.",
+    "serviceNotFoundInfo": "Examples: windshield replacement, battery test, AC service",
+
+    "mileageTooLow": "Mileage can't be less than your current mileage.",
+    "mileageTip": "Your car is currently at {{mileage}} km.",
+
+    "generic": "Something went wrong. Please try again."
   }
 }

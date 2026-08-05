@@ -3,68 +3,247 @@
     "next": "التالي",
     "back": "رجوع",
     "skip": "تخطي",
-    "getStarted": "يلا بينا! 🚗",
     "save": "حفظ",
     "cancel": "إلغاء",
-    "loading": "لحظة..."
+    "loading": "لحظة...",
+    "edit": "عدّل",
+    "tryAgain": "حاول تاني",
+    "delete": "احذف"
   },
   "auth": {
     "choiceTitle": "هتسجّل إزاي؟",
-    "choiceSubtitle": "اختار اللي بيريّحك.",
     "withEmail": "استمر بالبريد الإلكتروني",
     "withPhone": "استمر برقم الموبايل",
-    "signUpTitle": "إنشاء حساب",
-    "signInTitle": "أهلاً بعودتك! 👋",
+    "signUpTitle": "إنشاء حساب.",
+    "signInTitle": "أهلاً بعودتك.",
     "emailPlaceholder": "بريدك الإلكتروني",
     "passwordPlaceholder": "كلمة المرور (6 أحرف على الأقل)",
     "signUp": "إنشاء حساب",
     "signIn": "تسجيل الدخول",
-    "switchToSignIn": "عندك حساب بالفعل؟ سجّل دخولك",
-    "switchToSignUp": "مفيش حساب؟ اعمل واحد",
+    "switchToSignIn": "عندك حساب بالفعل؟ سجّل دخولك.",
+    "switchToSignUp": "مفيش حساب؟ اعمل واحد.",
     "errorInvalidEmail": "البريد الإلكتروني ده مش صح.",
     "errorShortPassword": "كلمة المرور لازم تكون 6 أحرف على الأقل.",
     "phoneTitle": "رقمك إيه؟",
-    "phoneSubtitle": "هبعتلك كود على رسالة، مفيش باسورد تتذكره.",
-    "phonePlaceholder": "10 123 4567",
+    "phoneSubtitle": "هنبعتلك كود مرة واحدة.",
+    "phonePlaceholder": "010 1234 5678",
     "sendCode": "ابعت الكود",
     "invalidPhone": "الرقم ده مش شكله رقم موبايل مصري.",
-    "verifyTitle": "افتح الرسايل! 📱",
-    "verifySubtitle": "اكتب الكود اللي بعتناه على {{phone}}",
+    "verifyTitle": "اكتب الكود.",
+    "verifySubtitle": "بعتنا كود على {{phone}}.",
     "codePlaceholder": "الكود المكون من 6 أرقام",
     "verify": "تأكيد",
     "resend": "إعادة إرسال الكود"
   },
   "onboarding": {
-    "welcomeTitle": "أهلاً بيك! 👋",
-    "welcomeSubtitle": "أنا VALV. هفتكر كل شيء عن عربيتك بدل ما تتعب نفسك.",
-    "brandTitle": "عربيتك ماركة إيه؟",
-    "brandSubtitle": "اختار ماركة عربيتك",
+    "welcomeHeadline": "ماضي سيارتك ومستقبلها، معروف ومخطط.",
+    "welcomeSubheadline": "تابع كل صيانة. اتنبه قبل ما تتأخر. احمي قيمة سيارتك.",
+    "welcomeCta": "يلا نبدأ",
+    "welcomeSkip": "تخطي",
+
+    "brandStep": "مين عمل سيارتك؟",
+    "brandTitle": "نضيف سيارتك.",
+    "brandSubtitle": "هنقول لك بالظبط متى سيارتك محتاجة صيانة.",
+
     "modelTitle": "الموديل إيه؟",
+
     "yearTitle": "موديل سنة كام؟",
-    "mileageTitle": "العداد واقف على كام دلوقتي؟",
-    "mileageSubtitle": "اكتب الرقم بس، وأنا أتولى الباقي.",
-    "mileagePlaceholder": "مثلاً 45000",
-    "doneTitle": "تمام! 🎉",
-    "doneSubtitle": "بظبط خطة الصيانة الخاصة بعربيتك دلوقتي."
+
+    "mileageTitle": "العداد واقف على كام؟",
+    "mileageSubtitle": "هنستخدم ده عشان نحسب جدول الصيانة بتاعتك.",
+    "mileagePlaceholder": "مثلا: 125,000",
+    "mileageError": "محتاجين معلومات سيارتك عشان نبدأ.",
+
+    "notificationsTitle": "ما تنسى صيانة تاني.",
+    "notificationsSubtitle": "اتنبه لما سيارتك محتاجة صيانة — بناء على الكيلومترات أو الوقت.",
+    "notificationsPermission": "Carvalv محتاجة اذن التنبيهات عشان نفكرك بالصيانة.",
+    "notificationsEnable": "فعّل التنبيهات",
+    "notificationsSkip": "تخطي",
+    "notificationsNote": "تقدر تغيره أي وقت في Settings.",
+
+    "doneTitle": "خلصنا كده.",
+    "doneSubtitle": "جدول الصيانة بتاعتك جاهز. هنفكرك لما يجي موعد أي حاجة."
   },
   "home": {
-    "greeting": "أهلاً {{name}} 👋",
-    "nextUp": "الجاي دلوقتي",
-    "allGood": "كل حاجة تمام! مفيش حاجة مستحقة قريب. 🌟",
-    "logMileage": "سجّل العداد",
-    "overdue": "متأخر",
-    "dueSoon": "قريب الاستحقاق",
-    "healthy": "تمام"
+    "title": "حالة سيارتك",
+    "car": "{{brand}} {{model}} · {{year}}",
+    "logKm": "سجّل الكيلو",
+
+    "statusGood": "تمام",
+    "statusDueSoon": "قريب الموعد",
+    "statusOverdue": "متأخر",
+    "statusOk": "OK",
+
+    "dueIn": "في {{km}} كيلو",
+    "dueInDays": "المتوقع: {{days}} يوم من دلوقتي",
+    "overdueByKm": "متأخر من {{km}} كيلو",
+    "overdueByDays": "متأخر من {{days}} يوم",
+    "overdueUrgency": "ما تنتظرش — احمي البراكات",
+    "actionNow": "تحرك دلوقتي",
+    "scheduleNow": "احجز دلوقتي",
+
+    "overdueCount": "{{count}} متأخر",
+    "dueSoonCount": "{{count}} قريب الموعد",
+    "allClear": "كله تمام.",
+    "noCar": "مفيش سيارة. أكمل خطوات الإعداد الأول.",
+
+    "addCustomItem": "+ أضيف عنصر مخصص",
+    "addCustomTitle": "أضيف عنصر صيانة",
+    "addCustomSubtitle": "تابع أي حاجة — ضغط الإطارات، غاز التكييف، قطع مخصصة.",
+    "addCustomName": "اسم العنصر",
+    "addCustomNamePlaceholder": "مثلا: فحص ضغط الإطارات",
+    "addCustomKm": "كل كام كيلو (اختياري)",
+    "addCustomKmPlaceholder": "مثلا: 5000",
+    "addCustomDays": "كل كام يوم (اختياري)",
+    "addCustomDaysPlaceholder": "مثلا: 90",
+    "addCustomIntervalError": "أضيف على الأقل فترة واحدة (كيلو أو أيام).",
+    "addCustomNameError": "الاسم مطلوب.",
+    "addCustomCta": "أضيف",
+
+    "tapToLog": "اضغط للتسجيل →",
+    "estimatedInterval": "فترة تقديرية",
+
+    "updateMileageTitle": "تحديث الكيلومتراج",
+    "updateMileageCurrent": "الحالي: {{mileage}} كيلو",
+    "updateMileagePlaceholder": "قراءة العداد الجديدة",
+    "updateMileageSave": "احفظ",
+    "mileageDownError": "الكيلو ما يقدرش ينزل",
+    "mileageDownMessage": "الحالي هو {{mileage}} كيلو.",
+    "mileageInvalid": "اكتب رقم صحيح."
   },
-  "mileage": {
-    "promptTitle": "تحديث سريع!",
-    "promptSubtitle": "العداد بكام كيلو دلوقتي؟",
-    "streak": "{{count}} تسجيل متتالي 🔥"
+  "history": {
+    "title": "سجل صيانة سيارتك",
+    "subtitle": "كل صيانة عملتها على سيارتك. كل حاجة في مكان واحد.",
+
+    "emptyTitle": "قصة سيارتك بتبدأ من هنا.",
+    "emptySubtitle": "أضيف الخدمات اللي عملتها عشان نبني سجل الصيانة الكامل بتاعك. ده بيساعدك لما تبيع.",
+    "emptyCta": "أضيف أول خدمة",
+    "emptySkip": "تخطي",
+    "emptySecondary": "ده بيساعد تثبت الصيانة لما تبيع السيارة.",
+
+    "totalSpent": "إجمالي الإنفاق: {{amount}} جنيه",
+    "intervalKm": "كل {{km}} كيلو",
+    "intervalDays": "كل {{days}} يوم",
+    "noLogsYet": "ما فيش خدمات مسجلة لسه.",
+    "logService": "+ سجّل خدمة"
+  },
+  "upcoming": {
+    "title": "الخدمات اللي قادمة لسيارتك",
+    "subtitle": "كن متقدم على حاجات سيارتك.",
+    "label": "الجدول",
+
+    "sectionOverdue": "متأخر",
+    "sectionDueSoon": "قريب الموعد",
+    "sectionOnSchedule": "في الموعد",
+
+    "emptyTitle": "سيارتك تمام!",
+    "emptySubtitle": "ما فيش خدمات قادمة دلوقتي. هنفكرك لما يقترب.",
+    "nextAlert": "الخدمة الجاية في {{days}} يوم (المتوقع)"
+  },
+  "addService": {
+    "title": "أضيف خدمة",
+    "subtitle": "وثق الصيانة. اعمل سجل كامل لسيارتك.",
+    "logTitle": "سجّل خدمة",
+
+    "labelService": "إيه الخدمة اللي عملتها؟",
+    "placeholderService": "مثلا: تغيير الزيت، تدوير العجل",
+    "labelDate": "متى عملتها؟",
+    "placeholderDate": "YYYY-MM-DD",
+    "labelMileage": "الكيلومتراج وقت الخدمة",
+    "placeholderMileage": "قراءة العداد",
+    "labelCost": "السعر (اختياري)",
+    "placeholderCost": "0",
+    "labelWhere": "فين؟ (اختياري)",
+    "placeholderWhere": "مثلا: محطة أحمد",
+    "labelNotes": "ملاحظات (اختياري)",
+    "placeholderNotes": "مثلا: استبدال البطانات، ملء سوائل الناقل",
+
+    "saveButton": "احفظ الخدمة",
+    "cancelButton": "الغي",
+    "errorEmpty": "كمّل اسم الخدمة والتاريخ.",
+    "success": "الخدمة محفوظة!",
+
+    "receiptUpload": "📎 ارفع الفاتورة — الذكاء الاصطناعي هيملي البيانات",
+    "receiptParsing": "بيقرأ الفاتورة..."
+  },
+  "itemDetail": {
+    "upToDate": "في الموعد.",
+    "serviceHistory": "سجل الخدمات",
+    "noHistory": "ما فيش خدمات مسجلة لسه.",
+    "logService": "+ سجّل خدمة",
+    "logTitle": "سجّل خدمة",
+    "doneAtKm": "الكيلو وقت التنفيذ",
+    "doneAtDate": "التاريخ",
+    "cost": "السعر (جنيه)",
+    "notes": "ملاحظات",
+    "odometerPlaceholder": "قراءة العداد",
+    "datePlaceholder": "YYYY-MM-DD",
+    "costPlaceholder": "0",
+    "notesPlaceholder": "إيه اللي اتعمل، القطع المستخدمة…"
+  },
+  "profile": {
+    "label": "الحساب",
+    "title": "الملف الشخصي",
+    "emailLabel": "البريد الإلكتروني",
+    "myCars": "سياراتي",
+    "activeBadge": "نشطة",
+    "addCar": "+ أضيف سيارة تانية",
+    "signOut": "تسجيل الخروج",
+    "signOutTitle": "تسجيل الخروج",
+    "signOutMessage": "متأكد؟",
+    "signOutConfirm": "اخرج",
+    "signOutCancel": "إلغاء"
+  },
+  "settings": {
+    "carTitle": "سيارتك",
+    "vehicleInfo": "معلومات السيارة",
+    "updateMileage": "حدّث الكيلومتراج",
+    "editCar": "عدّل معلومات السيارة",
+    "removeCar": "احذف السيارة",
+
+    "notificationsTitle": "التنبيهات",
+    "alertsDueSoon": "تنبيهات قريبة الموعد",
+    "alertTwoWeeks": "فكرني أسبوعين قبل",
+    "alert1000km": "فكرني 1,000 كيلو قبل",
+    "alertsOverdue": "تنبيهات متأخرة",
+    "alertOverdue": "فكرني إذا تأخرت",
+    "reminders": "تذكيرات",
+    "reminderFrequency": "أرسل تذكير كل",
+    "weekly": "أسبوع",
+    "biweekly": "أسبوعين",
+    "monthly": "شهر",
+
+    "aboutTitle": "عن Carvalv",
+    "version": "نسخة التطبيق: {{version}}",
+    "helpSection": "محتاج مساعدة؟",
+    "contactSupport": "تواصل معنا",
+    "faq": "الأسئلة الشهيرة",
+    "howTo": "كيفية الاستخدام",
+    "legalSection": "قانوني",
+    "privacy": "سياسة الخصوصية",
+    "terms": "شروط الخدمة"
   },
   "notifications": {
-    "oilDueTitle": "العربية محتاجة زيت 🛢️",
-    "oilDueBody": "تغيير الزيت قرّب لعربيتك {{model}}. تحب تحجز الأسبوع ده؟",
-    "mileageCheckTitle": "تساعدني؟",
-    "mileageCheckBody": "قولي عداد عربيتك عشان أظبط لك التذكيرات صح."
+    "dueSoonTitle": "{{service}} قريب",
+    "dueSoonBody": "في {{km}} كيلو. ما تنتظرش لما يصير متأخر.",
+    "overdueTitle": "⚠️ {{service}} متأخر",
+    "overdueBody": "متأخر من {{km}} كيلو. احمي سيارتك دلوقتي.",
+    "serviceLoggedTitle": "{{service}} معروف",
+    "serviceLoggedBody": "صيانة واحدة أكتر معروفة. قيمة سيارتك محمية.",
+    "serviceLoggedCta": "اشوف الجدول الجديد"
+  },
+  "errors": {
+    "noInternet": "لا يوجد اتصال إنترنت",
+    "noInternetSubtitle": "معلومات سيارتك محفوظة عندك. اتصل عشان نحدّث.",
+    "noInternetCta": "حاول تاني",
+
+    "serviceNotFound": "الخدمة مش موجودة في الجدول الرسمي",
+    "serviceNotFoundSubtitle": "ما يهمك. تقدر تسجلها وهتبقى في سجل سيارتك.",
+    "serviceNotFoundInfo": "أمثلة: استبدال الزجاج، فحص البطارية، صيانة المكيف",
+
+    "mileageTooLow": "الكيلومتراج لازم يكون أكتر من اللي انت فيه.",
+    "mileageTip": "سيارتك دلوقتي في {{mileage}} كيلو.",
+
+    "generic": "حصل غلطة. حاول تاني."
   }
 }

@@ -1,31 +1,29 @@
-import { Platform } from 'react-native';
-
-// ─── Primary palette ──────────────────────────────────────────────────────────
-// These three carry the brand on every surface: logo, splash, buttons, nav.
+// carvalv brand palette — dark-first
 export const colors = {
-  espresso: '#1A1410',   // dark background, headings on light
-  orange: '#FF8A3D',     // CTA buttons, links, accents
-  cream: '#F4EFE6',      // light screen backgrounds, cards
+  // Core
+  engineBlack: '#111110',
+  orange: '#FF7A1A',       // Ignition Orange
+  iconWhite: '#F4F2EE',    // Icon White
+  carbon: '#2E2E2C',       // Carbon Gray — cards, surfaces
+  steel: '#5C5C5A',        // muted labels
 
-  // Derived surfaces
-  background: '#F4EFE6', // cream for content screens
-  backgroundDark: '#1A1410', // espresso for splash/auth
-  surface: '#FFFFFF',
-  surfaceDark: '#2A2018', // slightly lighter than espresso for cards on dark bg
+  // Semantic aliases
+  background: '#111110',
+  surface: '#2E2E2C',
+  text: '#F4F2EE',
+  textMuted: '#5C5C5A',
+  border: '#3E3E3C',
+  primary: '#FF7A1A',
 
-  text: '#1A1410',
-  textLight: '#F4EFE6',  // text on dark backgrounds
-  textMuted: '#8A7D6E',  // muted on cream
-  textMutedDark: '#9A8E82', // muted on espresso
-  border: '#E2D9CC',     // subtle on cream
-  borderDark: '#3A2E22',
-
-  primary: '#FF8A3D',    // alias for orange
-
-  // ─── Status colors (functional only — never in marketing) ─────────────────
-  overdue: '#E24B4A',
-  dueSoon: '#FFD166',
+  // Status — functional only
+  overdue: '#FF2D2D',      // Redline Red
+  dueSoon: '#FF7A1A',      // same orange (urgency, not alarm)
   healthy: '#2EC4B6',
+
+  // legacy aliases kept so old references don't break during transition
+  espresso: '#111110',
+  cream: '#111110',
+  textLight: '#F4F2EE', // was "text on dark bg" — now same as text (app is dark-first)
 };
 
 export const spacing = {
@@ -44,22 +42,45 @@ export const radii = {
   pill: 999,
 };
 
-// SF Pro is the iOS system font — no fontFamily needed on iOS; it's the default.
-// On Android we use the system sans-serif which maps to Roboto.
+// Space Grotesk — body copy
+// Chakra Petch — headings / subheads
+// Space Mono — mileage, cost, numeric labels
 export const typography = {
-  title: { fontSize: 28, fontWeight: '700' as const, letterSpacing: -0.5 },
-  subtitle: { fontSize: 16, fontWeight: '400' as const },
-  body: { fontSize: 15, fontWeight: '400' as const },
-  label: { fontSize: 11, fontWeight: '600' as const, letterSpacing: 0.8, textTransform: 'uppercase' as const },
-  button: { fontSize: 16, fontWeight: '600' as const },
-  // SF Mono / monospace — mileage readings, dates, EGP amounts only
+  title: {
+    fontFamily: 'ChakraPetch_700Bold',
+    fontSize: 28,
+    letterSpacing: -0.5,
+    fontWeight: '700' as const,
+  },
+  subtitle: {
+    fontFamily: 'SpaceGrotesk_400Regular',
+    fontSize: 16,
+    fontWeight: '400' as const,
+  },
+  body: {
+    fontFamily: 'SpaceGrotesk_400Regular',
+    fontSize: 15,
+    fontWeight: '400' as const,
+  },
+  label: {
+    fontFamily: 'SpaceGrotesk_600SemiBold',
+    fontSize: 11,
+    fontWeight: '600' as const,
+    letterSpacing: 0.8,
+    textTransform: 'uppercase' as const,
+  },
+  button: {
+    fontFamily: 'SpaceGrotesk_600SemiBold',
+    fontSize: 16,
+    fontWeight: '600' as const,
+  },
   mono: {
-    fontFamily: Platform.OS === 'ios' ? 'Courier New' : 'monospace',
+    fontFamily: 'SpaceMono_400Regular',
     fontSize: 15,
     fontWeight: '400' as const,
   },
   monoLarge: {
-    fontFamily: Platform.OS === 'ios' ? 'Courier New' : 'monospace',
+    fontFamily: 'SpaceMono_400Regular',
     fontSize: 32,
     fontWeight: '700' as const,
     letterSpacing: -1,

@@ -7,14 +7,15 @@ export default function TabsLayout() {
       screenOptions={{
         headerShown: false,
         tabBarActiveTintColor: colors.orange,
-        tabBarInactiveTintColor: colors.textMuted,
+        tabBarInactiveTintColor: colors.steel,
         tabBarStyle: {
-          backgroundColor: colors.cream,
+          backgroundColor: colors.carbon,
           borderTopColor: colors.border,
         },
       }}
     >
       <Tabs.Screen name="index" options={{ title: 'Home' }} />
+      <Tabs.Screen name="upcoming" options={{ title: 'Timeline' }} />
       <Tabs.Screen name="profile" options={{ title: 'Profile' }} />
     </Tabs>
   );

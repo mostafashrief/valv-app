@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
 import { TextInput, StyleSheet } from 'react-native';
 import { router } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { OnboardingShell } from '../../components/OnboardingShell';
 import { Button } from '../../components/Button';
 import { useOnboarding } from '../../lib/onboarding-context';
 import { colors, radii, spacing, typography } from '../../constants/theme';
 
 export default function MileageStep() {
+  const { t } = useTranslation();
   const { setDraft } = useOnboarding();
   const [value, setValue] = useState('');
 
-  const mileage = parseInt(value, 10);
+  const mileage = parseInt(value.replace(/,/g, ''), 10);
   const isValid = !Number.isNaN(mileage) && mileage >= 0;
 
   const handleNext = () => {
@@ -23,15 +25,15 @@ export default function MileageStep() {
     <OnboardingShell
       step={4}
       totalSteps={4}
-      title="What's on the odometer?"
-      subtitle="Just the number."
-      footer={<Button label="Next" onPress={handleNext} disabled={!isValid} />}
+      title={t('onboarding.mileageTitle')}
+      subtitle={t('onboarding.mileageSubtitle')}
+      footer={<Button label={t('common.next')} onPress={handleNext} disabled={!isValid} />}
     >
       <TextInput
         style={styles.input}
         keyboardType="number-pad"
-        placeholder="e.g. 45000"
-        placeholderTextColor={colors.textMuted}
+        placeholder={t('onboarding.mileagePlaceholder')}
+        placeholderTextColor={colors.steel}
         value={value}
         onChangeText={setValue}
         autoFocus

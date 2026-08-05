@@ -1,12 +1,14 @@
 import React from 'react';
 import { FlatList, Pressable, Text, StyleSheet } from 'react-native';
 import { router } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { OnboardingShell } from '../../components/OnboardingShell';
 import { useOnboarding } from '../../lib/onboarding-context';
 import { CAR_BRANDS_SEED } from '../../data/cars-seed';
 import { colors, radii, spacing, typography } from '../../constants/theme';
 
 export default function ModelStep() {
+  const { t } = useTranslation();
   const { draft, setDraft } = useOnboarding();
 
   const brandSeed = CAR_BRANDS_SEED.find((b) => b.brand === draft.brand);
@@ -18,7 +20,7 @@ export default function ModelStep() {
   };
 
   return (
-    <OnboardingShell step={2} totalSteps={4} title="Which model?">
+    <OnboardingShell step={2} totalSteps={4} title={t('onboarding.modelTitle')}>
       <FlatList
         data={models}
         keyExtractor={(item) => item}

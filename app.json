@@ -1,13 +1,13 @@
 {
   "expo": {
-    "name": "VALV",
-    "slug": "valv-app",
-    "scheme": "valv",
+    "name": "carvalv",
+    "slug": "carvalv-app",
+    "scheme": "carvalv",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
-    "newArchEnabled": true,
+    "userInterfaceStyle": "dark",
+    "newArchEnabled": false,
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.valv.app"
@@ -16,7 +16,7 @@
       "package": "com.valv.app",
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon.png",
-        "backgroundColor": "#1A1410"
+        "backgroundColor": "#111110"
       },
       "predictiveBackGestureEnabled": false
     },
@@ -33,7 +33,9 @@
           "icon": "./assets/icon.png",
           "color": "#FF8A3D"
         }
-      ]
+      ],
+      "expo-font",
+      "expo-splash-screen"
     ],
     "extra": {
       "router": {}
