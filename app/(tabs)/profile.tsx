@@ -5,10 +5,12 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
+import * as Updates from 'expo-updates';
 import { colors, radii, spacing, typography } from '../../constants/theme';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../lib/auth-context';
 import { useCar, type Car } from '../../lib/car-context';
+import i18n, { setLanguage, type SupportedLanguage } from '../../lib/i18n';
 
 function calcCompletion(profile: any): number {
   if (!profile) return 20; // just account
@@ -25,6 +27,7 @@ export default function Profile() {
   const [signingOut, setSigningOut] = useState(false);
   const [profile, setProfile] = useState<any>(null);
   const [completion, setCompletion] = useState(20);
+  const currentLang = i18n.language as SupportedLanguage;
 
   useEffect(() => {
     if (!session?.user) return;
@@ -109,6 +112,23 @@ export default function Profile() {
 
         <View style={styles.divider} />
 
+        <View style={styles.langRow}>
+          <Text style={styles.langLabel}>{t('profile.language')}</Text>
+          <View style={styles.langToggle}>
+            {(['en', 'ar'] as SupportedLanguage[]).map((lang) => (
+              <Pressable
+                key={lang}
+                style={[styles.langOption, currentLang === lang && styles.langOptionActive]}
+                onPress={() => setLanguage(lang, () => Updates.reloadAsync())}
+              >
+                <Text style={[styles.langOptionText, currentLang === lang && styles.langOptionTextActive]}>
+                  {lang === 'en' ? 'English' : 'عربي'}
+                </Text>
+              </Pressable>
+            ))}
+          </View>
+        </View>
+
         <Pressable style={styles.signOutBtn} onPress={handleSignOut} disabled={signingOut}>
           {signingOut
             ? <ActivityIndicator color={colors.overdue} size="small" />
@@ -183,6 +203,27 @@ const styles = StyleSheet.create({
   progressBar: { height: 4, backgroundColor: colors.border, borderRadius: 2, marginBottom: spacing.sm },
   progressFill: { height: 4, backgroundColor: colors.orange, borderRadius: 2 },
   completionSub: { ...typography.body, color: colors.textMuted, fontSize: 13 },
+
+  langRow: {
+    flexDirection: 'row', alignItems: 'center',
+    justifyContent: 'space-between', marginBottom: spacing.md,
+  },
+  langLabel: { ...typography.label, color: colors.textMuted },
+  langToggle: {
+    flexDirection: 'row',
+    backgroundColor: colors.surface,
+    borderRadius: radii.pill,
+    borderWidth: 1,
+    borderColor: colors.border,
+    overflow: 'hidden',
+  },
+  langOption: {
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.md,
+  },
+  langOptionActive: { backgroundColor: colors.orange },
+  langOptionText: { ...typography.label, color: colors.textMuted, fontSize: 12 },
+  langOptionTextActive: { color: colors.engineBlack },
 
   signOutBtn: {
     borderWidth: 1.5,

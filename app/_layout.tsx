@@ -1,4 +1,5 @@
 import '../lib/i18n';
+import { initLanguage } from '../lib/i18n';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -16,6 +17,7 @@ import {
   SpaceMono_400Regular,
 } from '@expo-google-fonts/space-mono';
 import { View } from 'react-native';
+import { useEffect } from 'react';
 import { AuthProvider } from '../lib/auth-context';
 import { OnboardingProvider } from '../lib/onboarding-context';
 import { CarProvider } from '../lib/car-context';
@@ -23,6 +25,8 @@ import { QuizProvider } from '../lib/quiz-context';
 import { colors } from '../constants/theme';
 
 export default function RootLayout() {
+  useEffect(() => { initLanguage(); }, []);
+
   const [fontsLoaded] = useFonts({
     SpaceGrotesk_400Regular,
     SpaceGrotesk_500Medium,

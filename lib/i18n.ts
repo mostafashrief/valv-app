@@ -2,6 +2,7 @@ import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import * as Localization from 'expo-localization';
 import { I18nManager } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import en from '../locales/en.json';
 import ar from '../locales/ar.json';
@@ -9,32 +10,55 @@ import ar from '../locales/ar.json';
 export const SUPPORTED_LANGUAGES = ['en', 'ar'] as const;
 export type SupportedLanguage = (typeof SUPPORTED_LANGUAGES)[number];
 
+const LANG_KEY = 'app_language';
+
 const deviceLocale = Localization.getLocales()[0]?.languageCode ?? 'en';
-const initialLanguage: SupportedLanguage = SUPPORTED_LANGUAGES.includes(
+const fallbackLanguage: SupportedLanguage = SUPPORTED_LANGUAGES.includes(
   deviceLocale as SupportedLanguage,
-)
-  ? (deviceLocale as SupportedLanguage)
-  : 'en';
+) ? (deviceLocale as SupportedLanguage) : 'en';
+
+// Read persisted language synchronously from a module-level cache
+// (AsyncStorage is async; we prime the cache in initLanguage below)
+let cachedLanguage: SupportedLanguage = fallbackLanguage;
 
 export const isRTL = (lang: SupportedLanguage) => lang === 'ar';
 
-// Note: changing I18nManager.forceRTL requires an app reload to fully apply
-// (RN caches layout direction at native init). We call it eagerly here so
-// it's correct on first launch; the language switcher screen handles reload.
 I18nManager.allowRTL(true);
-if (I18nManager.isRTL !== isRTL(initialLanguage)) {
-  I18nManager.forceRTL(isRTL(initialLanguage));
-}
 
 i18n.use(initReactI18next).init({
   resources: {
     en: { translation: en },
     ar: { translation: ar },
   },
-  lng: initialLanguage,
+  lng: cachedLanguage,
   fallbackLng: 'en',
   interpolation: { escapeValue: false },
   compatibilityJSON: 'v4',
 });
+
+// Call this once at app startup (in _layout.tsx) to load the saved language
+export async function initLanguage() {
+  try {
+    const saved = await AsyncStorage.getItem(LANG_KEY) as SupportedLanguage | null;
+    if (saved && SUPPORTED_LANGUAGES.includes(saved)) {
+      cachedLanguage = saved;
+      await i18n.changeLanguage(saved);
+      if (I18nManager.isRTL !== isRTL(saved)) {
+        I18nManager.forceRTL(isRTL(saved));
+      }
+    }
+  } catch {}
+}
+
+export async function setLanguage(lang: SupportedLanguage, reloadApp: () => void) {
+  await AsyncStorage.setItem(LANG_KEY, lang);
+  await i18n.changeLanguage(lang);
+  const needsRTLChange = I18nManager.isRTL !== isRTL(lang);
+  if (needsRTLChange) {
+    I18nManager.forceRTL(isRTL(lang));
+    // RTL change requires full app reload
+    reloadApp();
+  }
+}
 
 export default i18n;
