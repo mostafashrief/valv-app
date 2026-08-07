@@ -5,7 +5,6 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
-import * as Updates from 'expo-updates';
 import { colors, radii, spacing, typography } from '../../constants/theme';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../lib/auth-context';
@@ -119,7 +118,7 @@ export default function Profile() {
               <Pressable
                 key={lang}
                 style={[styles.langOption, currentLang === lang && styles.langOptionActive]}
-                onPress={() => setLanguage(lang, () => Updates.reloadAsync())}
+                onPress={() => setLanguage(lang, () => Alert.alert('Restart required', 'Close and reopen the app to apply the new language.'))}
               >
                 <Text style={[styles.langOptionText, currentLang === lang && styles.langOptionTextActive]}>
                   {lang === 'en' ? 'English' : 'عربي'}
