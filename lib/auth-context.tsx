@@ -6,7 +6,8 @@ interface AuthContextValue {
   session: Session | null;
   initializing: boolean;
   signUp: (email: string, password: string) => Promise<{ error: string | null }>;
-  signIn: (email: string, password: string) => Promise<{ error: string | null }>;
+  signIn: (email: string, password: string) => Promise<{ error: string | null; session?: any }>;
+  signInWithGoogle: () => Promise<{ error: string | null }>;
   signInWithPhone: (e164Phone: string) => Promise<{ error: string | null }>;
   verifyOtp: (e164Phone: string, code: string) => Promise<{ error: string | null }>;
   signOut: () => Promise<void>;
@@ -40,8 +41,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         return { error: error?.message ?? null };
       },
       signIn: async (email, password) => {
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
-        return { error: error?.message ?? null };
+        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+        return { error: error?.message ?? null, session: data.session };
       },
       signInWithPhone: async (e164Phone) => {
         const { error } = await supabase.auth.signInWithOtp({ phone: e164Phone });
@@ -54,6 +55,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           type: 'sms',
         });
         return { error: error?.message ?? null };
+      },
+      signInWithGoogle: async () => {
+        return { error: 'Google sign-in coming soon' };
       },
       signOut: async () => {
         await supabase.auth.signOut();

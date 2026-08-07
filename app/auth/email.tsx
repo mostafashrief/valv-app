@@ -5,7 +5,13 @@ import { router } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { Button } from '../../components/Button';
 import { useAuth } from '../../lib/auth-context';
+import { supabase } from '../../lib/supabase';
 import { colors, radii, spacing, typography } from '../../constants/theme';
+
+async function userHasCar(userId: string): Promise<boolean> {
+  const { data } = await supabase.from('cars').select('id').eq('user_id', userId).limit(1);
+  return (data?.length ?? 0) > 0;
+}
 
 export default function EmailAuth() {
   const { t } = useTranslation();
@@ -23,12 +29,18 @@ export default function EmailAuth() {
     if (password.length < 6) { setError(t('auth.errorShortPassword')); return; }
     setError(null);
     setLoading(true);
-    const { error: authError } = mode === 'signup'
-      ? await signUp(email, password)
-      : await signIn(email, password);
-    setLoading(false);
-    if (authError) { setError(authError); return; }
-    router.replace('/onboarding/brand');
+    if (mode === 'signup') {
+      const { error: authError } = await signUp(email, password);
+      setLoading(false);
+      if (authError) { setError(authError); return; }
+      router.replace('/quiz/name');
+    } else {
+      const { error: authError, session } = await signIn(email, password);
+      setLoading(false);
+      if (authError) { setError(authError); return; }
+      const hasCar = session?.user ? await userHasCar(session.user.id) : false;
+      router.replace(hasCar ? '/(tabs)' : '/onboarding/brand');
+    }
   };
 
   return (

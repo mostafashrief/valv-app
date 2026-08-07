@@ -41,7 +41,7 @@ export default function VerifyStep() {
           style={styles.input}
           keyboardType="number-pad"
           placeholder="6-digit code"
-          placeholderTextColor={colors.textMutedDark}
+          placeholderTextColor={colors.textMuted}
           value={code}
           onChangeText={(v) => { setCode(v); setError(null); }}
           autoFocus
@@ -63,16 +63,16 @@ export default function VerifyStep() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.espresso, justifyContent: 'space-between' },
+  container: { flex: 1, backgroundColor: colors.background, justifyContent: 'space-between' },
   content: { flex: 1, paddingHorizontal: spacing.lg, paddingTop: spacing.xl },
   title: { ...typography.title, color: colors.textLight },
-  subtitle: { ...typography.body, color: colors.textMutedDark, marginTop: spacing.sm },
+  subtitle: { ...typography.body, color: colors.textMuted, marginTop: spacing.sm },
   input: {
     marginTop: spacing.xl,
-    backgroundColor: colors.surfaceDark,
+    backgroundColor: colors.surface,
     borderRadius: radii.md,
     borderWidth: 1,
-    borderColor: colors.borderDark,
+    borderColor: colors.border,
     paddingVertical: spacing.md,
     paddingHorizontal: spacing.lg,
     fontSize: 28,

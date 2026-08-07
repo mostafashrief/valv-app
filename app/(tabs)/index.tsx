@@ -166,6 +166,7 @@ export default function Home() {
 
   const overdueCount = statuses.filter((s) => s.status === 'overdue').length;
   const dueSoonCount = statuses.filter((s) => s.status === 'dueSoon').length;
+  const isEstimated = statuses.length > 0 && statuses.every((s) => s.item.source === 'estimated');
 
   if (!activeCar && !loading) {
     return (
@@ -190,6 +191,12 @@ export default function Home() {
           <Text style={styles.logBtnText}>{t('home.logKm')}</Text>
         </Pressable>
       </View>
+
+      {isEstimated && (
+        <Pressable style={styles.estimatedBanner} onPress={() => router.push('/item/upload-booklet' as any)}>
+          <Text style={styles.estimatedBannerText}>{t('home.estimatedBanner')}</Text>
+        </Pressable>
+      )}
 
       <View style={styles.summaryRow}>
         {overdueCount > 0 && (
@@ -353,6 +360,18 @@ const styles = StyleSheet.create({
   cardBottom: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 8 },
   estimated: { ...typography.label, color: colors.steel, fontSize: 9 },
   tapHint: { ...typography.label, color: colors.orange, fontSize: 10, marginLeft: 'auto' },
+
+  estimatedBanner: {
+    marginHorizontal: spacing.lg,
+    marginBottom: spacing.sm,
+    backgroundColor: colors.surface,
+    borderRadius: radii.md,
+    borderLeftWidth: 3,
+    borderLeftColor: colors.orange,
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.md,
+  },
+  estimatedBannerText: { ...typography.body, color: colors.textMuted, fontSize: 13 },
 
   addItemBtn: { alignItems: 'center', paddingVertical: spacing.lg },
   addItemText: { ...typography.body, color: colors.textMuted },

@@ -12,6 +12,7 @@
   },
   "auth": {
     "choiceTitle": "هتسجّل إزاي؟",
+    "withGoogle": "استمر بـ Google",
     "withEmail": "استمر بالبريد الإلكتروني",
     "withPhone": "استمر برقم الموبايل",
     "signUpTitle": "إنشاء حساب.",
@@ -102,6 +103,7 @@
 
     "tapToLog": "اضغط للتسجيل →",
     "estimatedInterval": "فترة تقديرية",
+    "estimatedBanner": "الجدول ده تقديري — رفّع كتيّب الصيانة بتاعك عشان نبقى أدق →",
 
     "updateMileageTitle": "تحديث الكيلومتراج",
     "updateMileageCurrent": "الحالي: {{mileage}} كيلو",

@@ -19,6 +19,7 @@ import { View } from 'react-native';
 import { AuthProvider } from '../lib/auth-context';
 import { OnboardingProvider } from '../lib/onboarding-context';
 import { CarProvider } from '../lib/car-context';
+import { QuizProvider } from '../lib/quiz-context';
 import { colors } from '../constants/theme';
 
 export default function RootLayout() {
@@ -40,13 +41,15 @@ export default function RootLayout() {
       <AuthProvider>
         <CarProvider>
           <OnboardingProvider>
-            <StatusBar style="light" />
-            <Stack
-              screenOptions={{
-                headerShown: false,
-                contentStyle: { backgroundColor: colors.background },
-              }}
-            />
+            <QuizProvider>
+              <StatusBar style="light" />
+              <Stack
+                screenOptions={{
+                  headerShown: false,
+                  contentStyle: { backgroundColor: colors.background },
+                }}
+              />
+            </QuizProvider>
           </OnboardingProvider>
         </CarProvider>
       </AuthProvider>

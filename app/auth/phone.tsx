@@ -39,7 +39,7 @@ export default function PhoneStep() {
             style={styles.input}
             keyboardType="phone-pad"
             placeholder="10 123 4567"
-            placeholderTextColor={colors.textMutedDark}
+            placeholderTextColor={colors.textMuted}
             value={localNumber}
             onChangeText={(v) => { setLocalNumber(v); setError(null); }}
             autoFocus
@@ -56,21 +56,21 @@ export default function PhoneStep() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.espresso, justifyContent: 'space-between' },
+  container: { flex: 1, backgroundColor: colors.background, justifyContent: 'space-between' },
   content: { flex: 1, paddingHorizontal: spacing.lg, paddingTop: spacing.xl },
   title: { ...typography.title, color: colors.textLight },
-  subtitle: { ...typography.body, color: colors.textMutedDark, marginTop: spacing.sm },
+  subtitle: { ...typography.body, color: colors.textMuted, marginTop: spacing.sm },
   inputRow: {
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: spacing.xl,
-    backgroundColor: colors.surfaceDark,
+    backgroundColor: colors.surface,
     borderRadius: radii.md,
     borderWidth: 1,
-    borderColor: colors.borderDark,
+    borderColor: colors.border,
     paddingHorizontal: spacing.lg,
   },
-  countryCode: { ...typography.body, fontSize: 20, color: colors.textMutedDark, marginRight: spacing.sm },
+  countryCode: { ...typography.body, fontSize: 20, color: colors.textMuted, marginRight: spacing.sm },
   input: { flex: 1, paddingVertical: spacing.md, fontSize: 20, color: colors.textLight },
   error: { ...typography.body, color: colors.overdue, marginTop: spacing.sm },
   footer: { paddingHorizontal: spacing.lg, paddingBottom: spacing.xl },

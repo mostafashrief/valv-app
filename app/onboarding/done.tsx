@@ -44,20 +44,37 @@ export default function DoneStep() {
       return;
     }
 
-    const { error: itemsError } = await supabase.from('maintenance_items').insert(
-      DEFAULT_MAINTENANCE_ITEMS.map((item) => ({
-        car_id: car.id,
-        name: item.name,
-        interval_km: item.intervalKm ?? null,
-        interval_days: item.intervalDays ?? null,
-        source: 'estimated' as const,
-      })),
-    );
+    // Check for official OEM schedule first
+    const { data: officialSchedule } = await supabase
+      .from('maintenance_schedules')
+      .select('*')
+      .eq('brand', draft.brand)
+      .or(`model.eq.${draft.model},model.is.null`);
+
+    const hasOfficialSchedule = (officialSchedule?.length ?? 0) > 0;
+
+    const itemsToInsert = hasOfficialSchedule
+      ? officialSchedule!.map((s) => ({
+          car_id: car.id,
+          name: s.name,
+          interval_km: s.interval_km ?? null,
+          interval_days: s.interval_days ?? null,
+          source: 'verified' as const,
+        }))
+      : DEFAULT_MAINTENANCE_ITEMS.map((item) => ({
+          car_id: car.id,
+          name: item.name,
+          interval_km: item.intervalKm ?? null,
+          interval_days: item.intervalDays ?? null,
+          source: 'estimated' as const,
+        }));
+
+    const { error: itemsError } = await supabase.from('maintenance_items').insert(itemsToInsert as any);
 
     setLoading(false);
     if (itemsError) { setError(itemsError.message); return; }
 
-    router.replace('/(tabs)');
+    router.replace('/quiz/ownership');
   };
 
   return (

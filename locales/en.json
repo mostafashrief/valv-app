@@ -12,6 +12,7 @@
   },
   "auth": {
     "choiceTitle": "How do you want to sign in?",
+    "withGoogle": "Continue with Google",
     "withEmail": "Continue with email",
     "withPhone": "Continue with phone number",
     "signUpTitle": "Create your account.",
@@ -102,6 +103,7 @@
 
     "tapToLog": "Tap to log →",
     "estimatedInterval": "Estimated interval",
+    "estimatedBanner": "Schedule based on general estimates — upload your service booklet for exact intervals →",
 
     "updateMileageTitle": "Update mileage",
     "updateMileageCurrent": "Current: {{mileage}} km",
