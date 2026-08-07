@@ -193,9 +193,9 @@ export default function Home() {
       </View>
 
       {isEstimated && (
-        <Pressable style={styles.estimatedBanner} onPress={() => router.push('/item/upload-booklet' as any)}>
+        <View style={styles.estimatedBanner}>
           <Text style={styles.estimatedBannerText}>{t('home.estimatedBanner')}</Text>
-        </Pressable>
+        </View>
       )}
 
       <View style={styles.summaryRow}>
