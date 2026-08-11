@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Pressable, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Pressable, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { useTranslation } from 'react-i18next';
@@ -45,54 +45,62 @@ export default function EmailAuth() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.content}>
-        <Text style={styles.title}>
-          {mode === 'signup' ? t('auth.signUpTitle') : t('auth.signInTitle')}
-        </Text>
-
-        <TextInput
-          style={styles.input}
-          placeholder={t('auth.emailPlaceholder')}
-          placeholderTextColor={colors.steel}
-          value={email}
-          onChangeText={(v) => { setEmail(v); setError(null); }}
-          keyboardType="email-address"
-          autoCapitalize="none"
-          autoFocus
-        />
-        <TextInput
-          style={[styles.input, { marginTop: spacing.sm }]}
-          placeholder={t('auth.passwordPlaceholder')}
-          placeholderTextColor={colors.steel}
-          value={password}
-          onChangeText={(v) => { setPassword(v); setError(null); }}
-          secureTextEntry
-        />
-        {error ? <Text style={styles.error}>{error}</Text> : null}
-
-        <Pressable
-          onPress={() => { setMode(mode === 'signup' ? 'signin' : 'signup'); setError(null); }}
-          style={styles.switchRow}
-        >
-          <Text style={styles.switchText}>
-            {mode === 'signup' ? t('auth.switchToSignIn') : t('auth.switchToSignUp')}
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.kav}
+      >
+        <View style={styles.content}>
+          <Text style={styles.title}>
+            {mode === 'signup' ? t('auth.signUpTitle') : t('auth.signInTitle')}
           </Text>
-        </Pressable>
-      </View>
 
-      <View style={styles.footer}>
-        <Button
-          label={mode === 'signup' ? t('auth.signUp') : t('auth.signIn')}
-          onPress={handleSubmit}
-          loading={loading}
-        />
-      </View>
+          <TextInput
+            style={styles.input}
+            placeholder={t('auth.emailPlaceholder')}
+            placeholderTextColor={colors.textMuted}
+            value={email}
+            onChangeText={(v) => { setEmail(v); setError(null); }}
+            keyboardType="email-address"
+            autoCapitalize="none"
+            autoFocus
+          />
+          <TextInput
+            style={[styles.input, { marginTop: spacing.sm }]}
+            placeholder={t('auth.passwordPlaceholder')}
+            placeholderTextColor={colors.textMuted}
+            value={password}
+            onChangeText={(v) => { setPassword(v); setError(null); }}
+            secureTextEntry
+            returnKeyType="go"
+            onSubmitEditing={handleSubmit}
+          />
+          {error ? <Text style={styles.error}>{error}</Text> : null}
+
+          <Pressable
+            onPress={() => { setMode(mode === 'signup' ? 'signin' : 'signup'); setError(null); }}
+            style={styles.switchRow}
+          >
+            <Text style={styles.switchText}>
+              {mode === 'signup' ? t('auth.switchToSignIn') : t('auth.switchToSignUp')}
+            </Text>
+          </Pressable>
+        </View>
+
+        <View style={styles.footer}>
+          <Button
+            label={mode === 'signup' ? t('auth.signUp') : t('auth.signIn')}
+            onPress={handleSubmit}
+            loading={loading}
+          />
+        </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.background, justifyContent: 'space-between' },
+  container: { flex: 1, backgroundColor: colors.background },
+  kav: { flex: 1 },
   content: { flex: 1, paddingHorizontal: spacing.lg, paddingTop: spacing.xl },
   title: { ...typography.title, color: colors.text, marginBottom: spacing.xl },
   input: {

@@ -34,10 +34,16 @@ export default function UploadBooklet() {
     setUploading(true);
     try {
       const uploads = result.assets.map(async (asset) => {
-        const ext = asset.uri.split('.').pop() ?? 'jpg';
+        const ext = (asset.uri.split('.').pop() ?? 'jpg').toLowerCase();
         const path = `booklets/${session?.user.id}/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
-        const blob = await fetch(asset.uri).then((r) => r.blob());
-        await supabase.storage.from('receipts').upload(path, blob, { contentType: `image/${ext}` });
+        const form = new FormData();
+        form.append('file', { uri: asset.uri, name: `upload.${ext}`, type: `image/${ext}` } as any);
+        const { data: { session: s } } = await supabase.auth.getSession();
+        await fetch(`https://fxziatkzwpzoyhuoumxk.supabase.co/storage/v1/object/receipts/${path}`, {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${s?.access_token}`, 'x-upsert': 'true' },
+          body: form,
+        });
       });
       await Promise.all(uploads);
       setDone(true);

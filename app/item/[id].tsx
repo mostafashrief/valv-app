@@ -110,16 +110,16 @@ export default function ItemDetail() {
     setParsing(true);
 
     try {
-      // Upload to Supabase Storage
-      const ext = asset.uri.split('.').pop() ?? 'jpg';
+      const ext = (asset.uri.split('.').pop() ?? 'jpg').toLowerCase();
       const path = `receipts/${Date.now()}.${ext}`;
-      const blob = await (await fetch(asset.uri)).blob();
-
-      const { error: uploadErr } = await supabase.storage
-        .from('receipts')
-        .upload(path, blob, { contentType: `image/${ext}`, upsert: true });
-
-      if (uploadErr) throw uploadErr;
+      const form = new FormData();
+      form.append('file', { uri: asset.uri, name: `upload.${ext}`, type: `image/${ext}` } as any);
+      const { data: { session: s } } = await supabase.auth.getSession();
+      const uploadRes = await fetch(
+        `https://fxziatkzwpzoyhuoumxk.supabase.co/storage/v1/object/receipts/${path}`,
+        { method: 'POST', headers: { Authorization: `Bearer ${s?.access_token}`, 'x-upsert': 'true' }, body: form }
+      );
+      if (!uploadRes.ok) throw new Error(await uploadRes.text());
 
       const { data: urlData } = supabase.storage.from('receipts').getPublicUrl(path);
       const publicUrl = urlData.publicUrl;
