@@ -20,7 +20,7 @@ export default function QuizName() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
       <BackButton />
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -37,7 +37,7 @@ export default function QuizName() {
             placeholderTextColor={colors.textMuted}
             autoFocus
             autoCapitalize="words"
-            returnKeyType="next"
+            returnKeyType="done"
             onSubmitEditing={handleNext}
           />
         </View>
