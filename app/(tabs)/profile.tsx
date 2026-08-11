@@ -56,6 +56,26 @@ export default function Profile() {
     reloadCars();
   };
 
+  const handleDeleteCar = (car: Car) => {
+    Alert.alert(
+      `Delete ${car.brand} ${car.model}?`,
+      'This will remove the car and all its maintenance history. This cannot be undone.',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Delete', style: 'destructive', onPress: async () => {
+            await supabase.from('cars').delete().eq('id', car.id);
+            if (activeCar?.id === car.id) {
+              const remaining = cars.filter((c) => c.id !== car.id);
+              setActiveCar(remaining[0] ?? null);
+            }
+            reloadCars();
+          },
+        },
+      ]
+    );
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
@@ -96,11 +116,20 @@ export default function Profile() {
                 <Text style={styles.carName}>{car.brand} {car.model}</Text>
                 <Text style={styles.carMeta}>{car.year} · {car.current_mileage_km.toLocaleString()} km</Text>
               </View>
-              {isActive && (
-                <View style={styles.activeBadge}>
-                  <Text style={styles.activeBadgeText}>{t('profile.activeBadge')}</Text>
-                </View>
-              )}
+              <View style={styles.carActions}>
+                {isActive && (
+                  <View style={styles.activeBadge}>
+                    <Text style={styles.activeBadgeText}>{t('profile.activeBadge')}</Text>
+                  </View>
+                )}
+                <Pressable
+                  style={styles.deleteBtn}
+                  onPress={() => handleDeleteCar(car)}
+                  hitSlop={8}
+                >
+                  <Text style={styles.deleteBtnText}>✕</Text>
+                </Pressable>
+              </View>
             </Pressable>
           );
         })}
@@ -169,6 +198,13 @@ const styles = StyleSheet.create({
   carInfo: { flex: 1 },
   carName: { ...typography.body, color: colors.text, fontWeight: '600' },
   carMeta: { ...typography.body, color: colors.textMuted, fontSize: 13, marginTop: 2 },
+  carActions: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
+  deleteBtn: {
+    width: 28, height: 28, borderRadius: 14,
+    backgroundColor: colors.overdue + '22',
+    alignItems: 'center', justifyContent: 'center',
+  },
+  deleteBtnText: { color: colors.overdue, fontSize: 12, fontWeight: '700' },
   activeBadge: {
     backgroundColor: colors.orange + '22',
     borderRadius: radii.pill,
