@@ -1,6 +1,10 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import type { Session } from '@supabase/supabase-js';
+import * as WebBrowser from 'expo-web-browser';
+import { makeRedirectUri } from 'expo-auth-session';
 import { supabase } from './supabase';
+
+WebBrowser.maybeCompleteAuthSession();
 
 interface AuthContextValue {
   session: Session | null;
@@ -44,6 +48,42 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         const { data, error } = await supabase.auth.signInWithPassword({ email, password });
         return { error: error?.message ?? null, session: data.session };
       },
+      signInWithGoogle: async () => {
+        try {
+          const redirectUrl = makeRedirectUri({ scheme: 'carvalv', path: 'auth/callback' });
+          const { data, error } = await supabase.auth.signInWithOAuth({
+            provider: 'google',
+            options: {
+              redirectTo: redirectUrl,
+              skipBrowserRedirect: true,
+            },
+          });
+          if (error) return { error: error.message };
+          if (!data.url) return { error: 'No auth URL returned' };
+
+          const result = await WebBrowser.openAuthSessionAsync(data.url, redirectUrl);
+          if (result.type !== 'success') return { error: null }; // user cancelled
+
+          const url = result.url;
+          const params = new URL(url);
+          const accessToken = params.searchParams.get('access_token');
+          const refreshToken = params.searchParams.get('refresh_token');
+
+          if (accessToken && refreshToken) {
+            await supabase.auth.setSession({ access_token: accessToken, refresh_token: refreshToken });
+          } else {
+            // Try fragment params (Supabase sometimes uses hash)
+            const hash = url.split('#')[1] ?? '';
+            const hashParams = new URLSearchParams(hash);
+            const at = hashParams.get('access_token');
+            const rt = hashParams.get('refresh_token');
+            if (at && rt) await supabase.auth.setSession({ access_token: at, refresh_token: rt });
+          }
+          return { error: null };
+        } catch (e) {
+          return { error: String(e) };
+        }
+      },
       signInWithPhone: async (e164Phone) => {
         const { error } = await supabase.auth.signInWithOtp({ phone: e164Phone });
         return { error: error?.message ?? null };
@@ -55,9 +95,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           type: 'sms',
         });
         return { error: error?.message ?? null };
-      },
-      signInWithGoogle: async () => {
-        return { error: 'Google sign-in coming soon' };
       },
       signOut: async () => {
         await supabase.auth.signOut();
