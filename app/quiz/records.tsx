@@ -1,13 +1,12 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import {
   View, Text, Pressable, StyleSheet, ActivityIndicator,
-  TextInput, ScrollView, Alert, Modal,
+  TextInput, ScrollView, Alert,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system/legacy';
-import { Audio } from 'expo-av';
 import { useTranslation } from 'react-i18next';
 import { useQuiz } from '../../lib/quiz-context';
 import { useAuth } from '../../lib/auth-context';
@@ -26,9 +25,6 @@ export default function QuizRecords() {
   const [mode, setMode] = useState<Mode>(null);
   const [uploading, setUploading] = useState(false);
   const [textNote, setTextNote] = useState('');
-  const [recording, setRecording] = useState<Audio.Recording | null>(null);
-  const [isRecording, setIsRecording] = useState(false);
-  const [recordingDone, setRecordingDone] = useState(false);
 
   const goNext = () => {
     setDraft({ hasRecords: mode === null ? 'none' : (mode as any) });
@@ -70,53 +66,6 @@ export default function QuizRecords() {
     }
   };
 
-  // ── Voice recording ───────────────────────────────────────────────────────
-  const startRecording = async () => {
-    try {
-      const { granted } = await Audio.requestPermissionsAsync();
-      if (!granted) { Alert.alert('Permission needed', 'Allow microphone access to record.'); return; }
-      await Audio.setAudioModeAsync({ allowsRecordingIOS: true, playsInSilentModeIOS: true });
-      const { recording: rec } = await Audio.Recording.createAsync(
-        Audio.RecordingOptionsPresets.HIGH_QUALITY
-      );
-      setRecording(rec);
-      setIsRecording(true);
-      setMode('voice');
-    } catch (e) {
-      Alert.alert('Recording failed', String(e));
-    }
-  };
-
-  const stopRecording = async () => {
-    if (!recording) return;
-    setIsRecording(false);
-    await recording.stopAndUnloadAsync();
-    await Audio.setAudioModeAsync({ allowsRecordingIOS: false });
-    const uri = recording.getURI();
-    setRecording(null);
-    setRecordingDone(true);
-    if (!uri) return;
-
-    // Upload voice note to storage
-    setUploading(true);
-    try {
-      const { data: { session: s } } = await supabase.auth.getSession();
-      const path = `${session?.user.id}/voice/${Date.now()}.m4a`;
-      await FileSystem.uploadAsync(
-        `https://fxziatkzwpzoyhuoumxk.supabase.co/storage/v1/object/receipts/${path}`,
-        uri,
-        {
-          httpMethod: 'POST',
-          uploadType: FileSystem.FileSystemUploadType.MULTIPART,
-          fieldName: 'file',
-          mimeType: 'audio/m4a',
-          headers: { Authorization: `Bearer ${s?.access_token}`, 'x-upsert': 'true' },
-        }
-      );
-    } catch {} finally {
-      setUploading(false);
-    }
-  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -174,26 +123,17 @@ export default function QuizRecords() {
           />
         )}
 
-        {/* Option 3 — Voice note */}
-        <Pressable
-          style={[styles.option, mode === 'voice' && styles.optionActive]}
-          onPress={isRecording ? stopRecording : startRecording}
-          disabled={uploading}
-        >
+        {/* Option 3 — Voice note (coming in next build) */}
+        <View style={styles.optionDisabled}>
           <View style={styles.optionLeft}>
-            <Text style={styles.optionEmoji}>{isRecording ? '⏹' : '🎤'}</Text>
+            <Text style={styles.optionEmoji}>🎤</Text>
             <View>
-              <Text style={[styles.optionLabel, mode === 'voice' && styles.optionLabelActive]}>
-                {isRecording ? 'Tap to stop recording' : recordingDone ? 'Voice note saved ✓' : 'Tell me by voice'}
-              </Text>
-              <Text style={styles.optionSub}>
-                {isRecording ? 'Speak freely — we\'ll extract what matters' : 'Say what services you remember'}
-              </Text>
+              <Text style={styles.optionLabelDisabled}>Tell me by voice</Text>
+              <Text style={styles.optionSub}>Coming soon — speak what you remember</Text>
             </View>
           </View>
-          {isRecording && <View style={styles.recDot} />}
-          {uploading && mode === 'voice' && <ActivityIndicator color={colors.orange} size="small" />}
-        </Pressable>
+          <Text style={styles.soonBadge}>Soon</Text>
+        </View>
 
         {/* Option 4 — Fresh start */}
         <Pressable
@@ -216,7 +156,7 @@ export default function QuizRecords() {
           <Button
             label={uploading ? 'Uploading…' : 'Continue →'}
             onPress={goNext}
-            disabled={uploading || isRecording}
+            disabled={uploading}
           />
         </View>
       </ScrollView>
@@ -266,10 +206,20 @@ const styles = StyleSheet.create({
     textAlignVertical: 'top',
   },
 
-  recDot: {
-    width: 10, height: 10, borderRadius: 5,
-    backgroundColor: colors.overdue,
+  optionDisabled: {
+    backgroundColor: colors.surface,
+    borderRadius: radii.md,
+    borderWidth: 1.5,
+    borderColor: colors.border,
+    padding: spacing.md,
+    marginBottom: spacing.sm,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    opacity: 0.5,
   },
+  optionLabelDisabled: { ...typography.body, color: colors.textMuted, fontWeight: '600', fontSize: 15 },
+  soonBadge: { ...typography.label, color: colors.textMuted, fontSize: 10 },
 
   footer: { marginTop: spacing.lg },
 });
