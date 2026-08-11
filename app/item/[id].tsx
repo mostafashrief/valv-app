@@ -6,6 +6,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import * as ImagePicker from 'expo-image-picker';
+import * as FileSystem from 'expo-file-system/legacy';
 import { useTranslation } from 'react-i18next';
 import { colors, radii, spacing, typography } from '../../constants/theme';
 import { supabase } from '../../lib/supabase';
@@ -112,14 +113,19 @@ export default function ItemDetail() {
     try {
       const ext = (asset.uri.split('.').pop() ?? 'jpg').toLowerCase();
       const path = `receipts/${Date.now()}.${ext}`;
-      const form = new FormData();
-      form.append('file', { uri: asset.uri, name: `upload.${ext}`, type: `image/${ext}` } as any);
       const { data: { session: s } } = await supabase.auth.getSession();
-      const uploadRes = await fetch(
+      const uploadRes = await FileSystem.uploadAsync(
         `https://fxziatkzwpzoyhuoumxk.supabase.co/storage/v1/object/receipts/${path}`,
-        { method: 'POST', headers: { Authorization: `Bearer ${s?.access_token}`, 'x-upsert': 'true' }, body: form }
+        asset.uri,
+        {
+          httpMethod: 'POST',
+          uploadType: FileSystem.FileSystemUploadType.MULTIPART,
+          fieldName: 'file',
+          mimeType: `image/${ext}`,
+          headers: { Authorization: `Bearer ${s?.access_token}`, 'x-upsert': 'true' },
+        }
       );
-      if (!uploadRes.ok) throw new Error(await uploadRes.text());
+      if (uploadRes.status >= 400) throw new Error(uploadRes.body);
 
       const { data: urlData } = supabase.storage.from('receipts').getPublicUrl(path);
       const publicUrl = urlData.publicUrl;

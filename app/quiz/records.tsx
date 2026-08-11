@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import * as ImagePicker from 'expo-image-picker';
 import { useTranslation } from 'react-i18next';
+import * as FileSystem from 'expo-file-system/legacy';
 import { useQuiz, type HasRecords } from '../../lib/quiz-context';
 import { useAuth } from '../../lib/auth-context';
 import { supabase } from '../../lib/supabase';
@@ -38,17 +39,21 @@ export default function QuizRecords() {
     if (result.canceled) { router.push('/quiz/driving'); return; }
 
     setUploading(true);
+    const { data: { session: s } } = await supabase.auth.getSession();
     const uploads = result.assets.map(async (asset) => {
       const ext = (asset.uri.split('.').pop() ?? 'jpg').toLowerCase();
       const path = `${session?.user.id}/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
-      const form = new FormData();
-      form.append('file', { uri: asset.uri, name: `upload.${ext}`, type: `image/${ext}` } as any);
-      const { data: { session: s } } = await supabase.auth.getSession();
-      await fetch(`https://fxziatkzwpzoyhuoumxk.supabase.co/storage/v1/object/receipts/${path}`, {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${s?.access_token}`, 'x-upsert': 'true' },
-        body: form,
-      });
+      await FileSystem.uploadAsync(
+        `https://fxziatkzwpzoyhuoumxk.supabase.co/storage/v1/object/receipts/${path}`,
+        asset.uri,
+        {
+          httpMethod: 'POST',
+          uploadType: FileSystem.FileSystemUploadType.MULTIPART,
+          fieldName: 'file',
+          mimeType: `image/${ext}`,
+          headers: { Authorization: `Bearer ${s?.access_token}`, 'x-upsert': 'true' },
+        }
+      );
     });
     await Promise.all(uploads);
     setUploading(false);
