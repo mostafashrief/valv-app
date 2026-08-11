@@ -3,54 +3,47 @@ import { View, Text, Pressable, StyleSheet, ActivityIndicator } from 'react-nati
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import * as ImagePicker from 'expo-image-picker';
+import { useTranslation } from 'react-i18next';
 import { useQuiz, type HasRecords } from '../../lib/quiz-context';
 import { useAuth } from '../../lib/auth-context';
 import { supabase } from '../../lib/supabase';
+import { BackButton } from '../../components/BackButton';
 import { colors, radii, spacing, typography } from '../../constants/theme';
 
-const OPTIONS: { value: HasRecords; label: string; sub: string; cta?: string }[] = [
-  { value: 'receipts', label: 'Yes — I have receipts',      sub: 'Photos, invoices, anything', cta: 'Upload receipts' },
-  { value: 'booklet',  label: 'Yes — I have the booklet',   sub: 'The service book from the dealer', cta: 'Upload booklet' },
-  { value: 'none',     label: 'No records',                  sub: "We'll start fresh with estimates" },
-];
-
 export default function QuizRecords() {
+  const { t } = useTranslation();
   const { setDraft } = useQuiz();
   const { session } = useAuth();
   const [selected, setSelected] = useState<HasRecords | null>(null);
   const [uploading, setUploading] = useState(false);
 
+  const OPTIONS: { value: HasRecords; label: string; sub: string; cta?: string }[] = [
+    { value: 'receipts', label: t('quiz.records.receipts'), sub: t('quiz.records.receiptsSub'), cta: t('quiz.records.upload') },
+    { value: 'booklet',  label: t('quiz.records.booklet'),  sub: t('quiz.records.bookletSub'),  cta: t('quiz.records.upload') },
+    { value: 'none',     label: t('quiz.records.none'),     sub: t('quiz.records.noneSub') },
+  ];
+
   const handleSelect = async (value: HasRecords) => {
     setSelected(value);
     setDraft({ hasRecords: value });
 
-    if (value === 'none') {
-      router.push('/quiz/driving');
-      return;
-    }
+    if (value === 'none') { router.push('/quiz/driving'); return; }
 
-    // Pick images
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsMultipleSelection: true,
       quality: 0.8,
     });
 
-    if (result.canceled) {
-      router.push('/quiz/driving');
-      return;
-    }
+    if (result.canceled) { router.push('/quiz/driving'); return; }
 
     setUploading(true);
-    // Upload each image to Supabase storage — parse-receipt Edge Function handles the rest
     const uploads = result.assets.map(async (asset) => {
       const ext = asset.uri.split('.').pop() ?? 'jpg';
       const path = `${session?.user.id}/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
       const blob = await fetch(asset.uri).then((r) => r.blob());
       await supabase.storage.from('receipts').upload(path, blob, { contentType: `image/${ext}` });
-      return path;
     });
-
     await Promise.all(uploads);
     setUploading(false);
     router.push('/quiz/driving');
@@ -58,10 +51,11 @@ export default function QuizRecords() {
 
   return (
     <SafeAreaView style={styles.container}>
+      <BackButton />
       <View style={styles.content}>
-        <Text style={styles.step}>5 of 6</Text>
-        <Text style={styles.title}>عندك فواتير؟</Text>
-        <Text style={styles.subtitle}>Any service records or a maintenance booklet?</Text>
+        <Text style={styles.step}>{t('quiz.step', { current: 5, total: 6 })}</Text>
+        <Text style={styles.title}>{t('quiz.records.title')}</Text>
+        <Text style={styles.subtitle}>{t('quiz.records.subtitle')}</Text>
         <View style={styles.options}>
           {OPTIONS.map((o) => (
             <Pressable
@@ -79,7 +73,9 @@ export default function QuizRecords() {
                 </View>
                 {o.cta && (
                   <View style={styles.ctaTag}>
-                    <Text style={styles.ctaText}>{uploading && selected === o.value ? '…' : 'Upload'}</Text>
+                    <Text style={styles.ctaText}>
+                      {uploading && selected === o.value ? '…' : o.cta}
+                    </Text>
                   </View>
                 )}
               </View>
@@ -89,7 +85,7 @@ export default function QuizRecords() {
         {uploading && (
           <View style={styles.uploadingRow}>
             <ActivityIndicator color={colors.orange} size="small" />
-            <Text style={styles.uploadingText}>Uploading your records…</Text>
+            <Text style={styles.uploadingText}>{t('quiz.records.uploading')}</Text>
           </View>
         )}
       </View>
@@ -99,7 +95,7 @@ export default function QuizRecords() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.background },
-  content: { flex: 1, paddingHorizontal: spacing.lg, paddingTop: spacing.xl, justifyContent: 'center' },
+  content: { flex: 1, paddingHorizontal: spacing.lg, justifyContent: 'center' },
   step: { ...typography.label, color: colors.orange, marginBottom: spacing.sm },
   title: { ...typography.title, color: colors.text, fontSize: 32 },
   subtitle: { ...typography.body, color: colors.textMuted, marginTop: 4, marginBottom: spacing.xl },

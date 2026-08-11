@@ -2,11 +2,14 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { useQuiz } from '../../lib/quiz-context';
 import { Button } from '../../components/Button';
-import { colors, radii, spacing, typography } from '../../constants/theme';
+import { BackButton } from '../../components/BackButton';
+import { colors, spacing, typography } from '../../constants/theme';
 
 export default function QuizName() {
+  const { t } = useTranslation();
   const { setDraft } = useQuiz();
   const [name, setName] = useState('');
 
@@ -18,17 +21,20 @@ export default function QuizName() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.inner}>
+      <BackButton />
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.kav}
+      >
         <View style={styles.content}>
-          <Text style={styles.step}>1 of 6</Text>
-          <Text style={styles.title}>ما اسمك؟</Text>
-          <Text style={styles.subtitle}>What's your name?</Text>
+          <Text style={styles.step}>{t('quiz.step', { current: 1, total: 6 })}</Text>
+          <Text style={styles.title}>{t('quiz.name.title')}</Text>
           <TextInput
             style={styles.input}
             value={name}
             onChangeText={setName}
-            placeholder="Your first name"
-            placeholderTextColor={colors.steel}
+            placeholder={t('quiz.name.placeholder')}
+            placeholderTextColor={colors.textMuted}
             autoFocus
             autoCapitalize="words"
             returnKeyType="next"
@@ -36,7 +42,7 @@ export default function QuizName() {
           />
         </View>
         <View style={styles.footer}>
-          <Button label="Next →" onPress={handleNext} disabled={!name.trim()} />
+          <Button label={t('common.next') + ' →'} onPress={handleNext} disabled={!name.trim()} />
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
@@ -45,11 +51,10 @@ export default function QuizName() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.background },
-  inner: { flex: 1, justifyContent: 'space-between' },
-  content: { flex: 1, paddingHorizontal: spacing.lg, paddingTop: spacing.xl, justifyContent: 'center' },
+  kav: { flex: 1 },
+  content: { flex: 1, paddingHorizontal: spacing.lg, justifyContent: 'center' },
   step: { ...typography.label, color: colors.orange, marginBottom: spacing.sm },
-  title: { ...typography.title, color: colors.text, fontSize: 32 },
-  subtitle: { ...typography.body, color: colors.textMuted, marginTop: 4, marginBottom: spacing.xl },
+  title: { ...typography.title, color: colors.text, fontSize: 32, marginBottom: spacing.xl },
   input: {
     ...typography.title, fontSize: 28, color: colors.text,
     borderBottomWidth: 2, borderBottomColor: colors.orange,

@@ -235,6 +235,71 @@
     "serviceLoggedBody": "One more service documented. Your car's value is protected.",
     "serviceLoggedCta": "View updated schedule"
   },
+  "quiz": {
+    "step": "{{current}} of {{total}}",
+    "name": {
+      "title": "What's your name?",
+      "placeholder": "Your first name"
+    },
+    "age": {
+      "title": "How old are you?",
+      "under20": "Under 20",
+      "20_30": "20 – 30",
+      "30_45": "30 – 45",
+      "45plus": "45+"
+    },
+    "ownership": {
+      "title": "How long have you owned this car?",
+      "new": "Brand new", "newSub": "Just got it",
+      "under6m": "Less than 6 months", "under6mSub": "Still getting to know it",
+      "6m2y": "6 months – 2 years", "6m2ySub": "Getting comfortable",
+      "2_5y": "2 – 5 years", "2_5ySub": "You know this car",
+      "over5y": "More than 5 years", "over5ySub": "Old friends"
+    },
+    "records": {
+      "title": "Any service records?",
+      "subtitle": "Receipts or a maintenance booklet?",
+      "receipts": "Yes — I have receipts", "receiptsSub": "Photos, invoices, anything",
+      "booklet": "Yes — I have the booklet", "bookletSub": "The service book from the dealer",
+      "none": "No records", "noneSub": "We'll start fresh with estimates",
+      "upload": "Upload",
+      "uploading": "Uploading your records…"
+    },
+    "driving": {
+      "title": "How do you use your car?",
+      "subtitle": "Help us estimate your mileage.",
+      "frequencyLabel": "How often do you drive?",
+      "every_day": "Every day",
+      "most_days": "Most days (4–5 days/week)",
+      "few_times": "A few times a week",
+      "weekends": "Mostly weekends",
+      "tripLabel": "What's your typical daily trip?",
+      "under_10": "Short errands", "under_10Sub": "Under 10 km a day",
+      "10_30": "Work or school", "10_30Sub": "10 – 30 km a day",
+      "30_60": "Longer commute", "30_60Sub": "30 – 60 km a day",
+      "60_plus": "Heavy daily use", "60_plusSub": "More than 60 km a day",
+      "intercityLabel": "Do you travel between cities?",
+      "rarely": "Rarely or never",
+      "few_year": "A few times a year",
+      "monthly": "Once a month or so",
+      "weekly": "Every week",
+      "next": "Almost done →"
+    },
+    "done": {
+      "titleWithName": "{{name}}, your car is in good hands.",
+      "title": "Your car is in good hands.",
+      "saving": "Setting up…",
+      "cta": "Open my plan"
+    },
+    "booklet": {
+      "title": "Upload your service booklet",
+      "subtitle": "We'll use it to build your exact maintenance schedule.",
+      "pick": "Choose from photos",
+      "uploading": "Uploading…",
+      "done": "Uploaded! We'll update your schedule.",
+      "skip": "Skip for now"
+    }
+  },
   "errors": {
     "noInternet": "No internet connection",
     "noInternetSubtitle": "Your car's data is saved locally. Reconnect to sync.",

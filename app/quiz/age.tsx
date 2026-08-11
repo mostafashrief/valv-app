@@ -2,18 +2,21 @@ import React from 'react';
 import { View, Text, Pressable, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { useQuiz, type AgeRange } from '../../lib/quiz-context';
+import { BackButton } from '../../components/BackButton';
 import { colors, radii, spacing, typography } from '../../constants/theme';
 
-const OPTIONS: { value: AgeRange; label: string }[] = [
-  { value: 'under_20', label: 'Under 20' },
-  { value: '20_30',    label: '20 – 30' },
-  { value: '30_45',    label: '30 – 45' },
-  { value: '45_plus',  label: '45+' },
-];
-
 export default function QuizAge() {
+  const { t } = useTranslation();
   const { draft, setDraft } = useQuiz();
+
+  const OPTIONS: { value: AgeRange; label: string }[] = [
+    { value: 'under_20', label: t('quiz.age.under20') },
+    { value: '20_30',    label: t('quiz.age.20_30') },
+    { value: '30_45',    label: t('quiz.age.30_45') },
+    { value: '45_plus',  label: t('quiz.age.45plus') },
+  ];
 
   const handleSelect = (value: AgeRange) => {
     setDraft({ ageRange: value });
@@ -22,10 +25,10 @@ export default function QuizAge() {
 
   return (
     <SafeAreaView style={styles.container}>
+      <BackButton />
       <View style={styles.content}>
-        <Text style={styles.step}>2 of 6</Text>
-        <Text style={styles.title}>عندك كام سنة؟</Text>
-        <Text style={styles.subtitle}>How old are you?</Text>
+        <Text style={styles.step}>{t('quiz.step', { current: 2, total: 6 })}</Text>
+        <Text style={styles.title}>{t('quiz.age.title')}</Text>
         <View style={styles.options}>
           {OPTIONS.map((o) => (
             <Pressable
@@ -46,10 +49,9 @@ export default function QuizAge() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.background },
-  content: { flex: 1, paddingHorizontal: spacing.lg, paddingTop: spacing.xl, justifyContent: 'center' },
+  content: { flex: 1, paddingHorizontal: spacing.lg, justifyContent: 'center' },
   step: { ...typography.label, color: colors.orange, marginBottom: spacing.sm },
-  title: { ...typography.title, color: colors.text, fontSize: 32 },
-  subtitle: { ...typography.body, color: colors.textMuted, marginTop: 4, marginBottom: spacing.xl },
+  title: { ...typography.title, color: colors.text, fontSize: 32, marginBottom: spacing.xl },
   options: { gap: spacing.sm },
   option: {
     backgroundColor: colors.surface, borderRadius: radii.md,
