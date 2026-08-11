@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet } from 'react-native';
+import { View, Text, TextInput, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { Button } from '../../components/Button';
@@ -28,35 +28,40 @@ export default function PhoneStep() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.content}>
-        <Text style={styles.title}>What's your number?</Text>
-        <Text style={styles.subtitle}>We'll text you a code. No password.</Text>
+    <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
+      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.kav}>
+        <View style={styles.content}>
+          <Text style={styles.title}>What's your number?</Text>
+          <Text style={styles.subtitle}>We'll text you a code. No password.</Text>
 
-        <View style={styles.inputRow}>
-          <Text style={styles.countryCode}>{EGYPT_COUNTRY_CODE}</Text>
-          <TextInput
-            style={styles.input}
-            keyboardType="phone-pad"
-            placeholder="10 123 4567"
-            placeholderTextColor={colors.textMuted}
-            value={localNumber}
-            onChangeText={(v) => { setLocalNumber(v); setError(null); }}
-            autoFocus
-            maxLength={11}
-          />
+          <View style={styles.inputRow}>
+            <Text style={styles.countryCode}>{EGYPT_COUNTRY_CODE}</Text>
+            <TextInput
+              style={styles.input}
+              keyboardType="phone-pad"
+              placeholder="10 123 4567"
+              placeholderTextColor={colors.textMuted}
+              value={localNumber}
+              onChangeText={(v) => { setLocalNumber(v); setError(null); }}
+              autoFocus
+              maxLength={11}
+              returnKeyType="go"
+              onSubmitEditing={handleSend}
+            />
+          </View>
+          {error ? <Text style={styles.error}>{error}</Text> : null}
         </View>
-        {error ? <Text style={styles.error}>{error}</Text> : null}
-      </View>
-      <View style={styles.footer}>
-        <Button label="Send code" onPress={handleSend} loading={loading} />
-      </View>
+        <View style={styles.footer}>
+          <Button label="Send code" onPress={handleSend} loading={loading} />
+        </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.background, justifyContent: 'space-between' },
+  container: { flex: 1, backgroundColor: colors.background },
+  kav: { flex: 1 },
   content: { flex: 1, paddingHorizontal: spacing.lg, paddingTop: spacing.xl },
   title: { ...typography.title, color: colors.textLight },
   subtitle: { ...typography.body, color: colors.textMuted, marginTop: spacing.sm },

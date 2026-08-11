@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors, radii, spacing, typography } from '../constants/theme';
 
@@ -21,28 +21,26 @@ export function OnboardingShell({
   footer,
 }: OnboardingShellProps) {
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
       <View style={styles.progressTrack}>
-        <View
-          style={[
-            styles.progressFill,
-            { width: `${Math.min(100, (step / totalSteps) * 100)}%` },
-          ]}
-        />
+        <View style={[styles.progressFill, { width: `${Math.min(100, (step / totalSteps) * 100)}%` }]} />
       </View>
-      <View style={styles.content}>
-        <Text style={styles.stepLabel}>{step} / {totalSteps}</Text>
-        <Text style={styles.title}>{title}</Text>
-        {subtitle ? <Text style={styles.subtitle}>{subtitle}</Text> : null}
-        <View style={styles.body}>{children}</View>
-      </View>
-      {footer ? <View style={styles.footer}>{footer}</View> : null}
+      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.kav}>
+        <View style={styles.content}>
+          <Text style={styles.stepLabel}>{step} / {totalSteps}</Text>
+          <Text style={styles.title}>{title}</Text>
+          {subtitle ? <Text style={styles.subtitle}>{subtitle}</Text> : null}
+          <View style={styles.body}>{children}</View>
+        </View>
+        {footer ? <View style={styles.footer}>{footer}</View> : null}
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.cream },
+  kav: { flex: 1 },
   progressTrack: {
     height: 3,
     backgroundColor: colors.border,

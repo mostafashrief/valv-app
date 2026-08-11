@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Pressable, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Pressable, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router, useLocalSearchParams } from 'expo-router';
 import { Button } from '../../components/Button';
@@ -32,38 +32,43 @@ export default function VerifyStep() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.content}>
-        <Text style={styles.title}>Check your texts.</Text>
-        <Text style={styles.subtitle}>Code sent to {phone}.</Text>
+    <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
+      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.kav}>
+        <View style={styles.content}>
+          <Text style={styles.title}>Check your texts.</Text>
+          <Text style={styles.subtitle}>Code sent to {phone}.</Text>
 
-        <TextInput
-          style={styles.input}
-          keyboardType="number-pad"
-          placeholder="6-digit code"
-          placeholderTextColor={colors.textMuted}
-          value={code}
-          onChangeText={(v) => { setCode(v); setError(null); }}
-          autoFocus
-          maxLength={6}
-        />
-        {error ? <Text style={styles.error}>{error}</Text> : null}
+          <TextInput
+            style={styles.input}
+            keyboardType="number-pad"
+            placeholder="6-digit code"
+            placeholderTextColor={colors.textMuted}
+            value={code}
+            onChangeText={(v) => { setCode(v); setError(null); }}
+            autoFocus
+            maxLength={6}
+            returnKeyType="go"
+            onSubmitEditing={handleVerify}
+          />
+          {error ? <Text style={styles.error}>{error}</Text> : null}
 
-        <Pressable onPress={handleResend} disabled={resending} style={styles.resendRow}>
-          <Text style={styles.resendText}>
-            {resending ? 'Sending...' : 'Resend code.'}
-          </Text>
-        </Pressable>
-      </View>
-      <View style={styles.footer}>
-        <Button label="Verify" onPress={handleVerify} loading={loading} />
-      </View>
+          <Pressable onPress={handleResend} disabled={resending} style={styles.resendRow}>
+            <Text style={styles.resendText}>
+              {resending ? 'Sending...' : 'Resend code.'}
+            </Text>
+          </Pressable>
+        </View>
+        <View style={styles.footer}>
+          <Button label="Verify" onPress={handleVerify} loading={loading} />
+        </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.background, justifyContent: 'space-between' },
+  container: { flex: 1, backgroundColor: colors.background },
+  kav: { flex: 1 },
   content: { flex: 1, paddingHorizontal: spacing.lg, paddingTop: spacing.xl },
   title: { ...typography.title, color: colors.textLight },
   subtitle: { ...typography.body, color: colors.textMuted, marginTop: spacing.sm },
