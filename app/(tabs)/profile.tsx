@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-  View, Text, StyleSheet, Pressable, ScrollView, Alert, ActivityIndicator,
+  View, Text, StyleSheet, Pressable, ScrollView, Alert, ActivityIndicator, Linking,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
@@ -24,6 +24,7 @@ export default function Profile() {
   const { session, signOut } = useAuth();
   const { cars, activeCar, setActiveCar, reloadCars } = useCar();
   const [signingOut, setSigningOut] = useState(false);
+  const [deletingAccount, setDeletingAccount] = useState(false);
   const [profile, setProfile] = useState<any>(null);
   const [completion, setCompletion] = useState(20);
   const currentLang = i18n.language as SupportedLanguage;
@@ -36,6 +37,38 @@ export default function Profile() {
         setCompletion(calcCompletion(data));
       });
   }, [session?.user]);
+
+  const handleDeleteAccount = () => {
+    Alert.alert(
+      'Delete Account',
+      'This will permanently delete your account, all your cars, and all service history. This cannot be undone.',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Delete My Account', style: 'destructive', onPress: async () => {
+            setDeletingAccount(true);
+            try {
+              const { data: { session: currentSession } } = await supabase.auth.getSession();
+              const res = await fetch(
+                'https://fxziatkzwpzoyhuoumxk.supabase.co/functions/v1/delete-account',
+                {
+                  method: 'POST',
+                  headers: { Authorization: `Bearer ${currentSession?.access_token}` },
+                }
+              );
+              if (!res.ok) throw new Error('Failed to delete account');
+              await signOut();
+              router.replace('/');
+            } catch {
+              Alert.alert('Error', 'Could not delete account. Please try again or contact support.');
+            } finally {
+              setDeletingAccount(false);
+            }
+          },
+        },
+      ]
+    );
+  };
 
   const handleSignOut = async () => {
     Alert.alert(t('profile.signOutTitle'), t('profile.signOutMessage'), [
@@ -164,6 +197,17 @@ export default function Profile() {
           }
         </Pressable>
 
+        <Pressable style={styles.deleteAccountBtn} onPress={handleDeleteAccount} disabled={deletingAccount}>
+          {deletingAccount
+            ? <ActivityIndicator color={colors.steel} size="small" />
+            : <Text style={styles.deleteAccountText}>Delete Account</Text>
+          }
+        </Pressable>
+
+        <Pressable style={styles.privacyBtn} onPress={() => Linking.openURL('https://www.carvalv.com/privacy')}>
+          <Text style={styles.privacyText}>Privacy Policy</Text>
+        </Pressable>
+
       </ScrollView>
     </SafeAreaView>
   );
@@ -268,4 +312,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   signOutText: { ...typography.button, color: colors.overdue },
+
+  deleteAccountBtn: {
+    alignItems: 'center',
+    paddingVertical: spacing.md,
+    marginTop: spacing.sm,
+  },
+  deleteAccountText: { ...typography.label, color: colors.steel, fontSize: 12 },
+
+  privacyBtn: { alignItems: 'center', paddingVertical: spacing.sm },
+  privacyText: { ...typography.label, color: colors.steel, fontSize: 12, textDecorationLine: 'underline' },
 });

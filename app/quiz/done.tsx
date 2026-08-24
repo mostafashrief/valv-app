@@ -6,12 +6,13 @@ import { useTranslation } from 'react-i18next';
 import { useQuiz } from '../../lib/quiz-context';
 import { useAuth } from '../../lib/auth-context';
 import { supabase } from '../../lib/supabase';
+import { scheduleMileageReminder } from '../../lib/notifications';
 import { Button } from '../../components/Button';
 import { colors, spacing, typography } from '../../constants/theme';
 
 export default function QuizDone() {
   const { t } = useTranslation();
-  const { draft, getMonthlyKm, getReminderFrequency, reset } = useQuiz();
+  const { draft, reset } = useQuiz();
   const { session } = useAuth();
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -20,19 +21,20 @@ export default function QuizDone() {
     if (!session?.user) { router.replace('/(tabs)'); return; }
 
     setSaving(true);
+    const freq = draft.mileageReminderFrequency ?? 'weekly';
+
     const { error: err } = await supabase.from('profiles').upsert({
       user_id: session.user.id,
       first_name: draft.firstName ?? null,
       age_range: draft.ageRange ?? null,
       ownership_duration: draft.ownershipDuration ?? null,
       has_service_records: draft.hasRecords ?? null,
-      drives_daily: draft.drivesDaily ?? null,
-      daily_trip: draft.dailyTrip ?? null,
-      intercity_travel: draft.intercityTravel ?? null,
-      monthly_km_estimate: getMonthlyKm(),
-      reminder_frequency: getReminderFrequency(),
+      mileage_reminder_frequency: freq,
       quiz_completed_at: new Date().toISOString(),
     }, { onConflict: 'user_id' });
+
+    // Schedule the mileage reminder notification
+    await scheduleMileageReminder(freq);
 
     setSaving(false);
     if (err) { setError(err.message); return; }

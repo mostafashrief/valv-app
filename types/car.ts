@@ -23,9 +23,14 @@ export interface CarProfile {
   maintenanceItems: MaintenanceItem[];
 }
 
+export type TransmissionType = 'manual' | 'automatic' | 'cvt' | 'dsg';
+export type TimingSystemType = 'chain' | 'belt' | 'unknown';
+
 export interface OnboardingDraft {
   brand?: string;
   model?: string;
   year?: number;
   mileageKm?: number;
+  transmission?: TransmissionType;
+  timingSystem?: TimingSystemType;
 }

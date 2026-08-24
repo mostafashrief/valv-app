@@ -50,7 +50,7 @@
 
     "yearTitle": "What year is it?",
 
-    "mileageTitle": "What's on the odometer?",
+    "mileageTitle": "How many kilometers has your car done?",
     "mileageSubtitle": "We'll use this to calculate your service schedule.",
     "mileagePlaceholder": "e.g., 125,000",
     "mileageError": "We need your car's info to get started.",
@@ -107,7 +107,7 @@
 
     "updateMileageTitle": "Update mileage",
     "updateMileageCurrent": "Current: {{mileage}} km",
-    "updateMileagePlaceholder": "New odometer reading",
+    "updateMileagePlaceholder": "Enter current kilometers",
     "updateMileageSave": "Save",
     "mileageDownError": "Mileage can't go down",
     "mileageDownMessage": "Current is {{mileage}} km.",
@@ -152,7 +152,7 @@
     "labelDate": "When was it done?",
     "placeholderDate": "YYYY-MM-DD",
     "labelMileage": "Mileage at service",
-    "placeholderMileage": "Odometer reading",
+    "placeholderMileage": "Kilometers reading",
     "labelCost": "Cost (optional)",
     "placeholderCost": "0",
     "labelWhere": "Where? (optional)",
@@ -178,7 +178,7 @@
     "doneAtDate": "Date",
     "cost": "Cost (EGP)",
     "notes": "Notes",
-    "odometerPlaceholder": "Odometer reading",
+    "odometerPlaceholder": "Kilometers reading",
     "datePlaceholder": "YYYY-MM-DD",
     "costPlaceholder": "0",
     "notesPlaceholder": "What was done, parts used…"

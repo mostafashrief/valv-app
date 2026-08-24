@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import {
   View, Text, StyleSheet, FlatList, Pressable,
-  ActivityIndicator, Modal, TextInput, KeyboardAvoidingView, Platform, Alert,
+  ActivityIndicator, Modal, TextInput, KeyboardAvoidingView, Platform, Alert, Image,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
+import * as ImagePicker from 'expo-image-picker';
 import { colors, radii, spacing, typography } from '../../constants/theme';
 import { supabase } from '../../lib/supabase';
 import { useCar } from '../../lib/car-context';
 import { calcItemStatus, sortByUrgency, type MaintenanceItemStatus } from '../../lib/maintenance';
+import { scheduleMaintenceNotifications } from '../../lib/notifications';
 import type { MaintenanceItem, MaintenanceStatus } from '../../types/car';
 
 const STATUS_COLOR: Record<MaintenanceStatus, string> = {
@@ -78,6 +80,13 @@ export default function Home() {
   const [newMileage, setNewMileage] = useState('');
   const [saving, setSaving] = useState(false);
 
+  // AI odometer
+  const [scanning, setScanning] = useState(false);
+  const [scannedPreview, setScannedPreview] = useState<string | null>(null);
+
+  // Streak
+  const [streak, setStreak] = useState(0);
+
   const [addVisible, setAddVisible] = useState(false);
   const [newItemName, setNewItemName] = useState('');
   const [newItemKm, setNewItemKm] = useState('');
@@ -86,7 +95,45 @@ export default function Home() {
   useEffect(() => {
     if (!activeCar) return;
     loadItems(activeCar.id, activeCar.current_mileage_km);
+    loadStreak(activeCar.id);
   }, [activeCar]);
+
+  const loadStreak = async (carId: string) => {
+    const { data } = await supabase
+      .from('mileage_logs')
+      .select('logged_at')
+      .eq('car_id', carId)
+      .order('logged_at', { ascending: false });
+    if (!data || data.length === 0) { setStreak(0); return; }
+
+    // Count consecutive weeks (Mon–Sun) that have at least one log
+    let count = 0;
+    const now = new Date();
+    // Get start of current week (Monday)
+    const startOfWeek = (d: Date) => {
+      const day = d.getDay(); // 0=Sun
+      const diff = (day === 0 ? -6 : 1 - day);
+      const s = new Date(d);
+      s.setDate(s.getDate() + diff);
+      s.setHours(0, 0, 0, 0);
+      return s;
+    };
+
+    let weekStart = startOfWeek(now);
+    for (let i = 0; i < 52; i++) {
+      const weekEnd = new Date(weekStart);
+      weekEnd.setDate(weekEnd.getDate() + 7);
+      const hasLog = data.some((row) => {
+        const d = new Date(row.logged_at);
+        return d >= weekStart && d < weekEnd;
+      });
+      if (!hasLog && i > 0) break; // gap — stop streak
+      if (hasLog) count++;
+      weekStart = new Date(weekStart);
+      weekStart.setDate(weekStart.getDate() - 7);
+    }
+    setStreak(count);
+  };
 
   const loadItems = async (carId: string, currentKm: number) => {
     setLoading(true);
@@ -117,7 +164,54 @@ export default function Home() {
 
   const openLogKm = () => {
     setNewMileage(activeCar ? String(activeCar.current_mileage_km) : '');
+    setScannedPreview(null);
     setLogVisible(true);
+  };
+
+  const scanOdometer = async () => {
+    const perm = await ImagePicker.requestCameraPermissionsAsync();
+    if (!perm.granted) { Alert.alert('Camera access needed to scan your kilometers.'); return; }
+
+    const result = await ImagePicker.launchCameraAsync({
+      mediaTypes: ['images'],
+      quality: 0.7,
+      base64: false,
+    });
+    if (result.canceled || !result.assets[0]) return;
+
+    const asset = result.assets[0];
+    setScanning(true);
+    setScannedPreview(asset.uri);
+
+    try {
+      // Upload to Supabase Storage
+      const fileName = `odometer/${Date.now()}.jpg`;
+      const response = await fetch(asset.uri);
+      const blob = await response.blob();
+      const arrayBuffer = await blob.arrayBuffer();
+      const { error: uploadError } = await supabase.storage
+        .from('receipts')
+        .upload(fileName, arrayBuffer, { contentType: 'image/jpeg' });
+      if (uploadError) throw uploadError;
+
+      const { data: urlData } = supabase.storage.from('receipts').getPublicUrl(fileName);
+
+      // Call edge function
+      const fnRes = await supabase.functions.invoke('parse-odometer', {
+        body: { image_url: urlData.publicUrl },
+      });
+      if (fnRes.error) throw fnRes.error;
+      const km: number | null = fnRes.data?.mileage_km ?? null;
+      if (km && km > 0) {
+        setNewMileage(String(km));
+      } else {
+        Alert.alert("Couldn't read the kilometers", "Type your kilometers manually.");
+      }
+    } catch {
+      Alert.alert("Scan failed", "Type your kilometers manually.");
+    } finally {
+      setScanning(false);
+    }
   };
 
   const saveKm = async () => {
@@ -138,6 +232,25 @@ export default function Home() {
     if (updateRes.error) { Alert.alert('Error', updateRes.error.message); return; }
     setLogVisible(false);
     reloadCars();
+    loadStreak(activeCar.id);
+
+    // Reschedule maintenance notifications with updated mileage
+    const { data: items } = await supabase
+      .from('maintenance_items')
+      .select('*')
+      .eq('car_id', activeCar.id);
+    if (items) {
+      const mapped: MaintenanceItem[] = items.map((row: any) => ({
+        id: row.id,
+        name: row.name,
+        intervalKm: row.interval_km ?? undefined,
+        intervalDays: row.interval_days ?? undefined,
+        lastDoneAtKm: row.last_done_at_km ?? undefined,
+        lastDoneAtDate: row.last_done_at ? row.last_done_at.split('T')[0] : undefined,
+        source: row.source,
+      }));
+      scheduleMaintenceNotifications(mapped, km);
+    }
   };
 
   const saveCustomItem = async () => {
@@ -186,6 +299,9 @@ export default function Home() {
           <Text style={styles.mileage}>
             {activeCar ? activeCar.current_mileage_km.toLocaleString() : '—'} km
           </Text>
+          {streak > 0 && (
+            <Text style={styles.streak}>🔥 {streak} week{streak > 1 ? 's' : ''} in a row</Text>
+          )}
         </View>
         <Pressable style={styles.logBtn} onPress={openLogKm}>
           <Text style={styles.logBtnText}>{t('home.logKm')}</Text>
@@ -252,6 +368,17 @@ export default function Home() {
             <Text style={styles.sheetSub}>
               {t('home.updateMileageCurrent', { mileage: activeCar?.current_mileage_km.toLocaleString() })}
             </Text>
+
+            {/* Scan button */}
+            <Pressable style={styles.scanBtn} onPress={scanOdometer} disabled={scanning}>
+              {scannedPreview ? (
+                <Image source={{ uri: scannedPreview }} style={styles.scanPreview} resizeMode="cover" />
+              ) : null}
+              <Text style={styles.scanBtnText}>
+                {scanning ? '⏳ Reading kilometers…' : scannedPreview ? '📷 Retake photo' : '📷 Scan kilometers'}
+              </Text>
+            </Pressable>
+
             <TextInput
               style={styles.kmInput}
               value={newMileage}
@@ -259,13 +386,12 @@ export default function Home() {
               keyboardType="numeric"
               placeholder={t('home.updateMileagePlaceholder')}
               placeholderTextColor={colors.steel}
-              autoFocus
             />
             <View style={styles.actions}>
               <Pressable style={styles.cancelBtn} onPress={() => setLogVisible(false)}>
                 <Text style={styles.cancelText}>{t('common.cancel')}</Text>
               </Pressable>
-              <Pressable style={styles.saveBtn} onPress={saveKm} disabled={saving}>
+              <Pressable style={styles.saveBtn} onPress={saveKm} disabled={saving || scanning}>
                 <Text style={styles.saveText}>{saving ? t('common.loading') : t('home.updateMileageSave')}</Text>
               </Pressable>
             </View>
@@ -333,6 +459,7 @@ const styles = StyleSheet.create({
   },
   carLabel: { ...typography.label, color: colors.textMuted },
   mileage: { ...typography.monoLarge, color: colors.text, marginTop: 2 },
+  streak: { ...typography.label, color: colors.orange, fontSize: 12, marginTop: 4 },
   logBtn: {
     backgroundColor: colors.orange, borderRadius: radii.pill,
     paddingVertical: spacing.sm, paddingHorizontal: spacing.md,
@@ -389,6 +516,14 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1.5, borderBottomColor: colors.border,
     paddingVertical: spacing.sm, marginBottom: spacing.md,
   },
+  scanBtn: {
+    flexDirection: 'row', alignItems: 'center', gap: spacing.sm,
+    borderWidth: 1.5, borderColor: colors.border, borderRadius: radii.md,
+    paddingVertical: spacing.sm, paddingHorizontal: spacing.md,
+    marginBottom: spacing.md,
+  },
+  scanPreview: { width: 48, height: 36, borderRadius: 4 },
+  scanBtnText: { ...typography.body, color: colors.textMuted, fontSize: 14 },
   kmInput: {
     ...typography.mono, fontSize: 28, color: colors.text,
     borderBottomWidth: 2, borderBottomColor: colors.orange,

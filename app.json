@@ -10,13 +10,16 @@
     "newArchEnabled": false,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.valv.app"
+      "bundleIdentifier": "com.valv.app",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "package": "com.valv.app",
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon.png",
-        "backgroundColor": "#111110"
+        "backgroundColor": "#F4EFE6"
       },
       "predictiveBackGestureEnabled": false
     },
@@ -31,14 +34,18 @@
         "expo-notifications",
         {
           "icon": "./assets/icon.png",
-          "color": "#FF8A3D"
+          "color": "#FF7A1A"
         }
       ],
       "expo-font",
-      "expo-splash-screen"
+      "expo-splash-screen",
+      "expo-web-browser"
     ],
     "extra": {
-      "router": {}
+      "router": {},
+      "eas": {
+        "projectId": "109af56a-7ad6-4141-8724-ab52da871b8b"
+      }
     }
   }
 }

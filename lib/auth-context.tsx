@@ -1,10 +1,17 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import type { Session } from '@supabase/supabase-js';
-import * as WebBrowser from 'expo-web-browser';
-import { makeRedirectUri } from 'expo-auth-session';
 import { supabase } from './supabase';
 
-WebBrowser.maybeCompleteAuthSession();
+// expo-web-browser requires a native build — not available in Expo Go
+let WebBrowser: typeof import('expo-web-browser') | null = null;
+let makeRedirectUri: typeof import('expo-auth-session').makeRedirectUri | null = null;
+try {
+  WebBrowser = require('expo-web-browser');
+  makeRedirectUri = require('expo-auth-session').makeRedirectUri;
+  WebBrowser?.maybeCompleteAuthSession();
+} catch {
+  // running in Expo Go — Google sign-in unavailable
+}
 
 interface AuthContextValue {
   session: Session | null;
@@ -50,6 +57,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       },
       signInWithGoogle: async () => {
         try {
+          if (!WebBrowser || !makeRedirectUri) return { error: 'Google sign-in requires a native build' };
           const redirectUrl = makeRedirectUri({ scheme: 'carvalv', path: 'auth/callback' });
           const { data, error } = await supabase.auth.signInWithOAuth({
             provider: 'google',

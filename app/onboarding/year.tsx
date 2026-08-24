@@ -19,7 +19,7 @@ export default function YearStep() {
   };
 
   return (
-    <OnboardingShell step={3} totalSteps={4} title={t('onboarding.yearTitle')}>
+    <OnboardingShell step={3} totalSteps={6} title={t('onboarding.yearTitle')}>
       <FlatList
         data={YEARS}
         keyExtractor={(item) => String(item)}

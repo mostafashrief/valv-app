@@ -18,13 +18,13 @@ export default function MileageStep() {
   const handleNext = () => {
     if (!isValid) return;
     setDraft({ mileageKm: mileage });
-    router.push('/onboarding/done');
+    router.push('/onboarding/engine');
   };
 
   return (
     <OnboardingShell
       step={4}
-      totalSteps={4}
+      totalSteps={6}
       title={t('onboarding.mileageTitle')}
       subtitle={t('onboarding.mileageSubtitle')}
       footer={<Button label={t('common.next')} onPress={handleNext} disabled={!isValid} />}

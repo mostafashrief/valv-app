@@ -18,14 +18,34 @@ import {
 } from '@expo-google-fonts/space-mono';
 import { View } from 'react-native';
 import { useEffect } from 'react';
-import { AuthProvider } from '../lib/auth-context';
+import { requestNotificationPermission } from '../lib/notifications';
+import { AuthProvider, useAuth } from '../lib/auth-context';
 import { OnboardingProvider } from '../lib/onboarding-context';
 import { CarProvider } from '../lib/car-context';
 import { QuizProvider } from '../lib/quiz-context';
+import { RevenueCatProvider, useRevenueCat } from '../lib/revenue-cat';
 import { colors } from '../constants/theme';
+import { router, useSegments } from 'expo-router';
+
+// Paywall gate — disabled until RevenueCat API key is configured
+function PaywallGate() {
+  return null;
+}
+
+function AppProviders({ children }: { children: React.ReactNode }) {
+  const { session } = useAuth();
+  return (
+    <RevenueCatProvider userId={session?.user.id ?? ''}>
+      {children}
+    </RevenueCatProvider>
+  );
+}
 
 export default function RootLayout() {
-  useEffect(() => { initLanguage(); }, []);
+  useEffect(() => {
+    initLanguage();
+    requestNotificationPermission();
+  }, []);
 
   const [fontsLoaded] = useFonts({
     SpaceGrotesk_400Regular,
@@ -46,13 +66,16 @@ export default function RootLayout() {
         <CarProvider>
           <OnboardingProvider>
             <QuizProvider>
-              <StatusBar style="light" />
-              <Stack
-                screenOptions={{
-                  headerShown: false,
-                  contentStyle: { backgroundColor: colors.background },
-                }}
-              />
+              <AppProviders>
+                <PaywallGate />
+                <StatusBar style="light" />
+                <Stack
+                  screenOptions={{
+                    headerShown: false,
+                    contentStyle: { backgroundColor: colors.background },
+                  }}
+                />
+              </AppProviders>
             </QuizProvider>
           </OnboardingProvider>
         </CarProvider>

@@ -20,7 +20,7 @@ export default function ModelStep() {
   };
 
   return (
-    <OnboardingShell step={2} totalSteps={4} title={t('onboarding.modelTitle')}>
+    <OnboardingShell step={2} totalSteps={6} title={t('onboarding.modelTitle')}>
       <FlatList
         data={models}
         keyExtractor={(item) => item}

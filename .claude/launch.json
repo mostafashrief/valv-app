@@ -1,0 +1,23 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "carvalv-waitlist",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "-p", "3500", "/Users/mostafashreif/Desktop/Apps/carvalv-waitlist"],
+      "port": 3500
+    },
+    {
+      "name": "carvalv-app",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["expo", "start", "--web", "--port", "19006"],
+      "port": 19006
+    },
+    {
+      "name": "mste-website",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "-p", "4321", "/Users/mostafashreif/Desktop/Apps/mste-website"],
+      "port": 4321
+    }
+  ]
+}
