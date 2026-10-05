@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, Pressable, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { useQuiz, type MileageReminderFrequency } from '../../lib/quiz-context';
 import { Button } from '../../components/Button';
 import { BackButton } from '../../components/BackButton';
@@ -15,6 +16,7 @@ const OPTIONS: { value: MileageReminderFrequency; label: string; sub: string }[]
 ];
 
 export default function QuizDriving() {
+  const { t } = useTranslation();
   const { setDraft } = useQuiz();
   const [selected, setSelected] = useState<MileageReminderFrequency | null>(null);
 
@@ -28,7 +30,7 @@ export default function QuizDriving() {
     <SafeAreaView style={styles.container}>
       <BackButton />
       <View style={styles.content}>
-        <Text style={styles.step}>Step 6 of 6</Text>
+        <Text style={styles.step}>5 / 5</Text>
         <Text style={styles.title}>How often should we remind you to update your mileage?</Text>
         <Text style={styles.subtitle}>
           The more you drive, the more often you should update — it keeps your reminders accurate.

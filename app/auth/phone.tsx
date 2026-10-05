@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { Button } from '../../components/Button';
 import { useAuth } from '../../lib/auth-context';
 import { isValidEgyptMobile, toE164, EGYPT_COUNTRY_CODE } from '../../lib/phone';
 import { colors, radii, spacing, typography } from '../../constants/theme';
 
 export default function PhoneStep() {
+  const { t } = useTranslation();
   const { signInWithPhone } = useAuth();
   const [localNumber, setLocalNumber] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -15,7 +17,7 @@ export default function PhoneStep() {
 
   const handleSend = async () => {
     if (!isValidEgyptMobile(localNumber)) {
-      setError("That doesn't look like an Egyptian mobile number.");
+      setError(t('auth.invalidPhone'));
       return;
     }
     setError(null);
@@ -31,15 +33,15 @@ export default function PhoneStep() {
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.kav}>
         <View style={styles.content}>
-          <Text style={styles.title}>What's your number?</Text>
-          <Text style={styles.subtitle}>We'll text you a code. No password.</Text>
+          <Text style={styles.title}>{t('auth.phoneTitle')}</Text>
+          <Text style={styles.subtitle}>{t('auth.phoneSubtitle')}</Text>
 
           <View style={styles.inputRow}>
             <Text style={styles.countryCode}>{EGYPT_COUNTRY_CODE}</Text>
             <TextInput
               style={styles.input}
               keyboardType="phone-pad"
-              placeholder="10 123 4567"
+              placeholder={t('auth.phonePlaceholder')}
               placeholderTextColor={colors.textMuted}
               value={localNumber}
               onChangeText={(v) => { setLocalNumber(v); setError(null); }}
@@ -52,7 +54,7 @@ export default function PhoneStep() {
           {error ? <Text style={styles.error}>{error}</Text> : null}
         </View>
         <View style={styles.footer}>
-          <Button label="Send code" onPress={handleSend} loading={loading} />
+          <Button label={t('auth.sendCode')} onPress={handleSend} loading={loading} />
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>

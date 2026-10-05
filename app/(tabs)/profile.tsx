@@ -12,8 +12,9 @@ import { useCar, type Car } from '../../lib/car-context';
 import i18n, { setLanguage, type SupportedLanguage } from '../../lib/i18n';
 
 function calcCompletion(profile: any): number {
-  if (!profile) return 20; // just account
-  const fields = ['first_name', 'age_range', 'ownership_duration', 'has_service_records', 'drives_daily', 'daily_trip', 'intercity_travel'];
+  if (!profile) return 20; // just account, no quiz done yet
+  // Only count fields the quiz actually collects
+  const fields = ['first_name', 'last_name', 'age', 'city', 'has_service_records', 'mileage_reminder_frequency'];
   const filled = fields.filter((f) => profile[f] != null).length;
   return Math.round(20 + (filled / fields.length) * 80);
 }
@@ -86,7 +87,6 @@ export default function Profile() {
 
   const switchCar = (car: Car) => {
     setActiveCar(car);
-    reloadCars();
   };
 
   const handleDeleteCar = (car: Car) => {
@@ -180,7 +180,7 @@ export default function Profile() {
               <Pressable
                 key={lang}
                 style={[styles.langOption, currentLang === lang && styles.langOptionActive]}
-                onPress={() => setLanguage(lang, () => Alert.alert('Restart required', 'Close and reopen the app to apply the new language.'))}
+                onPress={() => setLanguage(lang)}
               >
                 <Text style={[styles.langOptionText, currentLang === lang && styles.langOptionTextActive]}>
                   {lang === 'en' ? 'English' : 'عربي'}

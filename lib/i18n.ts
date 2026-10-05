@@ -50,14 +50,20 @@ export async function initLanguage() {
   } catch {}
 }
 
-export async function setLanguage(lang: SupportedLanguage, reloadApp: () => void) {
+export async function setLanguage(lang: SupportedLanguage) {
   await AsyncStorage.setItem(LANG_KEY, lang);
   await i18n.changeLanguage(lang);
   const needsRTLChange = I18nManager.isRTL !== isRTL(lang);
   if (needsRTLChange) {
     I18nManager.forceRTL(isRTL(lang));
-    // RTL change requires full app reload
-    reloadApp();
+    // RTL layout change requires a full JS bundle reload
+    try {
+      const Updates = require('expo-updates');
+      await Updates.reloadAsync();
+    } catch {
+      // In Expo Go or dev client, reloadAsync may not work — fall back to a no-op;
+      // the user will see RTL apply on next cold launch.
+    }
   }
 }
 

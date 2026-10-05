@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Pressable, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router, useLocalSearchParams } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { Button } from '../../components/Button';
 import { useAuth } from '../../lib/auth-context';
 import { colors, radii, spacing, typography } from '../../constants/theme';
 
 export default function VerifyStep() {
+  const { t } = useTranslation();
   const { verifyOtp, signInWithPhone } = useAuth();
   const { phone } = useLocalSearchParams<{ phone: string }>();
   const [code, setCode] = useState('');
@@ -21,7 +23,7 @@ export default function VerifyStep() {
     const { error: verifyError } = await verifyOtp(phone, code);
     setLoading(false);
     if (verifyError) { setError(verifyError); return; }
-    router.replace('/onboarding/brand');
+    // AuthGate in _layout.tsx handles routing based on whether user has a car
   };
 
   const handleResend = async () => {
@@ -35,13 +37,13 @@ export default function VerifyStep() {
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.kav}>
         <View style={styles.content}>
-          <Text style={styles.title}>Check your texts.</Text>
-          <Text style={styles.subtitle}>Code sent to {phone}.</Text>
+          <Text style={styles.title}>{t('auth.verifyTitle')}</Text>
+          <Text style={styles.subtitle}>{t('auth.verifySubtitle', { phone })}</Text>
 
           <TextInput
             style={styles.input}
             keyboardType="number-pad"
-            placeholder="6-digit code"
+            placeholder={t('auth.codePlaceholder')}
             placeholderTextColor={colors.textMuted}
             value={code}
             onChangeText={(v) => { setCode(v); setError(null); }}
@@ -54,12 +56,12 @@ export default function VerifyStep() {
 
           <Pressable onPress={handleResend} disabled={resending} style={styles.resendRow}>
             <Text style={styles.resendText}>
-              {resending ? 'Sending...' : 'Resend code.'}
+              {resending ? t('common.loading') : t('auth.resend')}
             </Text>
           </Pressable>
         </View>
         <View style={styles.footer}>
-          <Button label="Verify" onPress={handleVerify} loading={loading} />
+          <Button label={t('auth.verify')} onPress={handleVerify} loading={loading} />
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>

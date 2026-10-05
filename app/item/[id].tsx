@@ -49,6 +49,7 @@ export default function ItemDetail() {
 
   // Log modal
   const [logVisible, setLogVisible] = useState(false);
+  const [editingLogId, setEditingLogId] = useState<string | null>(null);
   const [doneAtKm, setDoneAtKm] = useState('');
   const [doneAtDate, setDoneAtDate] = useState('');
   const [costEgp, setCostEgp] = useState('');
@@ -85,13 +86,14 @@ export default function ItemDetail() {
 
   useEffect(() => { loadData(); }, [loadData]);
 
-  const openLog = () => {
-    setDoneAtKm(String(activeCar?.current_mileage_km ?? ''));
-    setDoneAtDate(new Date().toISOString().split('T')[0]);
-    setCostEgp('');
-    setNotes('');
-    setReceiptUri(null);
-    setReceiptUrl(null);
+  const openLog = (existing?: ServiceLog) => {
+    setEditingLogId(existing?.id ?? null);
+    setDoneAtKm(existing?.done_at_km != null ? String(existing.done_at_km) : String(activeCar?.current_mileage_km ?? ''));
+    setDoneAtDate(existing ? existing.done_at.split('T')[0] : new Date().toISOString().split('T')[0]);
+    setCostEgp(existing?.cost_egp != null ? String(existing.cost_egp) : '');
+    setNotes(existing?.notes ?? '');
+    setReceiptUri(existing?.receipt_url ?? null);
+    setReceiptUrl(existing?.receipt_url ?? null);
     setLogVisible(true);
   };
 
@@ -168,16 +170,20 @@ export default function ItemDetail() {
 
     const logDate = doneAtDate || new Date().toISOString().split('T')[0];
 
+    const logPayload = {
+      done_at_km: km,
+      done_at: logDate,
+      cost_egp: cost,
+      notes: notes || null,
+      receipt_url: receiptUrl,
+    };
+
+    const logOp = editingLogId
+      ? supabase.from('service_logs').update(logPayload).eq('id', editingLogId)
+      : supabase.from('service_logs').insert({ ...logPayload, car_id: activeCar.id, item_id: item.id });
+
     const [{ error: logErr }, { error: itemErr }] = await Promise.all([
-      supabase.from('service_logs').insert({
-        car_id: activeCar.id,
-        item_id: item.id,
-        done_at_km: km,
-        done_at: logDate,
-        cost_egp: cost,
-        notes: notes || null,
-        receipt_url: receiptUrl,
-      }),
+      logOp,
       supabase.from('maintenance_items').update({
         last_done_at_km: km ?? activeCar.current_mileage_km,
         last_done_at: new Date(logDate).toISOString(),
@@ -255,14 +261,21 @@ export default function ItemDetail() {
           renderItem={({ item: log }) => (
             <View style={styles.logCard}>
               <View style={styles.logRow}>
-                <Text style={styles.logDate}>{log.done_at}</Text>
-                {log.cost_egp != null && (
-                  <Text style={styles.logCost}>{log.cost_egp.toLocaleString()} EGP</Text>
-                )}
+                <View>
+                  <Text style={styles.logDate}>{log.done_at.split('T')[0]}</Text>
+                  {log.done_at_km != null && (
+                    <Text style={styles.logKm}>{log.done_at_km.toLocaleString()} km</Text>
+                  )}
+                </View>
+                <View style={styles.logRight}>
+                  {log.cost_egp != null && (
+                    <Text style={styles.logCost}>{log.cost_egp.toLocaleString()} EGP</Text>
+                  )}
+                  <Pressable style={styles.editBtn} onPress={() => openLog(log)}>
+                    <Text style={styles.editBtnText}>Edit</Text>
+                  </Pressable>
+                </View>
               </View>
-              {log.done_at_km != null && (
-                <Text style={styles.logKm}>{log.done_at_km.toLocaleString()} km</Text>
-              )}
               {log.notes && <Text style={styles.logNotes}>{log.notes}</Text>}
               {log.receipt_url && (
                 <Image source={{ uri: log.receipt_url }} style={styles.receiptThumb} resizeMode="cover" />
@@ -273,7 +286,7 @@ export default function ItemDetail() {
       )}
 
       {/* Log service FAB */}
-      <Pressable style={styles.fab} onPress={openLog}>
+      <Pressable style={styles.fab} onPress={() => openLog()}>
         <Text style={styles.fabText}>{t('itemDetail.logService')}</Text>
       </Pressable>
 
@@ -285,7 +298,7 @@ export default function ItemDetail() {
         >
           <ScrollView style={styles.sheet} contentContainerStyle={{ paddingBottom: 40 }} keyboardShouldPersistTaps="handled">
             <Text style={styles.sheetTitle}>{item.name}</Text>
-            <Text style={styles.sheetSub}>{t('itemDetail.logTitle')}</Text>
+            <Text style={styles.sheetSub}>{editingLogId ? 'Edit service record' : t('itemDetail.logTitle')}</Text>
 
             <Text style={styles.fieldLabel}>{t('itemDetail.doneAtKm')}</Text>
             <TextInput
@@ -396,10 +409,13 @@ const styles = StyleSheet.create({
     padding: spacing.md,
     marginBottom: spacing.sm,
   },
-  logRow: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 4 },
+  logRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 4 },
+  logRight: { alignItems: 'flex-end', gap: 6 },
   logDate: { ...typography.label, color: colors.textMuted },
   logCost: { ...typography.mono, color: colors.orange, fontSize: 13 },
-  logKm: { ...typography.mono, color: colors.text, fontSize: 13 },
+  logKm: { ...typography.mono, color: colors.text, fontSize: 12, marginTop: 2 },
+  editBtn: { paddingVertical: 3, paddingHorizontal: 10, borderRadius: radii.pill, borderWidth: 1, borderColor: colors.border },
+  editBtnText: { ...typography.label, color: colors.textMuted, fontSize: 11 },
   logNotes: { ...typography.body, color: colors.textMuted, fontSize: 13, marginTop: 4 },
   receiptThumb: { width: '100%', height: 120, borderRadius: radii.sm, marginTop: 8 },
 

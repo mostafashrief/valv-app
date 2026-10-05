@@ -26,8 +26,23 @@ export default function QuizRecords() {
   const [uploading, setUploading] = useState(false);
   const [textNote, setTextNote] = useState('');
 
-  const goNext = () => {
-    setDraft({ hasRecords: mode === null ? 'none' : (mode as any) });
+  const goNext = async () => {
+    // Map UI modes to HasRecords DB values
+    const recordsValue: 'receipts' | 'booklet' | 'none' =
+      mode === 'photos' ? 'receipts' :
+      mode === 'text'   ? 'receipts' : // text note treated as having records
+      'none';
+
+    setDraft({ hasRecords: recordsValue });
+
+    // Persist text note to profile notes column if user typed something
+    if (mode === 'text' && textNote.trim() && session?.user) {
+      await supabase.from('profiles').upsert(
+        { user_id: session.user.id, service_notes: textNote.trim() },
+        { onConflict: 'user_id' },
+      );
+    }
+
     router.push('/quiz/driving');
   };
 
@@ -71,7 +86,7 @@ export default function QuizRecords() {
     <SafeAreaView style={styles.container}>
       <BackButton />
       <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled">
-        <Text style={styles.step}>{t('quiz.step', { current: 5, total: 6 })}</Text>
+        <Text style={styles.step}>4 / 5</Text>
         <Text style={styles.title}>What has your car had done recently?</Text>
         <Text style={styles.subtitle}>Tell us what you remember — we'll take it from here.</Text>
 

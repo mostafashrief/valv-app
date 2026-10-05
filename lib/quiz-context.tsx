@@ -1,14 +1,19 @@
 import React, { createContext, useContext, useState } from 'react';
 
-export type AgeRange = 'under_20' | '20_30' | '30_45' | '45_plus';
-export type OwnershipDuration = 'under_6m' | '6m_2y' | '2_5y' | 'over_5y' | 'new';
 export type HasRecords = 'receipts' | 'booklet' | 'none';
 export type MileageReminderFrequency = 'daily' | 'weekly' | 'biweekly' | 'monthly';
 
+export type Gender = 'male' | 'female' | 'prefer_not_to_say';
+export type AcquisitionSource = 'friend' | 'social_media' | 'search' | 'app_store' | 'other';
+
 export interface QuizDraft {
   firstName?: string;
-  ageRange?: AgeRange;
-  ownershipDuration?: OwnershipDuration;
+  lastName?: string;
+  age?: number;
+  city?: string;
+  phone?: string;
+  gender?: Gender;
+  acquisitionSource?: AcquisitionSource;
   hasRecords?: HasRecords;
   mileageReminderFrequency?: MileageReminderFrequency;
 }

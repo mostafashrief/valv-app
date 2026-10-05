@@ -8,19 +8,26 @@ export interface PendingItem {
   interval_days: number | null;
   last_done_at_km: number | null;
   last_done_at: string | null;
-  source: 'verified' | 'estimated';
+  source: string;
 }
 
 let _items: PendingItem[] = [];
+let _currentKm = 0;
 
-export function setPendingItems(items: PendingItem[]) {
+export function setPendingItems(items: PendingItem[], currentKm: number) {
   _items = items;
+  _currentKm = currentKm;
 }
 
 export function getPendingItems(): PendingItem[] {
   return _items;
 }
 
+export function getPendingCurrentKm(): number {
+  return _currentKm;
+}
+
 export function clearPendingItems() {
   _items = [];
+  _currentKm = 0;
 }

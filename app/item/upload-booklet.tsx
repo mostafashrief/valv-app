@@ -6,6 +6,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { useTranslation } from 'react-i18next';
 import * as FileSystem from 'expo-file-system/legacy';
 import { useAuth } from '../../lib/auth-context';
+import { useCar } from '../../lib/car-context';
 import { supabase } from '../../lib/supabase';
 import { Button } from '../../components/Button';
 import { BackButton } from '../../components/BackButton';
@@ -14,6 +15,7 @@ import { colors, spacing, typography } from '../../constants/theme';
 export default function UploadBooklet() {
   const { t } = useTranslation();
   const { session } = useAuth();
+  const { activeCar } = useCar();
   const [uploading, setUploading] = useState(false);
   const [done, setDone] = useState(false);
 
@@ -35,7 +37,9 @@ export default function UploadBooklet() {
     setUploading(true);
     try {
       const { data: { session: s } } = await supabase.auth.getSession();
-      const uploads = result.assets.map(async (asset) => {
+      const uploadedUrls: string[] = [];
+
+      await Promise.all(result.assets.map(async (asset) => {
         const ext = (asset.uri.split('.').pop() ?? 'jpg').toLowerCase();
         const path = `booklets/${session?.user.id}/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
         await FileSystem.uploadAsync(
@@ -49,8 +53,20 @@ export default function UploadBooklet() {
             headers: { Authorization: `Bearer ${s?.access_token}`, 'x-upsert': 'true' },
           }
         );
-      });
-      await Promise.all(uploads);
+        const { data: urlData } = supabase.storage.from('receipts').getPublicUrl(path);
+        uploadedUrls.push(urlData.publicUrl);
+      }));
+
+      // Record the upload against the active car so we can reference it later
+      if (activeCar && uploadedUrls.length > 0) {
+        await supabase.from('booklet_uploads').insert({
+          car_id: activeCar.id,
+          user_id: session?.user.id,
+          photo_urls: uploadedUrls,
+          uploaded_at: new Date().toISOString(),
+        });
+      }
+
       setDone(true);
     } catch (err) {
       Alert.alert('Upload failed', String(err));

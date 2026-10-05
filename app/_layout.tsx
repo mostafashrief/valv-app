@@ -17,18 +17,57 @@ import {
   SpaceMono_400Regular,
 } from '@expo-google-fonts/space-mono';
 import { View } from 'react-native';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { requestNotificationPermission } from '../lib/notifications';
 import { AuthProvider, useAuth } from '../lib/auth-context';
 import { OnboardingProvider } from '../lib/onboarding-context';
 import { CarProvider } from '../lib/car-context';
 import { QuizProvider } from '../lib/quiz-context';
-import { RevenueCatProvider, useRevenueCat } from '../lib/revenue-cat';
+import { RevenueCatProvider } from '../lib/revenue-cat';
 import { colors } from '../constants/theme';
 import { router, useSegments } from 'expo-router';
+import { supabase } from '../lib/supabase';
 
-// Paywall gate — disabled until RevenueCat API key is configured
-function PaywallGate() {
+async function userHasCar(userId: string): Promise<boolean> {
+  const { data } = await supabase.from('cars').select('id').eq('user_id', userId).limit(1);
+  return (data?.length ?? 0) > 0;
+}
+
+// Routes every session change to the right screen.
+// Runs once on mount (cold launch) and again whenever the user signs in or out.
+function AuthGate() {
+  const { session, initializing } = useAuth();
+  const segments = useSegments();
+  const didRoute = useRef(false);
+
+  useEffect(() => {
+    if (initializing) return;
+
+    const inAuthGroup = segments[0] === 'auth';
+    const inOnboarding = segments[0] === 'onboarding';
+    const inQuiz = segments[0] === 'quiz';
+    const inTabs = segments[0] === '(tabs)';
+
+    if (!session) {
+      // Not signed in — send to welcome unless already there or in auth
+      if (!inAuthGroup && segments[0] !== undefined && segments[0] !== 'index') {
+        router.replace('/');
+      }
+      didRoute.current = false;
+      return;
+    }
+
+    // Signed in — figure out where to send them
+    // Only reroute if we haven't already done so for this session, or they're
+    // stuck on a screen they shouldn't be on (welcome, auth)
+    const onPublicScreen = !inTabs && !inOnboarding && !inQuiz && segments[0] !== 'item';
+    if (!onPublicScreen) return;
+
+    userHasCar(session.user.id).then((hasCar) => {
+      router.replace(hasCar ? '/(tabs)' : '/quiz/name');
+    });
+  }, [session, initializing]);
+
   return null;
 }
 
@@ -67,7 +106,7 @@ export default function RootLayout() {
           <OnboardingProvider>
             <QuizProvider>
               <AppProviders>
-                <PaywallGate />
+                <AuthGate />
                 <StatusBar style="light" />
                 <Stack
                   screenOptions={{

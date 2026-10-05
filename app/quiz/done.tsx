@@ -24,13 +24,17 @@ export default function QuizDone() {
     const freq = draft.mileageReminderFrequency ?? 'weekly';
 
     const { error: err } = await supabase.from('profiles').upsert({
-      user_id: session.user.id,
-      first_name: draft.firstName ?? null,
-      age_range: draft.ageRange ?? null,
-      ownership_duration: draft.ownershipDuration ?? null,
-      has_service_records: draft.hasRecords ?? null,
+      user_id:                    session.user.id,
+      first_name:                 draft.firstName ?? null,
+      last_name:                  draft.lastName ?? null,
+      age:                        draft.age ?? null,
+      city:                       draft.city ?? null,
+      phone:                      draft.phone ?? null,
+      gender:                     draft.gender ?? null,
+      acquisition_source:         draft.acquisitionSource ?? null,
+      has_service_records:        draft.hasRecords ?? null,
       mileage_reminder_frequency: freq,
-      quiz_completed_at: new Date().toISOString(),
+      quiz_completed_at:          new Date().toISOString(),
     }, { onConflict: 'user_id' });
 
     // Schedule the mileage reminder notification

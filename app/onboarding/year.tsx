@@ -5,13 +5,21 @@ import { useTranslation } from 'react-i18next';
 import { OnboardingShell } from '../../components/OnboardingShell';
 import { useOnboarding } from '../../lib/onboarding-context';
 import { colors, radii, spacing, typography } from '../../constants/theme';
+import { MODEL_YEAR_RANGES } from '../../data/cars-seed';
 
 const CURRENT_YEAR = new Date().getFullYear();
-const YEARS = Array.from({ length: 25 }, (_, i) => CURRENT_YEAR + 1 - i);
+
+function getYearsForModel(brand?: string, model?: string): number[] {
+  const range = MODEL_YEAR_RANGES.find(r => r.brand === brand && r.model === model);
+  const from = range?.yearFrom ?? CURRENT_YEAR - 24;
+  const to = range?.yearTo ?? CURRENT_YEAR;
+  return Array.from({ length: to - from + 1 }, (_, i) => to - i);
+}
 
 export default function YearStep() {
   const { t } = useTranslation();
-  const { setDraft } = useOnboarding();
+  const { draft, setDraft } = useOnboarding();
+  const YEARS = getYearsForModel(draft.brand, draft.model);
 
   const handleSelect = (year: number) => {
     setDraft({ year });
@@ -19,7 +27,7 @@ export default function YearStep() {
   };
 
   return (
-    <OnboardingShell step={3} totalSteps={6} title={t('onboarding.yearTitle')}>
+    <OnboardingShell step={3} totalSteps={4} title={t('onboarding.yearTitle')}>
       <FlatList
         data={YEARS}
         keyExtractor={(item) => String(item)}

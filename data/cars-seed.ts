@@ -3,163 +3,140 @@ export interface CarBrandSeed {
   models: string[];
 }
 
+export interface ModelYearRange {
+  brand: string;
+  model: string;
+  yearFrom: number;
+  yearTo: number | null; // null = current year
+}
+
+// Only brands & models with a certified official dealer maintenance schedule.
+// Do NOT add a model here unless its schedule exists in maintenance_schedules
+// with data_source = 'official_dealer'.
 export const CAR_BRANDS_SEED: CarBrandSeed[] = [
   {
     brand: 'Toyota',
     models: [
-      'Corolla', 'Yaris', 'Camry', 'RAV4', 'Fortuner', 'Hilux', 'Land Cruiser',
-      'Land Cruiser Prado', 'C-HR', 'Prius', 'Avalon', 'Vios', 'Aygo', 'GR Supra',
-      'GR86', 'bZ4X', 'Highlander', 'Sequoia', 'Tundra', 'Tacoma', '4Runner',
-      'Venza', 'Crown', 'Innova', 'Avanza', 'Hiace', 'Rush', 'Raize', 'Veloz',
-      'Alphard', 'Vellfire', 'Mirai', 'Sienta',
-    ],
-  },
-  {
-    brand: 'Hyundai',
-    models: [
-      'Elantra', 'Accent', 'Tucson', 'i10', 'i20', 'i30', 'i40', 'Verna',
-      'Sonata', 'Santa Fe', 'Creta', 'Venue', 'Kona', 'Ioniq', 'Ioniq 5',
-      'Ioniq 6', 'Staria', 'Palisade', 'Santa Cruz', 'Veloster', 'Azera', 'Nexo',
-    ],
-  },
-  {
-    brand: 'Kia',
-    models: [
-      'Cerato', 'Rio', 'Sportage', 'Picanto', 'K5', 'K8', 'Sorento', 'Telluride',
-      'Seltos', 'Stonic', 'Soul', 'Niro', 'EV6', 'EV9', 'Carnival', 'Stinger',
-      'Mohave', 'Morning',
-    ],
-  },
-  {
-    brand: 'Chevrolet',
-    models: [
-      'Optra', 'Aveo', 'Captiva', 'Spark', 'Cruze', 'Malibu', 'Blazer', 'Trax',
-      'Equinox', 'Traverse', 'Tahoe', 'Suburban', 'Silverado', 'Colorado',
-      'Camaro', 'Corvette', 'Sonic', 'Trailblazer', 'Bolt', 'Lova',
+      'Corolla',
+      'Yaris',
+      'Fortuner',
+      'Land Cruiser',
+      'Land Cruiser Prado',
+      'Hilux',
     ],
   },
   {
     brand: 'MG',
     models: [
-      'MG3', 'MG5', 'MG6', 'MG ZS', 'MG HS', 'MG RX5', 'MG RX8', 'MG4',
-      'MG One', 'Cyberster', 'Marvel R',
-    ],
-  },
-  {
-    brand: 'Nissan',
-    models: [
-      'Sunny', 'Sentra', 'Altima', 'Maxima', 'Qashqai', 'X-Trail', 'Juke',
-      'Kicks', 'Murano', 'Pathfinder', 'Patrol', 'Navara', 'Titan', 'Frontier',
-      'Rogue', 'Ariya', 'Leaf', '370Z', 'GT-R', 'Micra', 'Note', 'Magnite',
-    ],
-  },
-  {
-    brand: 'Mitsubishi',
-    models: [
-      'Lancer', 'Outlander', 'Eclipse Cross', 'L200', 'Pajero', 'ASX',
-      'Xpander', 'Mirage', 'Attrage', 'Galant', 'Triton', 'Grandis', 'Colt',
-    ],
-  },
-  {
-    brand: 'Fiat',
-    models: [
-      'Punto', '500', 'Tipo', 'Panda', 'Doblo', 'Bravo', 'Linea', 'Stilo',
-      '124 Spider', '500X', '500L', 'Fullback', 'Talento',
-    ],
-  },
-  {
-    brand: 'Suzuki',
-    models: [
-      'Swift', 'S-Presso', 'Dzire', 'Vitara', 'Grand Vitara', 'Jimny', 'Ciaz',
-      'Ertiga', 'Baleno', 'Alto', 'Celerio', 'Ignis', 'XL6',
-    ],
-  },
-  {
-    brand: 'Chery',
-    models: [
-      'Tiggo 4', 'Tiggo 7', 'Tiggo 8', 'Arrizo 5', 'Arrizo 6',
-      'Exeed TX', 'Exeed TXL', 'Exeed LX',
-    ],
-  },
-  {
-    brand: 'Geely',
-    models: [
-      'Emgrand', 'Coolray', 'Azkarra', 'Tugella', 'Okavango', 'Preface',
-      'Vision', 'Xingyue',
-    ],
-  },
-  {
-    brand: 'BYD',
-    models: [
-      'F3', 'Atto 3', 'Song Plus', 'Han', 'Tang', 'Yuan Plus', 'Dolphin',
-      'Seal', 'Seagull', 'Destroyer 05', 'Frigate 07',
-    ],
-  },
-  {
-    brand: 'Proton',
-    models: ['X50', 'X70', 'Saga', 'Persona', 'Iriz', 'Exora', 'Ertiga', 'S70'],
-  },
-  {
-    brand: 'Renault',
-    models: [
-      'Logan', 'Sandero', 'Duster', 'Kwid', 'Captur', 'Kadjar', 'Koleos',
-      'Megane', 'Clio', 'Zoe', 'Talisman', 'Laguna', 'Scenic', 'Symbol',
-    ],
-  },
-  {
-    brand: 'Peugeot',
-    models: ['208', '2008', '3008', '5008', '508', '408', '308', '207', '206'],
-  },
-  {
-    brand: 'Volkswagen',
-    models: [
-      'Polo', 'Golf', 'Tiguan', 'Passat', 'Jetta', 'Touareg', 'Touran',
-      'T-Roc', 'T-Cross', 'ID.3', 'ID.4', 'ID.5', 'Arteon', 'Beetle',
-      'Up!', 'Amarok', 'Caddy', 'Sharan',
-    ],
-  },
-  {
-    brand: 'Skoda',
-    models: [
-      'Octavia', 'Fabia', 'Karoq', 'Kodiaq', 'Superb', 'Scala', 'Kamiq',
-      'Enyaq', 'Rapid', 'Citigo',
+      'MG 5',
+      'MG 6',
+      'MG 7',
+      'MG ZS',
+      'MG ZS FL',
+      'MG HS',
+      'MG One',
+      'MG RX5',
+      'MG RX5+',
+      'MG GT',
+      'MG G50 Plus',
+      'MG RX9',
     ],
   },
   {
     brand: 'SEAT',
-    models: ['Ibiza', 'Leon', 'Arona', 'Ateca', 'Tarraco', 'Mii', 'Toledo', 'Alhambra', 'Altea'],
+    models: ['Ibiza'],
   },
   {
-    brand: 'Cupra',
-    models: ['Formentor', 'Leon', 'Born', 'Ateca', 'Terramar'],
+    brand: 'Skoda',
+    models: ['Kodiaq', 'Octavia', 'Superb'],
   },
   {
-    brand: 'Mercedes',
+    brand: 'Volkswagen',
     models: [
-      'A-Class', 'B-Class', 'C-Class', 'E-Class', 'S-Class', 'CLA', 'CLS',
-      'GLA', 'GLB', 'GLC', 'GLE', 'GLS', 'G-Class', 'AMG GT', 'EQA', 'EQB',
-      'EQC', 'EQE', 'EQS', 'SL', 'SLC', 'V-Class', 'Vito', 'Sprinter',
-    ],
-  },
-  {
-    brand: 'BMW',
-    models: [
-      '1 Series', '2 Series', '3 Series', '4 Series', '5 Series', '6 Series',
-      '7 Series', '8 Series', 'X1', 'X2', 'X3', 'X4', 'X5', 'X6', 'X7',
-      'Z4', 'M2', 'M3', 'M4', 'M5', 'M8', 'iX', 'iX1', 'iX3', 'i4', 'i5',
-      'i7', 'i8',
+      'Golf MK6 · 1.6 MPI',
+      'Golf MK6 · 1.4T TSI',
+      'Golf MK7 · 1.6 MPI',
+      'Golf MK7 · 1.2T TSI',
+      'Golf MK7 · 1.4T TSI',
+      'Golf MK8 · 1.6 MPI',
+      'Tiguan MK2 · 1.4T DSG',
+      'Tiguan MK3 · 1.4T DSG',
+      'Tiguan 2024 · 1.4T DSG',
+      'Jetta MK6 · 1.4T DSG',
+      'Passat B7 · 1.4T DSG',
+      'T-ROC · 1.4T',
+      'Touareg · 2.0T',
+      'Tayron · 1.4T DSG',
     ],
   },
   {
     brand: 'Audi',
     models: [
-      'A1', 'A3', 'A4', 'A5', 'A6', 'A7', 'A8', 'Q2', 'Q3', 'Q5', 'Q7', 'Q8',
-      'TT', 'R8', 'e-tron', 'e-tron GT', 'RS3', 'RS4', 'RS5', 'RS6', 'RS7',
-      'RS Q8', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8',
+      'A3 · 1.4T TSI · DSG',
+      'A4 · 2.0T TFSI · DSG',
+      'A5 · 2.0T TFSI · DSG',
+      'A6 · 2.0T TFSI · Automatic',
+      'Q2 · 1.0T TFSI · DSG',
+      'Q3 · 1.4T TFSI · DSG',
+      'Q3 · 2.0T TFSI · Automatic',
+      'Q5 · 2.0T TFSI · DSG',
+      'Q7 · 2.0T TFSI · Automatic',
     ],
   },
-  {
-    brand: 'Other',
-    models: ["I'll type it in"],
-  },
+];
+
+// Year ranges covered by official maintenance schedules.
+// Users can only pick years within these bounds — no schedule exists outside them.
+export const MODEL_YEAR_RANGES: ModelYearRange[] = [
+  // Toyota
+  { brand: 'Toyota', model: 'Corolla',             yearFrom: 2007, yearTo: null  },
+  { brand: 'Toyota', model: 'Yaris',               yearFrom: 2006, yearTo: null  },
+  { brand: 'Toyota', model: 'Fortuner',            yearFrom: 2005, yearTo: null  },
+  { brand: 'Toyota', model: 'Land Cruiser',        yearFrom: 2008, yearTo: null  },
+  { brand: 'Toyota', model: 'Land Cruiser Prado',  yearFrom: 2010, yearTo: null  },
+  { brand: 'Toyota', model: 'Hilux',               yearFrom: 2005, yearTo: 2015  },
+  // MG
+  { brand: 'MG', model: 'MG 5',       yearFrom: 2021, yearTo: null  },
+  { brand: 'MG', model: 'MG 6',       yearFrom: 2016, yearTo: null  },
+  { brand: 'MG', model: 'MG 7',       yearFrom: 2023, yearTo: null  },
+  { brand: 'MG', model: 'MG ZS',      yearFrom: 2018, yearTo: 2020  },
+  { brand: 'MG', model: 'MG ZS FL',   yearFrom: 2021, yearTo: null  },
+  { brand: 'MG', model: 'MG HS',      yearFrom: 2019, yearTo: null  },
+  { brand: 'MG', model: 'MG One',     yearFrom: 2022, yearTo: null  },
+  { brand: 'MG', model: 'MG RX5',     yearFrom: 2017, yearTo: 2022  },
+  { brand: 'MG', model: 'MG RX5+',    yearFrom: 2021, yearTo: null  },
+  { brand: 'MG', model: 'MG GT',      yearFrom: 2016, yearTo: null  },
+  { brand: 'MG', model: 'MG G50 Plus',yearFrom: 2022, yearTo: null  },
+  { brand: 'MG', model: 'MG RX9',     yearFrom: 2024, yearTo: null  },
+  // SEAT
+  { brand: 'SEAT',   model: 'Ibiza',               yearFrom: 2008, yearTo: null  },
+  // Skoda
+  { brand: 'Skoda',  model: 'Kodiaq',              yearFrom: 2025, yearTo: null  },
+  { brand: 'Skoda',  model: 'Octavia',             yearFrom: 2021, yearTo: null  },
+  { brand: 'Skoda',  model: 'Superb',              yearFrom: 2025, yearTo: null  },
+  // Volkswagen
+  { brand: 'Volkswagen', model: 'Golf MK6 · 1.6 MPI',      yearFrom: 2009, yearTo: 2013 },
+  { brand: 'Volkswagen', model: 'Golf MK6 · 1.4T TSI',     yearFrom: 2009, yearTo: 2011 },
+  { brand: 'Volkswagen', model: 'Golf MK7 · 1.6 MPI',      yearFrom: 2013, yearTo: null },
+  { brand: 'Volkswagen', model: 'Golf MK7 · 1.2T TSI',     yearFrom: 2013, yearTo: null },
+  { brand: 'Volkswagen', model: 'Golf MK7 · 1.4T TSI',     yearFrom: 2013, yearTo: null },
+  { brand: 'Volkswagen', model: 'Golf MK8 · 1.6 MPI',      yearFrom: 2022, yearTo: null },
+  { brand: 'Volkswagen', model: 'Tiguan MK2 · 1.4T DSG',   yearFrom: 2013, yearTo: null },
+  { brand: 'Volkswagen', model: 'Tiguan MK3 · 1.4T DSG',   yearFrom: 2015, yearTo: null },
+  { brand: 'Volkswagen', model: 'Tiguan 2024 · 1.4T DSG',  yearFrom: 2024, yearTo: null },
+  { brand: 'Volkswagen', model: 'Jetta MK6 · 1.4T DSG',    yearFrom: 2013, yearTo: null },
+  { brand: 'Volkswagen', model: 'Passat B7 · 1.4T DSG',    yearFrom: 2013, yearTo: null },
+  { brand: 'Volkswagen', model: 'T-ROC · 1.4T',            yearFrom: 2022, yearTo: null },
+  { brand: 'Volkswagen', model: 'Touareg · 2.0T',          yearFrom: 2024, yearTo: null },
+  { brand: 'Volkswagen', model: 'Tayron · 1.4T DSG',       yearFrom: 2026, yearTo: null },
+  // Audi
+  { brand: 'Audi', model: 'A3 · 1.4T TSI · DSG',          yearFrom: 2013, yearTo: null },
+  { brand: 'Audi', model: 'A4 · 2.0T TFSI · DSG',         yearFrom: 2016, yearTo: null },
+  { brand: 'Audi', model: 'A5 · 2.0T TFSI · DSG',         yearFrom: 2017, yearTo: null },
+  { brand: 'Audi', model: 'A6 · 2.0T TFSI · Automatic',   yearFrom: 2016, yearTo: null },
+  { brand: 'Audi', model: 'Q2 · 1.0T TFSI · DSG',         yearFrom: 2021, yearTo: null },
+  { brand: 'Audi', model: 'Q3 · 1.4T TFSI · DSG',         yearFrom: 2012, yearTo: null },
+  { brand: 'Audi', model: 'Q3 · 2.0T TFSI · Automatic',   yearFrom: 2015, yearTo: null },
+  { brand: 'Audi', model: 'Q5 · 2.0T TFSI · DSG',         yearFrom: 2017, yearTo: null },
+  { brand: 'Audi', model: 'Q7 · 2.0T TFSI · Automatic',   yearFrom: 2015, yearTo: null },
 ];

@@ -10,7 +10,7 @@ export interface MaintenanceItem {
   lastDoneAtKm?: number;
   lastDoneAtDate?: string; // ISO date
   /** "estimated" = generic rule-of-thumb default, "verified" = confirmed OEM data. */
-  source: 'estimated' | 'verified';
+  source: 'estimated' | 'verified' | string; // brand name = official (e.g. 'Toyota', 'MG')
 }
 
 export interface CarProfile {
