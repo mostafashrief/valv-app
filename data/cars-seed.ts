@@ -43,6 +43,10 @@ export const CAR_BRANDS_SEED: CarBrandSeed[] = [
     ],
   },
   {
+    brand: 'CUPRA',
+    models: ['Leon', 'Terramar'],
+  },
+  {
     brand: 'SEAT',
     models: ['Ibiza'],
   },
@@ -108,6 +112,9 @@ export const MODEL_YEAR_RANGES: ModelYearRange[] = [
   { brand: 'MG', model: 'MG GT',      yearFrom: 2016, yearTo: null  },
   { brand: 'MG', model: 'MG G50 Plus',yearFrom: 2022, yearTo: null  },
   { brand: 'MG', model: 'MG RX9',     yearFrom: 2024, yearTo: null  },
+  // CUPRA
+  { brand: 'CUPRA', model: 'Leon',                  yearFrom: 2024, yearTo: null  },
+  { brand: 'CUPRA', model: 'Terramar',              yearFrom: 2024, yearTo: null  },
   // SEAT
   { brand: 'SEAT',   model: 'Ibiza',               yearFrom: 2008, yearTo: null  },
   // Skoda
