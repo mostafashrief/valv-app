@@ -16,7 +16,7 @@ const PERKS = [
 ];
 
 export default function Paywall() {
-  const { offering, purchaseMonthly, purchaseYearly, restorePurchases, status } = useRevenueCat();
+  const { offering, purchaseMonthly, purchaseYearly, restorePurchases, status, isProActive } = useRevenueCat();
   const [selected, setSelected] = useState<'monthly' | 'yearly'>('yearly');
   const [loading, setLoading] = useState(false);
 
@@ -46,6 +46,11 @@ export default function Paywall() {
 
   return (
     <SafeAreaView style={styles.container}>
+      {isProActive && (
+        <Pressable style={styles.closeBtn} onPress={() => router.replace('/(tabs)')}>
+          <Text style={styles.closeBtnText}>✕</Text>
+        </Pressable>
+      )}
       <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
         {/* Header */}
         <View style={styles.header}>
@@ -181,4 +186,7 @@ const styles = StyleSheet.create({
   restoreText: { ...typography.label, color: colors.textMuted, fontSize: 13 },
 
   legal: { ...typography.label, color: colors.steel, fontSize: 10, textAlign: 'center', lineHeight: 14 },
+
+  closeBtn: { position: 'absolute', top: spacing.xl, right: spacing.lg, zIndex: 10, padding: spacing.sm },
+  closeBtnText: { color: colors.textMuted, fontSize: 18 },
 });

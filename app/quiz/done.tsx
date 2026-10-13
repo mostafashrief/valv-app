@@ -43,7 +43,7 @@ export default function QuizDone() {
     setSaving(false);
     if (err) { setError(err.message); return; }
     reset();
-    router.replace('/(tabs)');
+    router.replace('/paywall');
   };
 
   const title = draft.firstName

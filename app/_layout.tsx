@@ -27,7 +27,7 @@ import { AuthProvider, useAuth } from '../lib/auth-context';
 import { OnboardingProvider } from '../lib/onboarding-context';
 import { CarProvider } from '../lib/car-context';
 import { QuizProvider } from '../lib/quiz-context';
-import { RevenueCatProvider } from '../lib/revenue-cat';
+import { RevenueCatProvider, useRevenueCat } from '../lib/revenue-cat';
 import { colors } from '../constants/theme';
 import { router, useSegments } from 'expo-router';
 import { supabase } from '../lib/supabase';
@@ -75,10 +75,27 @@ function AuthGate() {
   return null;
 }
 
+// Redirects expired users to /paywall whenever they land on the tabs.
+// Runs inside RevenueCatProvider so it has access to subscription status.
+function PaywallGate() {
+  const { status } = useRevenueCat();
+  const segments = useSegments();
+
+  useEffect(() => {
+    if (status === 'loading') return;
+    if (status === 'expired' && segments[0] === '(tabs)') {
+      router.replace('/paywall');
+    }
+  }, [status, segments[0]]);
+
+  return null;
+}
+
 function AppProviders({ children }: { children: React.ReactNode }) {
   const { session } = useAuth();
   return (
     <RevenueCatProvider userId={session?.user.id ?? ''}>
+      <PaywallGate />
       {children}
     </RevenueCatProvider>
   );
