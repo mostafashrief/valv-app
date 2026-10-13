@@ -54,10 +54,10 @@ export default function Paywall() {
       <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
         {/* Header */}
         <View style={styles.header}>
-          <Text style={styles.badge}>3 MONTHS FREE</Text>
+          <Text style={styles.badge}>6 MONTHS FREE</Text>
           <Text style={styles.title}>Know your car.{'\n'}Before it knows you don't.</Text>
           <Text style={styles.subtitle}>
-            Full access free for 3 months. Cancel anytime before the trial ends.
+            Full access free for 6 months. Cancel anytime before the trial ends.
           </Text>
         </View>
 
@@ -79,7 +79,7 @@ export default function Paywall() {
           >
             <View style={styles.planLeft}>
               <Text style={[styles.planName, selected === 'yearly' && styles.planNameActive]}>Yearly</Text>
-              <Text style={styles.planSub}>399 EGP / year — save 45%</Text>
+              <Text style={styles.planSub}>229 EGP / year — save 34%</Text>
             </View>
             <View style={styles.planRight}>
               <View style={styles.bestValueBadge}>
@@ -95,7 +95,7 @@ export default function Paywall() {
           >
             <View style={styles.planLeft}>
               <Text style={[styles.planName, selected === 'monthly' && styles.planNameActive]}>Monthly</Text>
-              <Text style={styles.planSub}>39 EGP / month</Text>
+              <Text style={styles.planSub}>29 EGP / month</Text>
             </View>
             {selected === 'monthly' && <Text style={styles.planCheck}>✓</Text>}
           </Pressable>
@@ -105,11 +105,11 @@ export default function Paywall() {
         <Pressable style={styles.cta} onPress={handleSubscribe} disabled={loading}>
           {loading
             ? <ActivityIndicator color={colors.engineBlack} />
-            : <Text style={styles.ctaText}>Start 3-month free trial</Text>
+            : <Text style={styles.ctaText}>Start 6-month free trial</Text>
           }
         </Pressable>
         <Text style={styles.ctaHint}>
-          No charge today. {selected === 'yearly' ? '399 EGP/year' : '39 EGP/month'} after trial ends.
+          No charge today. {selected === 'yearly' ? '229 EGP/year' : '29 EGP/month'} after trial ends.
         </Text>
 
         {/* Restore */}
@@ -118,7 +118,7 @@ export default function Paywall() {
         </Pressable>
 
         <Text style={styles.legal}>
-          Subscription automatically renews unless cancelled at least 24 hours before the end of the trial period.
+          Subscription automatically renews unless cancelled at least 24 hours before the end of the 6-month trial period.
           Manage in iPhone Settings → Apple ID → Subscriptions.
         </Text>
       </ScrollView>
