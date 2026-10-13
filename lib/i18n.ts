@@ -7,15 +7,15 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import en from '../locales/en.json';
 import ar from '../locales/ar.json';
 
-export const SUPPORTED_LANGUAGES = ['en', 'ar'] as const;
+export const SUPPORTED_LANGUAGES = ['ar', 'en'] as const;
 export type SupportedLanguage = (typeof SUPPORTED_LANGUAGES)[number];
 
 const LANG_KEY = 'app_language';
 
-const deviceLocale = Localization.getLocales()[0]?.languageCode ?? 'en';
-const fallbackLanguage: SupportedLanguage = SUPPORTED_LANGUAGES.includes(
-  deviceLocale as SupportedLanguage,
-) ? (deviceLocale as SupportedLanguage) : 'en';
+// Arabic is the default for all new users.
+// If the device is explicitly set to English, respect that — otherwise Arabic.
+const deviceLocale = Localization.getLocales()[0]?.languageCode ?? 'ar';
+const fallbackLanguage: SupportedLanguage = deviceLocale === 'en' ? 'en' : 'ar';
 
 // Read persisted language synchronously from a module-level cache
 // (AsyncStorage is async; we prime the cache in initLanguage below)
@@ -24,6 +24,11 @@ let cachedLanguage: SupportedLanguage = fallbackLanguage;
 export const isRTL = (lang: SupportedLanguage) => lang === 'ar';
 
 I18nManager.allowRTL(true);
+// Force RTL on startup for Arabic (the default language).
+// setLanguage() handles the toggle when the user switches to English.
+if (fallbackLanguage === 'ar') {
+  I18nManager.forceRTL(true);
+}
 
 i18n.use(initReactI18next).init({
   resources: {
@@ -31,7 +36,7 @@ i18n.use(initReactI18next).init({
     ar: { translation: ar },
   },
   lng: cachedLanguage,
-  fallbackLng: 'en',
+  fallbackLng: 'ar',
   interpolation: { escapeValue: false },
   compatibilityJSON: 'v4',
 });
