@@ -25,11 +25,29 @@ const FREQUENCY_DAYS: Record<MileageReminderFrequency, number> = {
   monthly:  30,
 };
 
-// ─── permissions ──────────────────────────────────────────────────────────────
+// ─── permissions + push token registration ────────────────────────────────────
+
+const EAS_PROJECT_ID = '109af56a-7ad6-4141-8724-ab52da871b8b';
+
+async function registerPushToken() {
+  try {
+    // getExpoPushTokenAsync only works on a physical device with a native build
+    if (Platform.OS === 'web') return;
+    const tokenData = await Notifications.getExpoPushTokenAsync({ projectId: EAS_PROJECT_ID });
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
+    await supabase.from('profiles').update({ push_token: tokenData.data }).eq('id', user.id);
+  } catch {
+    // Silently skip — Expo Go on simulator returns an error; real device builds work
+  }
+}
 
 export async function requestNotificationPermission(): Promise<boolean> {
   const { status: existing } = await Notifications.getPermissionsAsync();
-  if (existing === 'granted') return true;
+  if (existing === 'granted') {
+    registerPushToken();
+    return true;
+  }
 
   const { status } = await Notifications.requestPermissionsAsync();
   if (status !== 'granted') return false;
@@ -46,6 +64,7 @@ export async function requestNotificationPermission(): Promise<boolean> {
     });
   }
 
+  registerPushToken();
   return true;
 }
 
