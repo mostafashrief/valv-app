@@ -25,8 +25,15 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="upcoming"
         options={{
-          title: 'Timeline',
-          tabBarIcon: ({ color, size }) => <Feather name="calendar" color={color} size={size} />,
+          title: 'Pit Stop',
+          tabBarIcon: ({ color, size }) => <Feather name="map-pin" color={color} size={size} />,
+        }}
+      />
+      <Tabs.Screen
+        name="records"
+        options={{
+          title: 'Records',
+          tabBarIcon: ({ color, size }) => <Feather name="book" color={color} size={size} />,
         }}
       />
       <Tabs.Screen

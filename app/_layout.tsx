@@ -16,7 +16,7 @@ import {
 import {
   SpaceMono_400Regular,
 } from '@expo-google-fonts/space-mono';
-import { View, AppState, AppStateStatus } from 'react-native';
+import { View, AppState, AppStateStatus, Platform } from 'react-native';
 import { useEffect, useRef } from 'react';
 import * as Notifications from 'expo-notifications';
 import {
@@ -64,7 +64,7 @@ function AuthGate() {
     // Signed in — figure out where to send them
     // Only reroute if we haven't already done so for this session, or they're
     // stuck on a screen they shouldn't be on (welcome, auth)
-    const onPublicScreen = !inTabs && !inOnboarding && !inQuiz && segments[0] !== 'item';
+    const onPublicScreen = !inTabs && !inOnboarding && !inQuiz && segments[0] !== 'item' && segments[0] !== 'paywall';
     if (!onPublicScreen) return;
 
     userHasCar(session.user.id).then((hasCar) => {
@@ -115,13 +115,20 @@ export default function RootLayout() {
     initLanguage();
     requestNotificationPermission();
 
-    // Gap 2: cold launch — app was closed and opened via notification tap
-    Notifications.getLastNotificationResponseAsync().then((response) => {
-      if (response) routeFromNotification(response);
-    });
+    if (Platform.OS === 'web') return;
 
-    // Gap 1: tap handler while app is running or backgrounded
-    const tapSub = Notifications.addNotificationResponseReceivedListener(routeFromNotification);
+    // Gap 2: cold launch — app was closed and opened via notification tap
+    try {
+      Notifications.getLastNotificationResponseAsync()
+        .then((response) => { if (response) routeFromNotification(response); })
+        .catch(() => {});
+    } catch {}
+
+    let tapSub: { remove: () => void } | null = null;
+    try {
+      // Gap 1: tap handler while app is running or backgrounded
+      tapSub = Notifications.addNotificationResponseReceivedListener(routeFromNotification);
+    } catch {}
 
     // Gap 3: reschedule maintenance notifications when app returns to foreground
     const appStateSub = AppState.addEventListener('change', (state: AppStateStatus) => {
@@ -129,7 +136,7 @@ export default function RootLayout() {
     });
 
     return () => {
-      tapSub.remove();
+      tapSub?.remove();
       appStateSub.remove();
     };
   }, []);

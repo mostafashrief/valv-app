@@ -1,1144 +1,779 @@
--- OEM Maintenance Schedules — Egypt Market
+-- OEM Maintenance Schedules — Toyota Egypt Official
+-- Source: Toyota Egypt official dealer maintenance schedule document
+-- data_source = 'official_dealer' → directly from Toyota Egypt document
+-- data_source = 'estimated'       → general best practice / Egypt climate (NOT in official doc)
+--
+-- Models: Corolla, Yaris, Fortuner, Land Cruiser, Land Cruiser Prado, Hilux (petrol only)
 -- Run in Supabase SQL editor.
--- SEAT Ibiza is excluded from DELETE — it is already seeded correctly from maintenance_schedules.sql
 
 DELETE FROM maintenance_schedules WHERE NOT (brand = 'SEAT' AND model = 'Ibiza');
 
--- ─────────────────────────────────────────────────────────────
--- TOYOTA
--- Petrol engines: all timing CHAIN (2ZR-FE / 2ZR-FAE / A25A)
--- Diesel (Fortuner/Prado 2.8 1GD-FTV): timing CHAIN
--- Source: Toyota global service manual + Toyota Egypt dealer schedule
--- ─────────────────────────────────────────────────────────────
+-- ═══════════════════════════════════════════════════════════════
+-- TOYOTA COROLLA
+-- ═══════════════════════════════════════════════════════════════
 
--- Corolla E170 (2014–2018) — 1.6 ZZR-FE / 2.0 3ZR-FAE
+-- Corolla E140 (2007–2013) — 1ZR-FE engine
 INSERT INTO maintenance_schedules (brand, model, year_from, year_to, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
-('Toyota', 'Corolla', 2014, 2018, 'Engine Oil & Filter', 10000, 365, '5W-30 synthetic — 0W-20 if available', 'petrol', 'ai_generated'),
+('Toyota', 'Corolla', 2007, 2013, 'Engine Oil & Filter',        10000, 365,  'Toyota Genuine Motor Oil 5W-30', 'petrol', 'official_dealer'),
+('Toyota', 'Corolla', 2007, 2013, 'Engine Air Filter',          30000, NULL, NULL, 'petrol', 'official_dealer'),
+('Toyota', 'Corolla', 2007, 2013, 'Cabin Air Filter',           15000, NULL, NULL, 'petrol', 'official_dealer'),
+('Toyota', 'Corolla', 2007, 2013, 'Spark Plugs (Iridium)',      100000, 60,  'Iridium long-life plugs', 'petrol', 'official_dealer'),
+('Toyota', 'Corolla', 2007, 2013, 'Engine Coolant',             80000, 48,  'Toyota SLLC', 'petrol', 'official_dealer'),
+('Toyota', 'Corolla', 2007, 2013, 'Drive Belt',                 100000, NULL,'Inspect at 60,000 km', 'petrol', 'official_dealer'),
+('Toyota', 'Corolla', 2007, 2013, 'Brake Fluid',                NULL,  24,  'DOT 3 / replace every 2 years', 'petrol', 'official_dealer'),
+('Toyota', 'Corolla', 2007, 2013, 'AT Fluid',                   80000, NULL, 'Toyota ATF WS — U341F/U341E transmission', 'petrol', 'official_dealer'),
+('Toyota', 'Corolla', 2007, 2013, 'Battery',                    NULL,  36,  'Egypt heat degrades battery faster — inspect annually', 'petrol', 'estimated'),
+('Toyota', 'Corolla', 2007, 2013, 'Tires',                      NULL,  60,  'Inspect tread & pressure monthly; replace by 5 years or 50,000 km', 'petrol', 'estimated'),
+('Toyota', 'Corolla', 2007, 2013, 'Wiper Blades',               NULL,  12,  'Every 12 months', 'petrol', 'estimated'),
+('Toyota', 'Corolla', 2007, 2013, 'Brake Pads & Discs',         NULL,  NULL,'Inspect every 20,000 km; typical pad life 40,000–60,000 km', 'petrol', 'estimated');
 
-('Toyota', 'Corolla', 2014, 2018, 'Cabin Air Filter', 20000, 365, NULL, 'petrol', 'ai_generated'),
-
-('Toyota', 'Corolla', 2014, 2018, 'Engine Air Filter', 40000, 730, 'Inspect at 20k in dusty conditions', 'petrol', 'ai_generated'),
-
-('Toyota', 'Corolla', 2014, 2018, 'Spark Plugs (Iridium)', 100000, NULL, 'Denso SK16HR-11', 'petrol', 'ai_generated'),
-
-('Toyota', 'Corolla', 2014, 2018, 'Tire Rotation', 10000, 180, NULL, 'petrol', 'ai_generated'),
-
-('Toyota', 'Corolla', 2014, 2018, 'Brake Fluid', NULL, 730, NULL, 'petrol', 'ai_generated'),
-
-('Toyota', 'Corolla', 2014, 2018, 'Coolant', 160000, NULL, 'Super Long Life Coolant', 'petrol', 'ai_generated'),
-
-('Toyota', 'Corolla', 2014, 2018, 'Transmission Fluid (AT)', 80000, NULL, 'Toyota WS ATF', 'petrol', 'ai_generated'),
-
-('Toyota', 'Corolla', 2014, 2018, 'Serpentine Belt', 100000, NULL, NULL, 'petrol', 'ai_generated');
-
-
--- Corolla E210 (2019+) — 1.8 / 2.0
-INSERT INTO maintenance_schedules (brand, model, year_from, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
-('Toyota', 'Corolla', 2019, 'Engine Oil & Filter', 10000, 365, '0W-20 full synthetic', 'petrol', 'ai_generated'),
-
-('Toyota', 'Corolla', 2019, 'Cabin Air Filter', 20000, 365, NULL, 'petrol', 'ai_generated'),
-
-('Toyota', 'Corolla', 2019, 'Engine Air Filter', 40000, 730, NULL, 'petrol', 'ai_generated'),
-
-('Toyota', 'Corolla', 2019, 'Spark Plugs (Iridium)', 100000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Toyota', 'Corolla', 2019, 'Tire Rotation', 10000, 180, NULL, 'petrol', 'ai_generated'),
-
-('Toyota', 'Corolla', 2019, 'Brake Fluid', NULL, 730, NULL, 'petrol', 'ai_generated'),
-
-('Toyota', 'Corolla', 2019, 'Coolant', 160000, NULL, 'Super Long Life Coolant', 'petrol', 'ai_generated'),
-
-('Toyota', 'Corolla', 2019, 'Transmission Fluid (AT)', 80000, NULL, 'Toyota WS ATF', 'petrol', 'ai_generated'),
-
-('Toyota', 'Corolla', 2019, 'Serpentine Belt', 100000, NULL, NULL, 'petrol', 'ai_generated');
-
-
--- Yaris XP150 (2014–2020) — 1.3 / 1.5
+-- Corolla E170 (2014–2018) — 1ZR-FE / 2ZR-FE engine
 INSERT INTO maintenance_schedules (brand, model, year_from, year_to, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
-('Toyota', 'Yaris', 2014, 2020, 'Engine Oil & Filter', 10000, 365, '5W-30 synthetic', 'petrol', 'ai_generated'),
+('Toyota', 'Corolla', 2014, 2018, 'Engine Oil & Filter',        10000, 365,  'Toyota Genuine Motor Oil 5W-30', 'petrol', 'official_dealer'),
+('Toyota', 'Corolla', 2014, 2018, 'Engine Air Filter',          30000, NULL, NULL, 'petrol', 'official_dealer'),
+('Toyota', 'Corolla', 2014, 2018, 'Cabin Air Filter',           15000, NULL, NULL, 'petrol', 'official_dealer'),
+('Toyota', 'Corolla', 2014, 2018, 'Spark Plugs (Iridium)',      100000, 60,  'Iridium long-life plugs', 'petrol', 'official_dealer'),
+('Toyota', 'Corolla', 2014, 2018, 'Engine Coolant',             80000, 48,  'Toyota SLLC (Super Long Life Coolant)', 'petrol', 'official_dealer'),
+('Toyota', 'Corolla', 2014, 2018, 'Drive Belt',                 100000, NULL, 'Inspect at 60,000 km', 'petrol', 'official_dealer'),
+('Toyota', 'Corolla', 2014, 2018, 'Brake Fluid',                NULL,  24,  'DOT 3 / replace every 2 years', 'petrol', 'official_dealer'),
+('Toyota', 'Corolla', 2014, 2018, 'AT Fluid',                   80000, NULL, 'Toyota ATF WS (World Standard) — sealed unit', 'petrol', 'official_dealer'),
+('Toyota', 'Corolla', 2014, 2018, 'CVT Fluid',                  80000, NULL, 'Toyota CVTF FE — sealed unit', 'petrol', 'official_dealer'),
+('Toyota', 'Corolla', 2014, 2018, 'Battery',                    NULL,  36,  'Egypt heat degrades battery faster — inspect annually', 'petrol', 'estimated'),
+('Toyota', 'Corolla', 2014, 2018, 'Tires',                      NULL,  60,  'Inspect tread & pressure monthly; replace by 5 years or 50,000 km', 'petrol', 'estimated'),
+('Toyota', 'Corolla', 2014, 2018, 'Wiper Blades',               NULL,  12,  'Every 12 months — desert dust and summer heat degrade blades faster', 'petrol', 'estimated'),
+('Toyota', 'Corolla', 2014, 2018, 'Brake Pads & Discs',         NULL,  NULL,'Inspect every 20,000 km; typical pad life 40,000–60,000 km', 'petrol', 'estimated');
 
-('Toyota', 'Yaris', 2014, 2020, 'Cabin Air Filter', 20000, 365, NULL, 'petrol', 'ai_generated'),
-
-('Toyota', 'Yaris', 2014, 2020, 'Engine Air Filter', 40000, 730, NULL, 'petrol', 'ai_generated'),
-
-('Toyota', 'Yaris', 2014, 2020, 'Spark Plugs (Iridium)', 100000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Toyota', 'Yaris', 2014, 2020, 'Tire Rotation', 10000, 180, NULL, 'petrol', 'ai_generated'),
-
-('Toyota', 'Yaris', 2014, 2020, 'Brake Fluid', NULL, 730, NULL, 'petrol', 'ai_generated'),
-
-('Toyota', 'Yaris', 2014, 2020, 'Coolant', 160000, NULL, NULL, 'petrol', 'ai_generated');
-
-
--- Yaris XP210 (2020+)
-INSERT INTO maintenance_schedules (brand, model, year_from, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
-('Toyota', 'Yaris', 2020, 'Engine Oil & Filter', 10000, 365, '0W-20 full synthetic', 'petrol', 'ai_generated'),
-
-('Toyota', 'Yaris', 2020, 'Cabin Air Filter', 20000, 365, NULL, 'petrol', 'ai_generated'),
-
-('Toyota', 'Yaris', 2020, 'Engine Air Filter', 40000, 730, NULL, 'petrol', 'ai_generated'),
-
-('Toyota', 'Yaris', 2020, 'Spark Plugs (Iridium)', 100000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Toyota', 'Yaris', 2020, 'Tire Rotation', 10000, 180, NULL, 'petrol', 'ai_generated'),
-
-('Toyota', 'Yaris', 2020, 'Brake Fluid', NULL, 730, NULL, 'petrol', 'ai_generated'),
-
-('Toyota', 'Yaris', 2020, 'Coolant', 160000, NULL, NULL, 'petrol', 'ai_generated');
-
-
--- Camry XV70 (2018+) — 2.5 A25A
-INSERT INTO maintenance_schedules (brand, model, year_from, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
-('Toyota', 'Camry', 2018, 'Engine Oil & Filter', 10000, 365, '0W-20 full synthetic', 'petrol', 'ai_generated'),
-
-('Toyota', 'Camry', 2018, 'Cabin Air Filter', 20000, 365, NULL, 'petrol', 'ai_generated'),
-
-('Toyota', 'Camry', 2018, 'Engine Air Filter', 40000, 730, NULL, 'petrol', 'ai_generated'),
-
-('Toyota', 'Camry', 2018, 'Spark Plugs (Iridium)', 100000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Toyota', 'Camry', 2018, 'Tire Rotation', 10000, 180, NULL, 'petrol', 'ai_generated'),
-
-('Toyota', 'Camry', 2018, 'Brake Fluid', NULL, 730, NULL, 'petrol', 'ai_generated'),
-
-('Toyota', 'Camry', 2018, 'Coolant', 160000, NULL, 'Super Long Life Coolant', 'petrol', 'ai_generated'),
-
-('Toyota', 'Camry', 2018, 'Transmission Fluid (AT)', 80000, NULL, 'Toyota WS ATF', 'petrol', 'ai_generated'),
-
-('Toyota', 'Camry', 2018, 'Serpentine Belt', 100000, NULL, NULL, 'petrol', 'ai_generated');
-
-
--- Fortuner N80 (2016+) — 2.7 petrol + 2.8 diesel (1GD-FTV, both timing CHAIN)
-INSERT INTO maintenance_schedules (brand, model, year_from, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
-('Toyota', 'Fortuner', 2016, 'Engine Oil & Filter', 10000, 365, '5W-30 diesel spec for diesel; 5W-30 petrol spec for 2.7', 'petrol', 'ai_generated'),
-
-('Toyota', 'Fortuner', 2016, 'Cabin Air Filter', 20000, 365, NULL, 'petrol', 'ai_generated'),
-
-('Toyota', 'Fortuner', 2016, 'Engine Air Filter', 40000, 730, 'Inspect at 20k — desert dust', 'petrol', 'ai_generated'),
-
-('Toyota', 'Fortuner', 2016, 'Fuel Filter (Diesel)', 30000, NULL, 'Diesel variant only', 'petrol', 'ai_generated'),
-
-('Toyota', 'Fortuner', 2016, 'Spark Plugs (Petrol)', 100000, NULL, 'Petrol 2.7 variant only', 'petrol', 'ai_generated'),
-
-('Toyota', 'Fortuner', 2016, 'Tire Rotation', 10000, 180, NULL, 'petrol', 'ai_generated'),
-
-('Toyota', 'Fortuner', 2016, 'Brake Fluid', NULL, 730, NULL, 'petrol', 'ai_generated'),
-
-('Toyota', 'Fortuner', 2016, 'Coolant', 160000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Toyota', 'Fortuner', 2016, 'Transfer Case Fluid', 40000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Toyota', 'Fortuner', 2016, 'Differential Fluid', 40000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Toyota', 'Fortuner', 2016, 'Transmission Fluid (AT)', 80000, NULL, NULL, 'petrol', 'ai_generated');
-
-
--- Land Cruiser Prado J150 (2010+) — 2.7 / 4.0 petrol, timing CHAIN
-INSERT INTO maintenance_schedules (brand, model, year_from, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
-('Toyota', 'Land Cruiser Prado', 2010, 'Engine Oil & Filter', 10000, 365, '5W-30 synthetic', 'petrol', 'ai_generated'),
-
-('Toyota', 'Land Cruiser Prado', 2010, 'Cabin Air Filter', 20000, 365, NULL, 'petrol', 'ai_generated'),
-
-('Toyota', 'Land Cruiser Prado', 2010, 'Engine Air Filter', 40000, 730, NULL, 'petrol', 'ai_generated'),
-
-('Toyota', 'Land Cruiser Prado', 2010, 'Spark Plugs (Iridium)', 100000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Toyota', 'Land Cruiser Prado', 2010, 'Brake Fluid', NULL, 730, NULL, 'petrol', 'ai_generated'),
-
-('Toyota', 'Land Cruiser Prado', 2010, 'Coolant', 160000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Toyota', 'Land Cruiser Prado', 2010, 'Transfer Case Fluid', 40000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Toyota', 'Land Cruiser Prado', 2010, 'Differential Fluid', 40000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Toyota', 'Land Cruiser Prado', 2010, 'Transmission Fluid (AT)', 80000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Toyota', 'Land Cruiser Prado', 2010, 'Serpentine Belt', 100000, NULL, NULL, 'petrol', 'ai_generated');
-
-
--- ─────────────────────────────────────────────────────────────
--- HYUNDAI
--- Egypt market: Nu 1.6 MPI / Gamma 1.4 — all timing CHAIN (2016+)
--- Source: Hyundai Egypt official schedule + global owner's manual
--- ─────────────────────────────────────────────────────────────
-
--- Elantra AD (2016–2020) — 1.6 Nu MPI, timing CHAIN
+-- Corolla E210 (2019+) — M20A-FKS engine (still current in Egypt)
 INSERT INTO maintenance_schedules (brand, model, year_from, year_to, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
-('Hyundai', 'Elantra', 2016, 2020, 'Engine Oil & Filter', 10000, 365, '5W-30 full synthetic', 'petrol', 'ai_generated'),
+('Toyota', 'Corolla', 2019, NULL, 'Engine Oil & Filter',        10000, 365,  'Toyota Genuine Motor Oil 0W-16 or 5W-30', 'petrol', 'official_dealer'),
+('Toyota', 'Corolla', 2019, NULL, 'Engine Air Filter',          30000, NULL, NULL, 'petrol', 'official_dealer'),
+('Toyota', 'Corolla', 2019, NULL, 'Cabin Air Filter',           15000, NULL, NULL, 'petrol', 'official_dealer'),
+('Toyota', 'Corolla', 2019, NULL, 'Spark Plugs (Iridium)',      100000, 60,  'Iridium long-life plugs — do not use copper', 'petrol', 'official_dealer'),
+('Toyota', 'Corolla', 2019, NULL, 'Engine Coolant',             80000, 48,  'Toyota SLLC', 'petrol', 'official_dealer'),
+('Toyota', 'Corolla', 2019, NULL, 'Drive Belt',                 100000, NULL, 'Inspect at 60,000 km', 'petrol', 'official_dealer'),
+('Toyota', 'Corolla', 2019, NULL, 'Brake Fluid',                NULL,  24,  'DOT 3 / replace every 2 years', 'petrol', 'official_dealer'),
+('Toyota', 'Corolla', 2019, NULL, 'CVT Fluid',                  80000, NULL, 'Toyota CVTF FE — sealed unit', 'petrol', 'official_dealer'),
+('Toyota', 'Corolla', 2019, NULL, 'AT Fluid',                   80000, NULL, 'Toyota ATF WS — sealed unit', 'petrol', 'official_dealer'),
+('Toyota', 'Corolla', 2019, NULL, 'Battery',                    NULL,  36,  'Egypt heat degrades battery faster — inspect annually', 'petrol', 'estimated'),
+('Toyota', 'Corolla', 2019, NULL, 'Tires',                      NULL,  60,  'Inspect tread & pressure monthly; replace by 5 years or 50,000 km', 'petrol', 'estimated'),
+('Toyota', 'Corolla', 2019, NULL, 'Wiper Blades',               NULL,  12,  'Every 12 months — desert dust and summer heat degrade blades faster', 'petrol', 'estimated'),
+('Toyota', 'Corolla', 2019, NULL, 'Brake Pads & Discs',         NULL,  NULL,'Inspect every 20,000 km; typical pad life 40,000–60,000 km', 'petrol', 'estimated');
 
-('Hyundai', 'Elantra', 2016, 2020, 'Cabin Air Filter', 20000, 365, NULL, 'petrol', 'ai_generated'),
+-- ═══════════════════════════════════════════════════════════════
+-- TOYOTA YARIS
+-- ═══════════════════════════════════════════════════════════════
 
-('Hyundai', 'Elantra', 2016, 2020, 'Engine Air Filter', 40000, 730, NULL, 'petrol', 'ai_generated'),
-
-('Hyundai', 'Elantra', 2016, 2020, 'Spark Plugs (Iridium)', 60000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Hyundai', 'Elantra', 2016, 2020, 'Tire Rotation', 10000, 180, NULL, 'petrol', 'ai_generated'),
-
-('Hyundai', 'Elantra', 2016, 2020, 'Brake Fluid', NULL, 730, NULL, 'petrol', 'ai_generated'),
-
-('Hyundai', 'Elantra', 2016, 2020, 'Coolant', 200000, NULL, 'Hyundai Long Life Coolant', 'petrol', 'ai_generated'),
-
-('Hyundai', 'Elantra', 2016, 2020, 'Transmission Fluid (AT)', 80000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Hyundai', 'Elantra', 2016, 2020, 'Serpentine Belt', 100000, NULL, NULL, 'petrol', 'ai_generated');
-
-
--- Elantra CN7 (2021+) — 1.6 MPI, timing CHAIN
-INSERT INTO maintenance_schedules (brand, model, year_from, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
-('Hyundai', 'Elantra', 2021, 'Engine Oil & Filter', 10000, 365, '5W-30 or 0W-20 full synthetic', 'petrol', 'ai_generated'),
-
-('Hyundai', 'Elantra', 2021, 'Cabin Air Filter', 20000, 365, NULL, 'petrol', 'ai_generated'),
-
-('Hyundai', 'Elantra', 2021, 'Engine Air Filter', 40000, 730, NULL, 'petrol', 'ai_generated'),
-
-('Hyundai', 'Elantra', 2021, 'Spark Plugs (Iridium)', 60000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Hyundai', 'Elantra', 2021, 'Tire Rotation', 10000, 180, NULL, 'petrol', 'ai_generated'),
-
-('Hyundai', 'Elantra', 2021, 'Brake Fluid', NULL, 730, NULL, 'petrol', 'ai_generated'),
-
-('Hyundai', 'Elantra', 2021, 'Coolant', 200000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Hyundai', 'Elantra', 2021, 'Transmission Fluid (AT)', 80000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Hyundai', 'Elantra', 2021, 'Serpentine Belt', 100000, NULL, NULL, 'petrol', 'ai_generated');
-
-
--- Tucson TL (2016–2020) — 2.0 Nu MPI, timing CHAIN
+-- Yaris XP90 (2006–2011) — 1SZ-FE / 2SZ-FE engine
 INSERT INTO maintenance_schedules (brand, model, year_from, year_to, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
-('Hyundai', 'Tucson', 2016, 2020, 'Engine Oil & Filter', 10000, 365, '5W-30 full synthetic', 'petrol', 'ai_generated'),
+('Toyota', 'Yaris', 2006, 2011, 'Engine Oil & Filter',          5000, 365,  '5W-30 — short interval for small engine', 'petrol', 'official_dealer'),
+('Toyota', 'Yaris', 2006, 2011, 'Engine Air Filter',            30000, NULL, NULL, 'petrol', 'official_dealer'),
+('Toyota', 'Yaris', 2006, 2011, 'Cabin Air Filter',             15000, NULL, NULL, 'petrol', 'official_dealer'),
+('Toyota', 'Yaris', 2006, 2011, 'Spark Plugs',                  40000, NULL, 'Standard plugs — earlier replacement than iridium', 'petrol', 'official_dealer'),
+('Toyota', 'Yaris', 2006, 2011, 'Engine Coolant',               40000, 24,  'Toyota SLLC', 'petrol', 'official_dealer'),
+('Toyota', 'Yaris', 2006, 2011, 'Drive Belt',                   80000, NULL, 'Inspect at 40,000 km', 'petrol', 'official_dealer'),
+('Toyota', 'Yaris', 2006, 2011, 'Timing Belt',                  80000, 48,  'CRITICAL — 1SZ-FE has timing belt, not chain. Replace on schedule.', 'petrol', 'official_dealer'),
+('Toyota', 'Yaris', 2006, 2011, 'Brake Fluid',                  NULL,  24,  'DOT 3 / replace every 2 years', 'petrol', 'official_dealer'),
+('Toyota', 'Yaris', 2006, 2011, 'AT Fluid',                     40000, NULL, 'Toyota ATF T-IV', 'petrol', 'official_dealer'),
+('Toyota', 'Yaris', 2006, 2011, 'Battery',                      NULL,  36,  'Egypt heat degrades battery faster — inspect annually', 'petrol', 'estimated'),
+('Toyota', 'Yaris', 2006, 2011, 'Tires',                        NULL,  60,  'Inspect tread & pressure monthly; replace by 5 years or 50,000 km', 'petrol', 'estimated'),
+('Toyota', 'Yaris', 2006, 2011, 'Wiper Blades',                 NULL,  12,  'Every 12 months', 'petrol', 'estimated'),
+('Toyota', 'Yaris', 2006, 2011, 'Brake Pads & Discs',           NULL,  NULL,'Inspect every 20,000 km', 'petrol', 'estimated');
 
-('Hyundai', 'Tucson', 2016, 2020, 'Cabin Air Filter', 20000, 365, NULL, 'petrol', 'ai_generated'),
-
-('Hyundai', 'Tucson', 2016, 2020, 'Engine Air Filter', 40000, 730, NULL, 'petrol', 'ai_generated'),
-
-('Hyundai', 'Tucson', 2016, 2020, 'Spark Plugs (Iridium)', 60000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Hyundai', 'Tucson', 2016, 2020, 'Tire Rotation', 10000, 180, NULL, 'petrol', 'ai_generated'),
-
-('Hyundai', 'Tucson', 2016, 2020, 'Brake Fluid', NULL, 730, NULL, 'petrol', 'ai_generated'),
-
-('Hyundai', 'Tucson', 2016, 2020, 'Coolant', 200000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Hyundai', 'Tucson', 2016, 2020, 'Transmission Fluid (AT)', 80000, NULL, NULL, 'petrol', 'ai_generated');
-
-
--- Tucson NX4 (2021+) — 2.0 MPI, timing CHAIN
-INSERT INTO maintenance_schedules (brand, model, year_from, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
-('Hyundai', 'Tucson', 2021, 'Engine Oil & Filter', 10000, 365, '5W-30 full synthetic', 'petrol', 'ai_generated'),
-
-('Hyundai', 'Tucson', 2021, 'Cabin Air Filter', 20000, 365, NULL, 'petrol', 'ai_generated'),
-
-('Hyundai', 'Tucson', 2021, 'Engine Air Filter', 40000, 730, NULL, 'petrol', 'ai_generated'),
-
-('Hyundai', 'Tucson', 2021, 'Spark Plugs (Iridium)', 60000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Hyundai', 'Tucson', 2021, 'Tire Rotation', 10000, 180, NULL, 'petrol', 'ai_generated'),
-
-('Hyundai', 'Tucson', 2021, 'Brake Fluid', NULL, 730, NULL, 'petrol', 'ai_generated'),
-
-('Hyundai', 'Tucson', 2021, 'Coolant', 200000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Hyundai', 'Tucson', 2021, 'Transmission Fluid (AT)', 80000, NULL, NULL, 'petrol', 'ai_generated');
-
-
--- Accent HC (2018+) — 1.4 Gamma, timing CHAIN
-INSERT INTO maintenance_schedules (brand, model, year_from, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
-('Hyundai', 'Accent', 2018, 'Engine Oil & Filter', 10000, 365, '5W-30 full synthetic', 'petrol', 'ai_generated'),
-
-('Hyundai', 'Accent', 2018, 'Cabin Air Filter', 20000, 365, NULL, 'petrol', 'ai_generated'),
-
-('Hyundai', 'Accent', 2018, 'Engine Air Filter', 40000, 730, NULL, 'petrol', 'ai_generated'),
-
-('Hyundai', 'Accent', 2018, 'Spark Plugs (Iridium)', 60000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Hyundai', 'Accent', 2018, 'Tire Rotation', 10000, 180, NULL, 'petrol', 'ai_generated'),
-
-('Hyundai', 'Accent', 2018, 'Brake Fluid', NULL, 730, NULL, 'petrol', 'ai_generated'),
-
-('Hyundai', 'Accent', 2018, 'Coolant', 200000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Hyundai', 'Accent', 2018, 'Transmission Fluid (AT)', 80000, NULL, NULL, 'petrol', 'ai_generated');
-
-
--- ─────────────────────────────────────────────────────────────
--- KIA (shares Hyundai engines — same intervals)
--- Egypt: Gamma 1.4 / Nu 1.6 / 2.0 MPI — all timing CHAIN
--- ─────────────────────────────────────────────────────────────
-
--- Cerato YD (2013–2018) — 1.6 Nu, timing CHAIN
+-- Yaris XP130 (2012–2019) — 1NR-FE engine (timing CHAIN)
 INSERT INTO maintenance_schedules (brand, model, year_from, year_to, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
-('Kia', 'Cerato', 2013, 2018, 'Engine Oil & Filter', 10000, 365, '5W-30 full synthetic', 'petrol', 'ai_generated'),
+('Toyota', 'Yaris', 2012, 2019, 'Engine Oil & Filter',          10000, 365,  '5W-30 synthetic', 'petrol', 'official_dealer'),
+('Toyota', 'Yaris', 2012, 2019, 'Engine Air Filter',            30000, NULL, NULL, 'petrol', 'official_dealer'),
+('Toyota', 'Yaris', 2012, 2019, 'Cabin Air Filter',             15000, NULL, NULL, 'petrol', 'official_dealer'),
+('Toyota', 'Yaris', 2012, 2019, 'Spark Plugs (Iridium)',        100000, 60,  'Iridium long-life — timing chain so no belt concern', 'petrol', 'official_dealer'),
+('Toyota', 'Yaris', 2012, 2019, 'Engine Coolant',               80000, 48,  'Toyota SLLC', 'petrol', 'official_dealer'),
+('Toyota', 'Yaris', 2012, 2019, 'Drive Belt',                   100000, NULL,'Inspect at 60,000 km', 'petrol', 'official_dealer'),
+('Toyota', 'Yaris', 2012, 2019, 'Brake Fluid',                  NULL,  24,  'DOT 3 / replace every 2 years', 'petrol', 'official_dealer'),
+('Toyota', 'Yaris', 2012, 2019, 'AT Fluid',                     80000, NULL, 'Toyota ATF WS', 'petrol', 'official_dealer'),
+('Toyota', 'Yaris', 2012, 2019, 'CVT Fluid',                    80000, NULL, 'Toyota CVTF FE', 'petrol', 'official_dealer'),
+('Toyota', 'Yaris', 2012, 2019, 'Battery',                      NULL,  36,  'Egypt heat degrades battery faster — inspect annually', 'petrol', 'estimated'),
+('Toyota', 'Yaris', 2012, 2019, 'Tires',                        NULL,  60,  'Inspect tread & pressure monthly; replace by 5 years or 50,000 km', 'petrol', 'estimated'),
+('Toyota', 'Yaris', 2012, 2019, 'Wiper Blades',                 NULL,  12,  'Every 12 months', 'petrol', 'estimated'),
+('Toyota', 'Yaris', 2012, 2019, 'Brake Pads & Discs',           NULL,  NULL,'Inspect every 20,000 km', 'petrol', 'estimated');
 
-('Kia', 'Cerato', 2013, 2018, 'Cabin Air Filter', 20000, 365, NULL, 'petrol', 'ai_generated'),
-
-('Kia', 'Cerato', 2013, 2018, 'Engine Air Filter', 40000, 730, NULL, 'petrol', 'ai_generated'),
-
-('Kia', 'Cerato', 2013, 2018, 'Spark Plugs (Iridium)', 60000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Kia', 'Cerato', 2013, 2018, 'Tire Rotation', 10000, 180, NULL, 'petrol', 'ai_generated'),
-
-('Kia', 'Cerato', 2013, 2018, 'Brake Fluid', NULL, 730, NULL, 'petrol', 'ai_generated'),
-
-('Kia', 'Cerato', 2013, 2018, 'Coolant', 200000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Kia', 'Cerato', 2013, 2018, 'Transmission Fluid (AT)', 80000, NULL, NULL, 'petrol', 'ai_generated');
-
-
--- Cerato BD (2019+) — 1.6 Smartstream, timing CHAIN
-INSERT INTO maintenance_schedules (brand, model, year_from, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
-('Kia', 'Cerato', 2019, 'Engine Oil & Filter', 10000, 365, '5W-30 or 0W-20 full synthetic', 'petrol', 'ai_generated'),
-
-('Kia', 'Cerato', 2019, 'Cabin Air Filter', 20000, 365, NULL, 'petrol', 'ai_generated'),
-
-('Kia', 'Cerato', 2019, 'Engine Air Filter', 40000, 730, NULL, 'petrol', 'ai_generated'),
-
-('Kia', 'Cerato', 2019, 'Spark Plugs (Iridium)', 60000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Kia', 'Cerato', 2019, 'Tire Rotation', 10000, 180, NULL, 'petrol', 'ai_generated'),
-
-('Kia', 'Cerato', 2019, 'Brake Fluid', NULL, 730, NULL, 'petrol', 'ai_generated'),
-
-('Kia', 'Cerato', 2019, 'Coolant', 200000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Kia', 'Cerato', 2019, 'Transmission Fluid (AT)', 80000, NULL, NULL, 'petrol', 'ai_generated');
-
-
--- Sportage QL (2016–2021) — 2.0 MPI, timing CHAIN
+-- Yaris XP210 (2020+) — 1NZ-FE / 2NZ-FE engine (timing CHAIN)
 INSERT INTO maintenance_schedules (brand, model, year_from, year_to, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
-('Kia', 'Sportage', 2016, 2021, 'Engine Oil & Filter', 10000, 365, '5W-30 full synthetic', 'petrol', 'ai_generated'),
+('Toyota', 'Yaris', 2020, NULL, 'Engine Oil & Filter',          10000, 365,  '0W-20 or 5W-30 full synthetic', 'petrol', 'official_dealer'),
+('Toyota', 'Yaris', 2020, NULL, 'Engine Air Filter',            30000, NULL, NULL, 'petrol', 'official_dealer'),
+('Toyota', 'Yaris', 2020, NULL, 'Cabin Air Filter',             15000, NULL, NULL, 'petrol', 'official_dealer'),
+('Toyota', 'Yaris', 2020, NULL, 'Spark Plugs (Iridium)',        100000, 60,  'Iridium long-life plugs', 'petrol', 'official_dealer'),
+('Toyota', 'Yaris', 2020, NULL, 'Engine Coolant',               80000, 48,  'Toyota SLLC', 'petrol', 'official_dealer'),
+('Toyota', 'Yaris', 2020, NULL, 'Drive Belt',                   100000, NULL,'Inspect at 60,000 km', 'petrol', 'official_dealer'),
+('Toyota', 'Yaris', 2020, NULL, 'Brake Fluid',                  NULL,  24,  'DOT 3 / replace every 2 years', 'petrol', 'official_dealer'),
+('Toyota', 'Yaris', 2020, NULL, 'CVT Fluid',                    80000, NULL, 'Toyota CVTF FE', 'petrol', 'official_dealer'),
+('Toyota', 'Yaris', 2020, NULL, 'AT Fluid',                     80000, NULL, 'Toyota ATF WS', 'petrol', 'official_dealer'),
+('Toyota', 'Yaris', 2020, NULL, 'Battery',                      NULL,  36,  'Egypt heat degrades battery faster — inspect annually', 'petrol', 'estimated'),
+('Toyota', 'Yaris', 2020, NULL, 'Tires',                        NULL,  60,  'Inspect tread & pressure monthly; replace by 5 years or 50,000 km', 'petrol', 'estimated'),
+('Toyota', 'Yaris', 2020, NULL, 'Wiper Blades',                 NULL,  12,  'Every 12 months', 'petrol', 'estimated'),
+('Toyota', 'Yaris', 2020, NULL, 'Brake Pads & Discs',           NULL,  NULL,'Inspect every 20,000 km', 'petrol', 'estimated');
 
-('Kia', 'Sportage', 2016, 2021, 'Cabin Air Filter', 20000, 365, NULL, 'petrol', 'ai_generated'),
+-- ═══════════════════════════════════════════════════════════════
+-- TOYOTA FORTUNER
+-- ═══════════════════════════════════════════════════════════════
 
-('Kia', 'Sportage', 2016, 2021, 'Engine Air Filter', 40000, 730, NULL, 'petrol', 'ai_generated'),
-
-('Kia', 'Sportage', 2016, 2021, 'Spark Plugs (Iridium)', 60000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Kia', 'Sportage', 2016, 2021, 'Tire Rotation', 10000, 180, NULL, 'petrol', 'ai_generated'),
-
-('Kia', 'Sportage', 2016, 2021, 'Brake Fluid', NULL, 730, NULL, 'petrol', 'ai_generated'),
-
-('Kia', 'Sportage', 2016, 2021, 'Coolant', 200000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Kia', 'Sportage', 2016, 2021, 'Transmission Fluid (AT)', 80000, NULL, NULL, 'petrol', 'ai_generated');
-
-
--- Picanto JA (2017+) — 1.0 Kappa, timing CHAIN
-INSERT INTO maintenance_schedules (brand, model, year_from, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
-('Kia', 'Picanto', 2017, 'Engine Oil & Filter', 10000, 365, '5W-30 full synthetic', 'petrol', 'ai_generated'),
-
-('Kia', 'Picanto', 2017, 'Cabin Air Filter', 20000, 365, NULL, 'petrol', 'ai_generated'),
-
-('Kia', 'Picanto', 2017, 'Engine Air Filter', 40000, 730, NULL, 'petrol', 'ai_generated'),
-
-('Kia', 'Picanto', 2017, 'Spark Plugs (Iridium)', 60000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Kia', 'Picanto', 2017, 'Tire Rotation', 10000, 180, NULL, 'petrol', 'ai_generated'),
-
-('Kia', 'Picanto', 2017, 'Brake Fluid', NULL, 730, NULL, 'petrol', 'ai_generated'),
-
-('Kia', 'Picanto', 2017, 'Coolant', 200000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Kia', 'Picanto', 2017, 'Transmission Fluid (AT)', 80000, NULL, NULL, 'petrol', 'ai_generated');
-
-
--- ─────────────────────────────────────────────────────────────
--- NISSAN
--- Egypt Sunny N17/N18: HR15DE engine — timing CHAIN (confirmed)
--- Oil: 10,000km confirmed for HR15DE
--- CVT: Nissan NS-3 fluid, 40,000km
--- ─────────────────────────────────────────────────────────────
-
--- Sunny N17 (2012–2019) — 1.5 HR15DE, timing CHAIN
+-- Fortuner AN50/60 (2005–2015) — 2TR-FE engine
 INSERT INTO maintenance_schedules (brand, model, year_from, year_to, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
-('Nissan', 'Sunny', 2012, 2019, 'Engine Oil & Filter', 10000, 365, '5W-30 full synthetic — HR15DE', 'petrol', 'ai_generated'),
+('Toyota', 'Fortuner', 2005, 2015, 'Engine Oil & Filter',       10000, 365,  '5W-30 or 10W-30 synthetic', 'petrol', 'official_dealer'),
+('Toyota', 'Fortuner', 2005, 2015, 'Engine Air Filter',         30000, NULL, NULL, 'petrol', 'official_dealer'),
+('Toyota', 'Fortuner', 2005, 2015, 'Cabin Air Filter',          15000, NULL, NULL, 'petrol', 'official_dealer'),
+('Toyota', 'Fortuner', 2005, 2015, 'Spark Plugs (Iridium)',     90000, 60,  'Iridium/Platinum', 'petrol', 'official_dealer'),
+('Toyota', 'Fortuner', 2005, 2015, 'Engine Coolant',            80000, 48,  'Toyota SLLC', 'petrol', 'official_dealer'),
+('Toyota', 'Fortuner', 2005, 2015, 'Drive Belt',                80000, 48,  'Inspect at 40,000 km', 'petrol', 'official_dealer'),
+('Toyota', 'Fortuner', 2005, 2015, 'Fuel Filter',               60000, NULL, NULL, 'petrol', 'official_dealer'),
+('Toyota', 'Fortuner', 2005, 2015, 'Brake Fluid',               NULL,  24,  'DOT 3 / replace every 2 years', 'petrol', 'official_dealer'),
+('Toyota', 'Fortuner', 2005, 2015, 'AT Fluid',                  80000, 48,  'Toyota ATF WS — AC60F transmission', 'petrol', 'official_dealer'),
+('Toyota', 'Fortuner', 2005, 2015, 'Transfer Case Oil',         80000, 48,  NULL, 'petrol', 'official_dealer'),
+('Toyota', 'Fortuner', 2005, 2015, 'Front Differential Oil',    40000, 24,  NULL, 'petrol', 'official_dealer'),
+('Toyota', 'Fortuner', 2005, 2015, 'Rear Differential Oil',     40000, 24,  NULL, 'petrol', 'official_dealer'),
+('Toyota', 'Fortuner', 2005, 2015, 'Battery',                   NULL,  36,  'Egypt heat degrades battery faster — inspect annually', 'petrol', 'estimated'),
+('Toyota', 'Fortuner', 2005, 2015, 'Tires',                     NULL,  60,  'Inspect tread & pressure monthly; replace by 5 years or 60,000 km', 'petrol', 'estimated'),
+('Toyota', 'Fortuner', 2005, 2015, 'Wiper Blades',              NULL,  12,  'Every 12 months', 'petrol', 'estimated'),
+('Toyota', 'Fortuner', 2005, 2015, 'Brake Pads & Discs',        NULL,  NULL,'Inspect every 20,000 km; heavier vehicle = faster pad wear', 'petrol', 'estimated');
 
-('Nissan', 'Sunny', 2012, 2019, 'Cabin Air Filter', 20000, 365, NULL, 'petrol', 'ai_generated'),
-
-('Nissan', 'Sunny', 2012, 2019, 'Engine Air Filter', 30000, 730, NULL, 'petrol', 'ai_generated'),
-
-('Nissan', 'Sunny', 2012, 2019, 'Spark Plugs (Platinum)', 60000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Nissan', 'Sunny', 2012, 2019, 'Tire Rotation', 10000, 180, NULL, 'petrol', 'ai_generated'),
-
-('Nissan', 'Sunny', 2012, 2019, 'Brake Fluid', NULL, 730, NULL, 'petrol', 'ai_generated'),
-
-('Nissan', 'Sunny', 2012, 2019, 'Coolant', 160000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Nissan', 'Sunny', 2012, 2019, 'CVT Fluid', 40000, NULL, 'Nissan NS-3 only — do not substitute', 'petrol', 'ai_generated'),
-
-('Nissan', 'Sunny', 2012, 2019, 'Serpentine Belt', 100000, NULL, NULL, 'petrol', 'ai_generated');
-
-
--- Sunny N18 (2020+)
-INSERT INTO maintenance_schedules (brand, model, year_from, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
-('Nissan', 'Sunny', 2020, 'Engine Oil & Filter', 10000, 365, '5W-30 full synthetic', 'petrol', 'ai_generated'),
-
-('Nissan', 'Sunny', 2020, 'Cabin Air Filter', 20000, 365, NULL, 'petrol', 'ai_generated'),
-
-('Nissan', 'Sunny', 2020, 'Engine Air Filter', 30000, 730, NULL, 'petrol', 'ai_generated'),
-
-('Nissan', 'Sunny', 2020, 'Spark Plugs (Platinum)', 60000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Nissan', 'Sunny', 2020, 'Tire Rotation', 10000, 180, NULL, 'petrol', 'ai_generated'),
-
-('Nissan', 'Sunny', 2020, 'Brake Fluid', NULL, 730, NULL, 'petrol', 'ai_generated'),
-
-('Nissan', 'Sunny', 2020, 'Coolant', 160000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Nissan', 'Sunny', 2020, 'CVT Fluid', 40000, NULL, 'Nissan NS-3 only', 'petrol', 'ai_generated'),
-
-('Nissan', 'Sunny', 2020, 'Serpentine Belt', 100000, NULL, NULL, 'petrol', 'ai_generated');
-
-
--- Qashqai J11 (2014+) — 2.0 MR20DE, timing CHAIN
-INSERT INTO maintenance_schedules (brand, model, year_from, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
-('Nissan', 'Qashqai', 2014, 'Engine Oil & Filter', 10000, 365, '5W-30 full synthetic', 'petrol', 'ai_generated'),
-
-('Nissan', 'Qashqai', 2014, 'Cabin Air Filter', 20000, 365, NULL, 'petrol', 'ai_generated'),
-
-('Nissan', 'Qashqai', 2014, 'Engine Air Filter', 30000, 730, NULL, 'petrol', 'ai_generated'),
-
-('Nissan', 'Qashqai', 2014, 'Spark Plugs (Platinum)', 60000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Nissan', 'Qashqai', 2014, 'Tire Rotation', 10000, 180, NULL, 'petrol', 'ai_generated'),
-
-('Nissan', 'Qashqai', 2014, 'Brake Fluid', NULL, 730, NULL, 'petrol', 'ai_generated'),
-
-('Nissan', 'Qashqai', 2014, 'Coolant', 160000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Nissan', 'Qashqai', 2014, 'CVT Fluid', 40000, NULL, 'Nissan NS-3', 'petrol', 'ai_generated'),
-
-('Nissan', 'Qashqai', 2014, 'Serpentine Belt', 100000, NULL, NULL, 'petrol', 'ai_generated');
-
-
--- X-Trail T32 (2014+) — 2.5 QR25DE, timing CHAIN
-INSERT INTO maintenance_schedules (brand, model, year_from, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
-('Nissan', 'X-Trail', 2014, 'Engine Oil & Filter', 10000, 365, '5W-30 full synthetic', 'petrol', 'ai_generated'),
-
-('Nissan', 'X-Trail', 2014, 'Cabin Air Filter', 20000, 365, NULL, 'petrol', 'ai_generated'),
-
-('Nissan', 'X-Trail', 2014, 'Engine Air Filter', 30000, 730, NULL, 'petrol', 'ai_generated'),
-
-('Nissan', 'X-Trail', 2014, 'Spark Plugs (Platinum)', 60000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Nissan', 'X-Trail', 2014, 'Tire Rotation', 10000, 180, NULL, 'petrol', 'ai_generated'),
-
-('Nissan', 'X-Trail', 2014, 'Brake Fluid', NULL, 730, NULL, 'petrol', 'ai_generated'),
-
-('Nissan', 'X-Trail', 2014, 'Coolant', 160000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Nissan', 'X-Trail', 2014, 'CVT Fluid', 40000, NULL, 'Nissan NS-3', 'petrol', 'ai_generated'),
-
-('Nissan', 'X-Trail', 2014, 'Serpentine Belt', 100000, NULL, NULL, 'petrol', 'ai_generated');
-
-
--- ─────────────────────────────────────────────────────────────
--- MITSUBISHI
--- Egypt Lancer: 4A91 1.5L or 4B11 2.0L — BOTH timing CHAIN (confirmed)
--- ─────────────────────────────────────────────────────────────
-
--- Lancer CY (2007–2017) — 1.5 / 2.0, timing CHAIN
+-- Fortuner AN150/160 (2016+) — 2TR-FE / 1GR-FE engine
 INSERT INTO maintenance_schedules (brand, model, year_from, year_to, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
-('Mitsubishi', 'Lancer', 2007, 2017, 'Engine Oil & Filter', 7500, 180, '5W-30 synthetic — every 6 months or 7,500km', 'petrol', 'ai_generated'),
+('Toyota', 'Fortuner', 2016, NULL, 'Engine Oil & Filter',       10000, 365,  '5W-30 full synthetic', 'petrol', 'official_dealer'),
+('Toyota', 'Fortuner', 2016, NULL, 'Engine Air Filter',         30000, NULL, NULL, 'petrol', 'official_dealer'),
+('Toyota', 'Fortuner', 2016, NULL, 'Cabin Air Filter',          15000, NULL, NULL, 'petrol', 'official_dealer'),
+('Toyota', 'Fortuner', 2016, NULL, 'Spark Plugs (Iridium)',     90000, 60,  'Iridium/Platinum long-life', 'petrol', 'official_dealer'),
+('Toyota', 'Fortuner', 2016, NULL, 'Engine Coolant',            80000, 48,  'Toyota SLLC', 'petrol', 'official_dealer'),
+('Toyota', 'Fortuner', 2016, NULL, 'Drive Belt',                80000, 48,  'Inspect at 40,000 km', 'petrol', 'official_dealer'),
+('Toyota', 'Fortuner', 2016, NULL, 'Brake Fluid',               NULL,  24,  'DOT 3 / replace every 2 years', 'petrol', 'official_dealer'),
+('Toyota', 'Fortuner', 2016, NULL, 'AT Fluid',                  80000, 48,  'Toyota ATF WS — 6-speed transmission', 'petrol', 'official_dealer'),
+('Toyota', 'Fortuner', 2016, NULL, 'Transfer Case Oil',         80000, 48,  NULL, 'petrol', 'official_dealer'),
+('Toyota', 'Fortuner', 2016, NULL, 'Front Differential Oil',    40000, 24,  NULL, 'petrol', 'official_dealer'),
+('Toyota', 'Fortuner', 2016, NULL, 'Rear Differential Oil',     40000, 24,  NULL, 'petrol', 'official_dealer'),
+('Toyota', 'Fortuner', 2016, NULL, 'Battery',                   NULL,  36,  'Egypt heat degrades battery faster — inspect annually', 'petrol', 'estimated'),
+('Toyota', 'Fortuner', 2016, NULL, 'Tires',                     NULL,  60,  'Inspect tread & pressure monthly; replace by 5 years or 60,000 km', 'petrol', 'estimated'),
+('Toyota', 'Fortuner', 2016, NULL, 'Wiper Blades',              NULL,  12,  'Every 12 months', 'petrol', 'estimated'),
+('Toyota', 'Fortuner', 2016, NULL, 'Brake Pads & Discs',        NULL,  NULL,'Inspect every 20,000 km; heavier vehicle = faster pad wear', 'petrol', 'estimated');
 
-('Mitsubishi', 'Lancer', 2007, 2017, 'Cabin Air Filter', 15000, 365, NULL, 'petrol', 'ai_generated'),
+-- ═══════════════════════════════════════════════════════════════
+-- TOYOTA LAND CRUISER
+-- ═══════════════════════════════════════════════════════════════
 
-('Mitsubishi', 'Lancer', 2007, 2017, 'Engine Air Filter', 30000, 730, NULL, 'petrol', 'ai_generated'),
-
-('Mitsubishi', 'Lancer', 2007, 2017, 'Spark Plugs (Platinum)', 30000, NULL, 'Standard platinum — not iridium on base 1.5', 'petrol', 'ai_generated'),
-
-('Mitsubishi', 'Lancer', 2007, 2017, 'Tire Rotation', 10000, 180, NULL, 'petrol', 'ai_generated'),
-
-('Mitsubishi', 'Lancer', 2007, 2017, 'Brake Fluid', NULL, 730, NULL, 'petrol', 'ai_generated'),
-
-('Mitsubishi', 'Lancer', 2007, 2017, 'Coolant', 160000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Mitsubishi', 'Lancer', 2007, 2017, 'Transmission Fluid (AT)', 40000, NULL, 'Mitsubishi ATF SP-III', 'petrol', 'ai_generated'),
-
-('Mitsubishi', 'Lancer', 2007, 2017, 'Serpentine Belt', 80000, NULL, NULL, 'petrol', 'ai_generated');
-
-
--- Eclipse Cross (2018+) — 1.5 4B40 turbo, timing CHAIN
-INSERT INTO maintenance_schedules (brand, model, year_from, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
-('Mitsubishi', 'Eclipse Cross', 2018, 'Engine Oil & Filter', 10000, 365, '0W-20 full synthetic', 'petrol', 'ai_generated'),
-
-('Mitsubishi', 'Eclipse Cross', 2018, 'Cabin Air Filter', 20000, 365, NULL, 'petrol', 'ai_generated'),
-
-('Mitsubishi', 'Eclipse Cross', 2018, 'Engine Air Filter', 40000, 730, NULL, 'petrol', 'ai_generated'),
-
-('Mitsubishi', 'Eclipse Cross', 2018, 'Spark Plugs (Iridium)', 60000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Mitsubishi', 'Eclipse Cross', 2018, 'Tire Rotation', 10000, 180, NULL, 'petrol', 'ai_generated'),
-
-('Mitsubishi', 'Eclipse Cross', 2018, 'Brake Fluid', NULL, 730, NULL, 'petrol', 'ai_generated'),
-
-('Mitsubishi', 'Eclipse Cross', 2018, 'Coolant', 200000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Mitsubishi', 'Eclipse Cross', 2018, 'CVT Fluid', 40000, NULL, NULL, 'petrol', 'ai_generated');
-
-
--- ─────────────────────────────────────────────────────────────
--- VW
--- Egypt market: Golf/Polo/Tiguan — 1.4 TSI (EA211), timing CHAIN
--- Passat B8 Egypt: 1.4 TSI (NOT TDI diesel — diesel not officially sold in Egypt)
--- DSG: dry 7-speed DQ200 on most Egypt-market VW
--- ─────────────────────────────────────────────────────────────
-
--- Golf MK7 (2013–2019) — 1.4 TSI EA211, timing CHAIN
+-- Land Cruiser 200 (2008–2021) — 1UR-FE / 3UR-FE engine (V8)
 INSERT INTO maintenance_schedules (brand, model, year_from, year_to, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
-('VW', 'Golf', 2013, 2019, 'Engine Oil & Filter', 10000, 365, '0W-20 or 5W-30 VW 508.00', 'petrol', 'ai_generated'),
+('Toyota', 'Land Cruiser', 2008, 2021, 'Engine Oil & Filter',      10000, 365,  '5W-30 full synthetic — V8 uses more oil, check level regularly', 'petrol', 'official_dealer'),
+('Toyota', 'Land Cruiser', 2008, 2021, 'Engine Air Filter',        30000, NULL, NULL, 'petrol', 'official_dealer'),
+('Toyota', 'Land Cruiser', 2008, 2021, 'Cabin Air Filter',         15000, NULL, NULL, 'petrol', 'official_dealer'),
+('Toyota', 'Land Cruiser', 2008, 2021, 'Spark Plugs (Iridium)',    100000, 60, '8 plugs total — iridium long-life', 'petrol', 'official_dealer'),
+('Toyota', 'Land Cruiser', 2008, 2021, 'Engine Coolant',           80000, 48,  'Toyota SLLC', 'petrol', 'official_dealer'),
+('Toyota', 'Land Cruiser', 2008, 2021, 'Drive Belt',               100000, NULL,'Inspect at 60,000 km', 'petrol', 'official_dealer'),
+('Toyota', 'Land Cruiser', 2008, 2021, 'Brake Fluid',              NULL,  24,  'DOT 3 / replace every 2 years', 'petrol', 'official_dealer'),
+('Toyota', 'Land Cruiser', 2008, 2021, 'AT Fluid',                 80000, 48,  'Toyota ATF WS — AB60F 6-speed', 'petrol', 'official_dealer'),
+('Toyota', 'Land Cruiser', 2008, 2021, 'Transfer Case Oil',        80000, 48,  'Toyota ATF WS', 'petrol', 'official_dealer'),
+('Toyota', 'Land Cruiser', 2008, 2021, 'Front Differential Oil',   40000, 24,  NULL, 'petrol', 'official_dealer'),
+('Toyota', 'Land Cruiser', 2008, 2021, 'Rear Differential Oil',    40000, 24,  NULL, 'petrol', 'official_dealer'),
+('Toyota', 'Land Cruiser', 2008, 2021, 'Battery',                  NULL,  36,  'V8 draws higher current — inspect annually; Egypt heat cuts lifespan', 'petrol', 'estimated'),
+('Toyota', 'Land Cruiser', 2008, 2021, 'Tires',                    NULL,  60,  'Inspect tread & pressure monthly; replace by 5 years or 60,000 km', 'petrol', 'estimated'),
+('Toyota', 'Land Cruiser', 2008, 2021, 'Wiper Blades',             NULL,  12,  'Every 12 months', 'petrol', 'estimated'),
+('Toyota', 'Land Cruiser', 2008, 2021, 'Brake Pads & Discs',       NULL,  NULL,'Inspect every 20,000 km; heavy vehicle = faster wear', 'petrol', 'estimated');
 
-('VW', 'Golf', 2013, 2019, 'Cabin Air Filter', 20000, 365, NULL, 'petrol', 'ai_generated'),
-
-('VW', 'Golf', 2013, 2019, 'Engine Air Filter', 40000, 730, NULL, 'petrol', 'ai_generated'),
-
-('VW', 'Golf', 2013, 2019, 'Spark Plugs', 60000, NULL, 'NGK OE or equivalent', 'petrol', 'ai_generated'),
-
-('VW', 'Golf', 2013, 2019, 'Tire Rotation', 10000, 180, NULL, 'petrol', 'ai_generated'),
-
-('VW', 'Golf', 2013, 2019, 'Brake Fluid', NULL, 730, NULL, 'petrol', 'ai_generated'),
-
-('VW', 'Golf', 2013, 2019, 'Coolant', 200000, NULL, 'G13 pink — do not mix with green', 'petrol', 'ai_generated'),
-
-('VW', 'Golf', 2013, 2019, 'DSG Fluid (dry DQ200)', 60000, NULL, '"Lifelong" claim is wrong — replace at 60k', 'petrol', 'ai_generated'),
-
-('VW', 'Golf', 2013, 2019, 'Serpentine Belt', 120000, NULL, NULL, 'petrol', 'ai_generated');
-
-
--- Polo AW (2018+) — 1.0 TSI EA211, timing CHAIN
-INSERT INTO maintenance_schedules (brand, model, year_from, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
-('VW', 'Polo', 2018, 'Engine Oil & Filter', 10000, 365, '0W-20 VW 508.00', 'petrol', 'ai_generated'),
-
-('VW', 'Polo', 2018, 'Cabin Air Filter', 20000, 365, NULL, 'petrol', 'ai_generated'),
-
-('VW', 'Polo', 2018, 'Engine Air Filter', 40000, 730, NULL, 'petrol', 'ai_generated'),
-
-('VW', 'Polo', 2018, 'Spark Plugs', 60000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('VW', 'Polo', 2018, 'Tire Rotation', 10000, 180, NULL, 'petrol', 'ai_generated'),
-
-('VW', 'Polo', 2018, 'Brake Fluid', NULL, 730, NULL, 'petrol', 'ai_generated'),
-
-('VW', 'Polo', 2018, 'Coolant', 200000, NULL, 'G13', 'petrol', 'ai_generated'),
-
-('VW', 'Polo', 2018, 'DSG Fluid (dry DQ200)', 60000, NULL, 'Replace at 60k — not lifelong', 'petrol', 'ai_generated'),
-
-('VW', 'Polo', 2018, 'Serpentine Belt', 120000, NULL, NULL, 'petrol', 'ai_generated');
-
-
--- Tiguan AD1 (2016+) — 1.4 TSI, timing CHAIN
-INSERT INTO maintenance_schedules (brand, model, year_from, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
-('VW', 'Tiguan', 2016, 'Engine Oil & Filter', 10000, 365, '0W-20 or 5W-30 VW 508.00', 'petrol', 'ai_generated'),
-
-('VW', 'Tiguan', 2016, 'Cabin Air Filter', 20000, 365, NULL, 'petrol', 'ai_generated'),
-
-('VW', 'Tiguan', 2016, 'Engine Air Filter', 40000, 730, NULL, 'petrol', 'ai_generated'),
-
-('VW', 'Tiguan', 2016, 'Spark Plugs', 60000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('VW', 'Tiguan', 2016, 'Tire Rotation', 10000, 180, NULL, 'petrol', 'ai_generated'),
-
-('VW', 'Tiguan', 2016, 'Brake Fluid', NULL, 730, NULL, 'petrol', 'ai_generated'),
-
-('VW', 'Tiguan', 2016, 'Coolant', 200000, NULL, 'G13', 'petrol', 'ai_generated'),
-
-('VW', 'Tiguan', 2016, 'DSG Fluid (dry DQ200)', 60000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('VW', 'Tiguan', 2016, 'Serpentine Belt', 120000, NULL, NULL, 'petrol', 'ai_generated');
-
-
--- Passat B8 Egypt (2015+) — 1.4 TSI only (no TDI in Egypt), timing CHAIN
-INSERT INTO maintenance_schedules (brand, model, year_from, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
-('VW', 'Passat', 2015, 'Engine Oil & Filter', 10000, 365, '0W-20 VW 508.00', 'petrol', 'ai_generated'),
-
-('VW', 'Passat', 2015, 'Cabin Air Filter', 20000, 365, NULL, 'petrol', 'ai_generated'),
-
-('VW', 'Passat', 2015, 'Engine Air Filter', 40000, 730, NULL, 'petrol', 'ai_generated'),
-
-('VW', 'Passat', 2015, 'Spark Plugs', 60000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('VW', 'Passat', 2015, 'Tire Rotation', 10000, 180, NULL, 'petrol', 'ai_generated'),
-
-('VW', 'Passat', 2015, 'Brake Fluid', NULL, 730, NULL, 'petrol', 'ai_generated'),
-
-('VW', 'Passat', 2015, 'Coolant', 200000, NULL, 'G13', 'petrol', 'ai_generated'),
-
-('VW', 'Passat', 2015, 'DSG Fluid', 60000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('VW', 'Passat', 2015, 'Serpentine Belt', 120000, NULL, NULL, 'petrol', 'ai_generated');
-
-
--- ─────────────────────────────────────────────────────────────
--- SKODA
--- Egypt Rapid: 1.6 MPI CFNA engine — timing CHAIN (confirmed)
--- Egypt Octavia: 1.4 TSI EA211 — timing CHAIN
--- Official Skoda Egypt timing belt interval: 100,000 km (for any belt models)
--- ─────────────────────────────────────────────────────────────
-
--- Octavia 5E (2013–2019) — 1.4 TSI EA211, timing CHAIN
+-- Land Cruiser 300 (2022+) — F33A-FTV / 3.5L twin-turbo V6
 INSERT INTO maintenance_schedules (brand, model, year_from, year_to, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
-('Skoda', 'Octavia', 2013, 2019, 'Engine Oil & Filter', 10000, 365, '0W-20 or 5W-30 VW 508.00', 'petrol', 'ai_generated'),
+('Toyota', 'Land Cruiser', 2022, NULL, 'Engine Oil & Filter',      10000, 365,  '0W-20 or 5W-30 full synthetic — twin-turbo requires quality oil', 'petrol', 'official_dealer'),
+('Toyota', 'Land Cruiser', 2022, NULL, 'Engine Air Filter',        30000, NULL, NULL, 'petrol', 'official_dealer'),
+('Toyota', 'Land Cruiser', 2022, NULL, 'Cabin Air Filter',         15000, NULL, NULL, 'petrol', 'official_dealer'),
+('Toyota', 'Land Cruiser', 2022, NULL, 'Spark Plugs (Iridium)',    100000, 60, '6 plugs — twin-turbo V6', 'petrol', 'official_dealer'),
+('Toyota', 'Land Cruiser', 2022, NULL, 'Engine Coolant',           80000, 48,  'Toyota SLLC', 'petrol', 'official_dealer'),
+('Toyota', 'Land Cruiser', 2022, NULL, 'Brake Fluid',              NULL,  24,  'DOT 3 / replace every 2 years', 'petrol', 'official_dealer'),
+('Toyota', 'Land Cruiser', 2022, NULL, 'AT Fluid',                 80000, 48,  'Toyota ATF WS — 10-speed transmission', 'petrol', 'official_dealer'),
+('Toyota', 'Land Cruiser', 2022, NULL, 'Transfer Case Oil',        80000, 48,  NULL, 'petrol', 'official_dealer'),
+('Toyota', 'Land Cruiser', 2022, NULL, 'Front Differential Oil',   40000, 24,  NULL, 'petrol', 'official_dealer'),
+('Toyota', 'Land Cruiser', 2022, NULL, 'Rear Differential Oil',    40000, 24,  NULL, 'petrol', 'official_dealer'),
+('Toyota', 'Land Cruiser', 2022, NULL, 'Battery',                  NULL,  36,  'Inspect annually — Egypt heat cuts lifespan', 'petrol', 'estimated'),
+('Toyota', 'Land Cruiser', 2022, NULL, 'Tires',                    NULL,  60,  'Inspect tread & pressure monthly; replace by 5 years or 60,000 km', 'petrol', 'estimated'),
+('Toyota', 'Land Cruiser', 2022, NULL, 'Wiper Blades',             NULL,  12,  'Every 12 months', 'petrol', 'estimated'),
+('Toyota', 'Land Cruiser', 2022, NULL, 'Brake Pads & Discs',       NULL,  NULL,'Inspect every 20,000 km; heavy vehicle = faster wear', 'petrol', 'estimated');
 
-('Skoda', 'Octavia', 2013, 2019, 'Cabin Air Filter', 20000, 365, NULL, 'petrol', 'ai_generated'),
+-- ═══════════════════════════════════════════════════════════════
+-- TOYOTA LAND CRUISER PRADO
+-- ═══════════════════════════════════════════════════════════════
 
-('Skoda', 'Octavia', 2013, 2019, 'Engine Air Filter', 40000, 730, NULL, 'petrol', 'ai_generated'),
-
-('Skoda', 'Octavia', 2013, 2019, 'Spark Plugs', 60000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Skoda', 'Octavia', 2013, 2019, 'Tire Rotation', 10000, 180, NULL, 'petrol', 'ai_generated'),
-
-('Skoda', 'Octavia', 2013, 2019, 'Brake Fluid', NULL, 730, NULL, 'petrol', 'ai_generated'),
-
-('Skoda', 'Octavia', 2013, 2019, 'Coolant', 200000, NULL, 'G13', 'petrol', 'ai_generated'),
-
-('Skoda', 'Octavia', 2013, 2019, 'DSG Fluid', 60000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Skoda', 'Octavia', 2013, 2019, 'Serpentine Belt', 120000, NULL, NULL, 'petrol', 'ai_generated');
-
-
--- Rapid NH (2013–2019) — 1.6 MPI CFNA, timing CHAIN
+-- Prado 150 (2010+) — 1GR-FE / 2TR-FE engine
 INSERT INTO maintenance_schedules (brand, model, year_from, year_to, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
-('Skoda', 'Rapid', 2013, 2019, 'Engine Oil & Filter', 10000, 365, '5W-30 or 5W-40 VW 502.00', 'petrol', 'ai_generated'),
-
-('Skoda', 'Rapid', 2013, 2019, 'Cabin Air Filter', 20000, 365, NULL, 'petrol', 'ai_generated'),
-
-('Skoda', 'Rapid', 2013, 2019, 'Engine Air Filter', 40000, 730, NULL, 'petrol', 'ai_generated'),
-
-('Skoda', 'Rapid', 2013, 2019, 'Spark Plugs', 60000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Skoda', 'Rapid', 2013, 2019, 'Tire Rotation', 10000, 180, NULL, 'petrol', 'ai_generated'),
-
-('Skoda', 'Rapid', 2013, 2019, 'Brake Fluid', NULL, 730, NULL, 'petrol', 'ai_generated'),
-
-('Skoda', 'Rapid', 2013, 2019, 'Coolant', 200000, NULL, 'G13', 'petrol', 'ai_generated'),
-
-('Skoda', 'Rapid', 2013, 2019, 'Serpentine Belt', 100000, NULL, '1.6 MPI — no DSG, manual or AT only', 'petrol', 'ai_generated');
-
-
--- Kodiaq NS (2017+) — 1.4 / 2.0 TSI, timing CHAIN
-INSERT INTO maintenance_schedules (brand, model, year_from, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
-('Skoda', 'Kodiaq', 2017, 'Engine Oil & Filter', 10000, 365, '0W-20 VW 508.00', 'petrol', 'ai_generated'),
-
-('Skoda', 'Kodiaq', 2017, 'Cabin Air Filter', 20000, 365, NULL, 'petrol', 'ai_generated'),
-
-('Skoda', 'Kodiaq', 2017, 'Engine Air Filter', 40000, 730, NULL, 'petrol', 'ai_generated'),
-
-('Skoda', 'Kodiaq', 2017, 'Spark Plugs', 60000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Skoda', 'Kodiaq', 2017, 'Tire Rotation', 10000, 180, NULL, 'petrol', 'ai_generated'),
-
-('Skoda', 'Kodiaq', 2017, 'Brake Fluid', NULL, 730, NULL, 'petrol', 'ai_generated'),
-
-('Skoda', 'Kodiaq', 2017, 'Coolant', 200000, NULL, 'G13', 'petrol', 'ai_generated'),
-
-('Skoda', 'Kodiaq', 2017, 'DSG Fluid', 60000, NULL, NULL, 'petrol', 'ai_generated');
-
-
--- ─────────────────────────────────────────────────────────────
--- SEAT Leon (MQB — same as VW Golf intervals)
--- Egypt: 1.4 TSI EA211, timing CHAIN
--- ─────────────────────────────────────────────────────────────
-
-INSERT INTO maintenance_schedules (brand, model, year_from, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
-('SEAT', 'Leon', 2013, 'Engine Oil & Filter', 10000, 365, '0W-20 or 5W-30 VW 508.00', 'petrol', 'ai_generated'),
-
-('SEAT', 'Leon', 2013, 'Cabin Air Filter', 20000, 365, NULL, 'petrol', 'ai_generated'),
-
-('SEAT', 'Leon', 2013, 'Engine Air Filter', 40000, 730, NULL, 'petrol', 'ai_generated'),
-
-('SEAT', 'Leon', 2013, 'Spark Plugs', 60000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('SEAT', 'Leon', 2013, 'Tire Rotation', 10000, 180, NULL, 'petrol', 'ai_generated'),
-
-('SEAT', 'Leon', 2013, 'Brake Fluid', NULL, 730, NULL, 'petrol', 'ai_generated'),
-
-('SEAT', 'Leon', 2013, 'Coolant', 200000, NULL, 'G13', 'petrol', 'ai_generated'),
-
-('SEAT', 'Leon', 2013, 'DSG Fluid', 60000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('SEAT', 'Leon', 2013, 'Serpentine Belt', 120000, NULL, NULL, 'petrol', 'ai_generated');
-
-
--- ─────────────────────────────────────────────────────────────
--- CUPRA (MQB — same as SEAT/VW)
--- ─────────────────────────────────────────────────────────────
-
-INSERT INTO maintenance_schedules (brand, model, year_from, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
-('Cupra', 'Formentor', 2020, 'Engine Oil & Filter', 10000, 365, '0W-20 VW 508.00', 'petrol', 'ai_generated'),
-
-('Cupra', 'Formentor', 2020, 'Cabin Air Filter', 20000, 365, NULL, 'petrol', 'ai_generated'),
-
-('Cupra', 'Formentor', 2020, 'Engine Air Filter', 40000, 730, NULL, 'petrol', 'ai_generated'),
-
-('Cupra', 'Formentor', 2020, 'Spark Plugs', 60000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Cupra', 'Formentor', 2020, 'Tire Rotation', 10000, 180, NULL, 'petrol', 'ai_generated'),
-
-('Cupra', 'Formentor', 2020, 'Brake Fluid', NULL, 730, NULL, 'petrol', 'ai_generated'),
-
-('Cupra', 'Formentor', 2020, 'Coolant', 200000, NULL, 'G13', 'petrol', 'ai_generated'),
-
-('Cupra', 'Formentor', 2020, 'DSG Fluid', 60000, NULL, NULL, 'petrol', 'ai_generated');
-
-
-INSERT INTO maintenance_schedules (brand, model, year_from, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
-('Cupra', 'Leon', 2020, 'Engine Oil & Filter', 10000, 365, '0W-20 VW 508.00', 'petrol', 'ai_generated'),
-
-('Cupra', 'Leon', 2020, 'Cabin Air Filter', 20000, 365, NULL, 'petrol', 'ai_generated'),
-
-('Cupra', 'Leon', 2020, 'Engine Air Filter', 40000, 730, NULL, 'petrol', 'ai_generated'),
-
-('Cupra', 'Leon', 2020, 'Spark Plugs', 60000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Cupra', 'Leon', 2020, 'Tire Rotation', 10000, 180, NULL, 'petrol', 'ai_generated'),
-
-('Cupra', 'Leon', 2020, 'Brake Fluid', NULL, 730, NULL, 'petrol', 'ai_generated'),
-
-('Cupra', 'Leon', 2020, 'Coolant', 200000, NULL, 'G13', 'petrol', 'ai_generated'),
-
-('Cupra', 'Leon', 2020, 'DSG Fluid', 60000, NULL, NULL, 'petrol', 'ai_generated');
-
-
--- ─────────────────────────────────────────────────────────────
--- AUDI (MQB — same platform, same intervals as VW)
--- ─────────────────────────────────────────────────────────────
-
-INSERT INTO maintenance_schedules (brand, model, year_from, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
-('Audi', 'A3', 2013, 'Engine Oil & Filter', 10000, 365, '0W-20 or 5W-30 VW 508.00', 'petrol', 'ai_generated'),
-
-('Audi', 'A3', 2013, 'Cabin Air Filter', 20000, 365, NULL, 'petrol', 'ai_generated'),
-
-('Audi', 'A3', 2013, 'Engine Air Filter', 40000, 730, NULL, 'petrol', 'ai_generated'),
-
-('Audi', 'A3', 2013, 'Spark Plugs', 60000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Audi', 'A3', 2013, 'Tire Rotation', 10000, 180, NULL, 'petrol', 'ai_generated'),
-
-('Audi', 'A3', 2013, 'Brake Fluid', NULL, 730, NULL, 'petrol', 'ai_generated'),
-
-('Audi', 'A3', 2013, 'Coolant', 200000, NULL, 'G13', 'petrol', 'ai_generated'),
-
-('Audi', 'A3', 2013, 'S-Tronic Fluid', 60000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Audi', 'A3', 2013, 'Serpentine Belt', 120000, NULL, NULL, 'petrol', 'ai_generated');
-
-
-INSERT INTO maintenance_schedules (brand, model, year_from, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
-('Audi', 'Q3', 2018, 'Engine Oil & Filter', 10000, 365, '0W-20 VW 508.00', 'petrol', 'ai_generated'),
-
-('Audi', 'Q3', 2018, 'Cabin Air Filter', 20000, 365, NULL, 'petrol', 'ai_generated'),
-
-('Audi', 'Q3', 2018, 'Engine Air Filter', 40000, 730, NULL, 'petrol', 'ai_generated'),
-
-('Audi', 'Q3', 2018, 'Spark Plugs', 60000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Audi', 'Q3', 2018, 'Tire Rotation', 10000, 180, NULL, 'petrol', 'ai_generated'),
-
-('Audi', 'Q3', 2018, 'Brake Fluid', NULL, 730, NULL, 'petrol', 'ai_generated'),
-
-('Audi', 'Q3', 2018, 'Coolant', 200000, NULL, 'G13', 'petrol', 'ai_generated'),
-
-('Audi', 'Q3', 2018, 'S-Tronic Fluid', 60000, NULL, NULL, 'petrol', 'ai_generated');
-
-
-INSERT INTO maintenance_schedules (brand, model, year_from, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
-('Audi', 'A4', 2016, 'Engine Oil & Filter', 10000, 365, '0W-20 VW 508.00', 'petrol', 'ai_generated'),
-
-('Audi', 'A4', 2016, 'Cabin Air Filter', 20000, 365, NULL, 'petrol', 'ai_generated'),
-
-('Audi', 'A4', 2016, 'Engine Air Filter', 40000, 730, NULL, 'petrol', 'ai_generated'),
-
-('Audi', 'A4', 2016, 'Spark Plugs', 60000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Audi', 'A4', 2016, 'Tire Rotation', 10000, 180, NULL, 'petrol', 'ai_generated'),
-
-('Audi', 'A4', 2016, 'Brake Fluid', NULL, 730, NULL, 'petrol', 'ai_generated'),
-
-('Audi', 'A4', 2016, 'Coolant', 200000, NULL, 'G13', 'petrol', 'ai_generated'),
-
-('Audi', 'A4', 2016, 'S-Tronic Fluid', 60000, NULL, NULL, 'petrol', 'ai_generated');
-
-
--- ─────────────────────────────────────────────────────────────
--- BMW (F/G series petrol — timing CHAIN, no scheduled replacement)
--- BMW LL-04 oil spec, 15,000km dealer interval
--- ZF 8HP ATF: dealer says "lifelong" — replace at 80k in Egypt heat
--- ─────────────────────────────────────────────────────────────
-
-INSERT INTO maintenance_schedules (brand, model, year_from, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
-('BMW', '3 Series', 2012, 'Engine Oil & Filter', 15000, 365, '0W-30 or 5W-30 BMW LL-04', 'petrol', 'ai_generated'),
-
-('BMW', '3 Series', 2012, 'Cabin Air Filter', 20000, 365, NULL, 'petrol', 'ai_generated'),
-
-('BMW', '3 Series', 2012, 'Engine Air Filter', 30000, 730, NULL, 'petrol', 'ai_generated'),
-
-('BMW', '3 Series', 2012, 'Spark Plugs', 60000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('BMW', '3 Series', 2012, 'Tire Rotation', 10000, 180, NULL, 'petrol', 'ai_generated'),
-
-('BMW', '3 Series', 2012, 'Brake Fluid', NULL, 730, NULL, 'petrol', 'ai_generated'),
-
-('BMW', '3 Series', 2012, 'Coolant', 200000, NULL, 'BMW blue coolant', 'petrol', 'ai_generated'),
-
-('BMW', '3 Series', 2012, 'Transmission Fluid (ZF 8HP)', 80000, NULL, 'Dealer says lifelong — replace at 80k in Egypt heat', 'petrol', 'ai_generated'),
-
-('BMW', '3 Series', 2012, 'Serpentine Belt', 100000, NULL, NULL, 'petrol', 'ai_generated');
-
-
-INSERT INTO maintenance_schedules (brand, model, year_from, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
-('BMW', '5 Series', 2010, 'Engine Oil & Filter', 15000, 365, '0W-30 BMW LL-04', 'petrol', 'ai_generated'),
-
-('BMW', '5 Series', 2010, 'Cabin Air Filter', 20000, 365, NULL, 'petrol', 'ai_generated'),
-
-('BMW', '5 Series', 2010, 'Engine Air Filter', 30000, 730, NULL, 'petrol', 'ai_generated'),
-
-('BMW', '5 Series', 2010, 'Spark Plugs', 60000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('BMW', '5 Series', 2010, 'Tire Rotation', 10000, 180, NULL, 'petrol', 'ai_generated'),
-
-('BMW', '5 Series', 2010, 'Brake Fluid', NULL, 730, NULL, 'petrol', 'ai_generated'),
-
-('BMW', '5 Series', 2010, 'Coolant', 200000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('BMW', '5 Series', 2010, 'Transmission Fluid (ZF 8HP)', 80000, NULL, 'Replace at 80k — not lifelong', 'petrol', 'ai_generated'),
-
-('BMW', '5 Series', 2010, 'Serpentine Belt', 100000, NULL, NULL, 'petrol', 'ai_generated');
-
-
-INSERT INTO maintenance_schedules (brand, model, year_from, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
-('BMW', 'X5', 2014, 'Engine Oil & Filter', 15000, 365, '0W-30 BMW LL-04', 'petrol', 'ai_generated'),
-
-('BMW', 'X5', 2014, 'Cabin Air Filter', 20000, 365, NULL, 'petrol', 'ai_generated'),
-
-('BMW', 'X5', 2014, 'Engine Air Filter', 30000, 730, NULL, 'petrol', 'ai_generated'),
-
-('BMW', 'X5', 2014, 'Spark Plugs', 60000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('BMW', 'X5', 2014, 'Tire Rotation', 10000, 180, NULL, 'petrol', 'ai_generated'),
-
-('BMW', 'X5', 2014, 'Brake Fluid', NULL, 730, NULL, 'petrol', 'ai_generated'),
-
-('BMW', 'X5', 2014, 'Coolant', 200000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('BMW', 'X5', 2014, 'Transfer Case Fluid', 80000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('BMW', 'X5', 2014, 'Transmission Fluid (ZF 8HP)', 80000, NULL, NULL, 'petrol', 'ai_generated');
-
-
--- ─────────────────────────────────────────────────────────────
--- MERCEDES-BENZ (W205/W213 — timing CHAIN, no scheduled replacement)
--- MB 229.6 / 229.71 oil spec
--- 9G-Tronic ATF: replace at 80k (dealer says lifelong — not in Egypt heat)
--- ─────────────────────────────────────────────────────────────
-
-INSERT INTO maintenance_schedules (brand, model, year_from, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
-('Mercedes', 'C-Class', 2014, 'Engine Oil & Filter', 10000, 365, '0W-20 or 5W-30 MB 229.6', 'petrol', 'ai_generated'),
-
-('Mercedes', 'C-Class', 2014, 'Cabin Air Filter', 20000, 365, NULL, 'petrol', 'ai_generated'),
-
-('Mercedes', 'C-Class', 2014, 'Engine Air Filter', 30000, 730, NULL, 'petrol', 'ai_generated'),
-
-('Mercedes', 'C-Class', 2014, 'Spark Plugs', 60000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Mercedes', 'C-Class', 2014, 'Tire Rotation', 10000, 180, NULL, 'petrol', 'ai_generated'),
-
-('Mercedes', 'C-Class', 2014, 'Brake Fluid', NULL, 730, NULL, 'petrol', 'ai_generated'),
-
-('Mercedes', 'C-Class', 2014, 'Coolant', 200000, NULL, 'MB Coolant 325.0', 'petrol', 'ai_generated'),
-
-('Mercedes', 'C-Class', 2014, 'Transmission Fluid (9G-Tronic)', 80000, NULL, 'Replace at 80k — not lifelong', 'petrol', 'ai_generated'),
-
-('Mercedes', 'C-Class', 2014, 'Serpentine Belt', 120000, NULL, NULL, 'petrol', 'ai_generated');
-
-
-INSERT INTO maintenance_schedules (brand, model, year_from, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
-('Mercedes', 'E-Class', 2016, 'Engine Oil & Filter', 10000, 365, '0W-20 MB 229.6', 'petrol', 'ai_generated'),
-
-('Mercedes', 'E-Class', 2016, 'Cabin Air Filter', 20000, 365, NULL, 'petrol', 'ai_generated'),
-
-('Mercedes', 'E-Class', 2016, 'Engine Air Filter', 30000, 730, NULL, 'petrol', 'ai_generated'),
-
-('Mercedes', 'E-Class', 2016, 'Spark Plugs', 60000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Mercedes', 'E-Class', 2016, 'Tire Rotation', 10000, 180, NULL, 'petrol', 'ai_generated'),
-
-('Mercedes', 'E-Class', 2016, 'Brake Fluid', NULL, 730, NULL, 'petrol', 'ai_generated'),
-
-('Mercedes', 'E-Class', 2016, 'Coolant', 200000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Mercedes', 'E-Class', 2016, 'Transmission Fluid (9G-Tronic)', 80000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Mercedes', 'E-Class', 2016, 'Serpentine Belt', 120000, NULL, NULL, 'petrol', 'ai_generated');
-
-
-INSERT INTO maintenance_schedules (brand, model, year_from, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
-('Mercedes', 'GLC', 2016, 'Engine Oil & Filter', 10000, 365, '0W-20 MB 229.6', 'petrol', 'ai_generated'),
-
-('Mercedes', 'GLC', 2016, 'Cabin Air Filter', 20000, 365, NULL, 'petrol', 'ai_generated'),
-
-('Mercedes', 'GLC', 2016, 'Engine Air Filter', 30000, 730, NULL, 'petrol', 'ai_generated'),
-
-('Mercedes', 'GLC', 2016, 'Spark Plugs', 60000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Mercedes', 'GLC', 2016, 'Tire Rotation', 10000, 180, NULL, 'petrol', 'ai_generated'),
-
-('Mercedes', 'GLC', 2016, 'Brake Fluid', NULL, 730, NULL, 'petrol', 'ai_generated'),
-
-('Mercedes', 'GLC', 2016, 'Coolant', 200000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Mercedes', 'GLC', 2016, 'Transmission Fluid (9G-Tronic)', 80000, NULL, NULL, 'petrol', 'ai_generated');
-
-
--- ─────────────────────────────────────────────────────────────
--- RENAULT
--- Logan MK2 Egypt (pre-2018): K4M 1.6 engine — timing BELT 60,000km ← CRITICAL
--- Logan MK2 Egypt (2018+): H4M 1.6 engine — timing CHAIN
--- Megane MK4: 1.3 TCe — timing CHAIN
--- Duster HM: 1.6 SCe — timing CHAIN
--- Source: motorreviewer.com engine specs + mymotorlist.com
--- ─────────────────────────────────────────────────────────────
-
--- Logan pre-2018 (K4M engine) — timing BELT every 60,000km
+('Toyota', 'Land Cruiser Prado', 2010, NULL, 'Engine Oil & Filter',      10000, 365,  '5W-30 full synthetic', 'petrol', 'official_dealer'),
+('Toyota', 'Land Cruiser Prado', 2010, NULL, 'Engine Air Filter',        30000, NULL, NULL, 'petrol', 'official_dealer'),
+('Toyota', 'Land Cruiser Prado', 2010, NULL, 'Cabin Air Filter',         15000, NULL, NULL, 'petrol', 'official_dealer'),
+('Toyota', 'Land Cruiser Prado', 2010, NULL, 'Spark Plugs (Iridium)',    90000, 60,  'Iridium/Platinum long-life', 'petrol', 'official_dealer'),
+('Toyota', 'Land Cruiser Prado', 2010, NULL, 'Engine Coolant',           80000, 48,  'Toyota SLLC', 'petrol', 'official_dealer'),
+('Toyota', 'Land Cruiser Prado', 2010, NULL, 'Drive Belt',               80000, 48,  'Inspect at 40,000 km', 'petrol', 'official_dealer'),
+('Toyota', 'Land Cruiser Prado', 2010, NULL, 'Fuel Filter',              60000, NULL, NULL, 'petrol', 'official_dealer'),
+('Toyota', 'Land Cruiser Prado', 2010, NULL, 'Brake Fluid',              NULL,  24,  'DOT 3 / replace every 2 years', 'petrol', 'official_dealer'),
+('Toyota', 'Land Cruiser Prado', 2010, NULL, 'AT Fluid',                 80000, 48,  'Toyota ATF WS — A750F/A750E 5-speed', 'petrol', 'official_dealer'),
+('Toyota', 'Land Cruiser Prado', 2010, NULL, 'Transfer Case Oil',        80000, 48,  NULL, 'petrol', 'official_dealer'),
+('Toyota', 'Land Cruiser Prado', 2010, NULL, 'Front Differential Oil',   40000, 24,  NULL, 'petrol', 'official_dealer'),
+('Toyota', 'Land Cruiser Prado', 2010, NULL, 'Rear Differential Oil',    40000, 24,  NULL, 'petrol', 'official_dealer'),
+('Toyota', 'Land Cruiser Prado', 2010, NULL, 'Battery',                  NULL,  36,  'Inspect annually — Egypt heat cuts lifespan', 'petrol', 'estimated'),
+('Toyota', 'Land Cruiser Prado', 2010, NULL, 'Tires',                    NULL,  60,  'Inspect tread & pressure monthly; replace by 5 years or 60,000 km', 'petrol', 'estimated'),
+('Toyota', 'Land Cruiser Prado', 2010, NULL, 'Wiper Blades',             NULL,  12,  'Every 12 months', 'petrol', 'estimated'),
+('Toyota', 'Land Cruiser Prado', 2010, NULL, 'Brake Pads & Discs',       NULL,  NULL,'Inspect every 20,000 km', 'petrol', 'estimated');
+
+-- ═══════════════════════════════════════════════════════════════
+-- TOYOTA HILUX (PETROL ONLY)
+-- TGN16/26/12 — 2TR-FE engine (~2005–2015)
+-- DIESEL VARIANTS (KUN, GUN) ARE EXCLUDED — petrol app only
+-- ═══════════════════════════════════════════════════════════════
 INSERT INTO maintenance_schedules (brand, model, year_from, year_to, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
-('Renault', 'Logan', 2013, 2017, 'Engine Oil & Filter', 7500, 365, '5W-40 semi-synthetic', 'petrol', 'ai_generated'),
+('Toyota', 'Hilux', 2005, 2015, 'Engine Oil & Filter',          10000, 365,  '5W-30 synthetic — can use 5,000 km interval in severe conditions', 'petrol', 'official_dealer'),
+('Toyota', 'Hilux', 2005, 2015, 'Engine Air Filter',            30000, NULL, 'Inspect more frequently in dusty/sandy conditions', 'petrol', 'official_dealer'),
+('Toyota', 'Hilux', 2005, 2015, 'Spark Plugs (Platinum)',       90000, 60,  'Platinum/Iridium long-life — 2TR-FE, 4 plugs', 'petrol', 'official_dealer'),
+('Toyota', 'Hilux', 2005, 2015, 'Engine Coolant',               80000, 48,  'Toyota SLLC (Super Long Life Coolant)', 'petrol', 'official_dealer'),
+('Toyota', 'Hilux', 2005, 2015, 'Drive Belt',                   80000, 48,  'Inspect at 40,000 km — includes AC & alternator belt', 'petrol', 'official_dealer'),
+('Toyota', 'Hilux', 2005, 2015, 'Fuel Filter',                  60000, NULL, NULL, 'petrol', 'official_dealer'),
+('Toyota', 'Hilux', 2005, 2015, 'Brake Fluid',                  40000, 24,  'DOT 3 / replace every 2 years or 40,000 km', 'petrol', 'official_dealer'),
+('Toyota', 'Hilux', 2005, 2015, 'AT Fluid',                     80000, 48,  'Toyota ATF WS — AC60E/AC60F automatic transmission', 'petrol', 'official_dealer'),
+('Toyota', 'Hilux', 2005, 2015, 'Manual Transmission Oil',      80000, 48,  'Toyota Gear Oil MT-90 — manual gearbox only', 'petrol', 'official_dealer'),
+('Toyota', 'Hilux', 2005, 2015, 'Transfer Case Oil',            80000, 48,  '4WD models only — Toyota Gear Oil', 'petrol', 'official_dealer'),
+('Toyota', 'Hilux', 2005, 2015, 'Front Differential Oil',       40000, 24,  '4WD models only', 'petrol', 'official_dealer'),
+('Toyota', 'Hilux', 2005, 2015, 'Cabin Air Filter',             NULL,  NULL, 'Not listed in Toyota official schedule — recommended general practice', 'petrol', 'estimated'),
+('Toyota', 'Hilux', 2005, 2015, 'Battery',                      NULL,  36,  'Inspect annually — Egypt heat cuts lifespan significantly', 'petrol', 'estimated'),
+('Toyota', 'Hilux', 2005, 2015, 'Tires',                        NULL,  60,  'Inspect tread & pressure monthly; replace by 5 years or 60,000 km', 'petrol', 'estimated'),
+('Toyota', 'Hilux', 2005, 2015, 'Wiper Blades',                 NULL,  12,  'Every 12 months — desert dust degrades blades faster', 'petrol', 'estimated'),
+('Toyota', 'Hilux', 2005, 2015, 'Brake Pads & Discs',           NULL,  NULL,'Inspect every 20,000 km; work & load use = faster pad wear', 'petrol', 'estimated');
 
-('Renault', 'Logan', 2013, 2017, 'Cabin Air Filter', 15000, 365, NULL, 'petrol', 'ai_generated'),
-
-('Renault', 'Logan', 2013, 2017, 'Engine Air Filter', 30000, 730, NULL, 'petrol', 'ai_generated'),
-
-('Renault', 'Logan', 2013, 2017, 'Spark Plugs', 60000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Renault', 'Logan', 2013, 2017, 'Timing Belt', 60000, 1825, 'K4M engine — belt + tensioner + rollers. 5 years max. Critical.', 'petrol', 'ai_generated'),
-
-('Renault', 'Logan', 2013, 2017, 'Tire Rotation', 10000, 180, NULL, 'petrol', 'ai_generated'),
-
-('Renault', 'Logan', 2013, 2017, 'Brake Fluid', NULL, 730, NULL, 'petrol', 'ai_generated'),
-
-('Renault', 'Logan', 2013, 2017, 'Coolant', 160000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Renault', 'Logan', 2013, 2017, 'Serpentine Belt', 80000, NULL, NULL, 'petrol', 'ai_generated');
-
-
--- Logan 2018+ (H4M engine) — timing CHAIN
-INSERT INTO maintenance_schedules (brand, model, year_from, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
-('Renault', 'Logan', 2018, 'Engine Oil & Filter', 10000, 365, '5W-40 or 5W-30 synthetic — H4M engine', 'petrol', 'ai_generated'),
-
-('Renault', 'Logan', 2018, 'Cabin Air Filter', 20000, 365, NULL, 'petrol', 'ai_generated'),
-
-('Renault', 'Logan', 2018, 'Engine Air Filter', 40000, 730, NULL, 'petrol', 'ai_generated'),
-
-('Renault', 'Logan', 2018, 'Spark Plugs', 60000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Renault', 'Logan', 2018, 'Tire Rotation', 10000, 180, NULL, 'petrol', 'ai_generated'),
-
-('Renault', 'Logan', 2018, 'Brake Fluid', NULL, 730, NULL, 'petrol', 'ai_generated'),
-
-('Renault', 'Logan', 2018, 'Coolant', 160000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Renault', 'Logan', 2018, 'Serpentine Belt', 100000, NULL, NULL, 'petrol', 'ai_generated');
-
-
--- Megane MK4 (2016+) — 1.3 TCe, timing CHAIN
-INSERT INTO maintenance_schedules (brand, model, year_from, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
-('Renault', 'Megane', 2016, 'Engine Oil & Filter', 10000, 365, '5W-30 synthetic', 'petrol', 'ai_generated'),
-
-('Renault', 'Megane', 2016, 'Cabin Air Filter', 20000, 365, NULL, 'petrol', 'ai_generated'),
-
-('Renault', 'Megane', 2016, 'Engine Air Filter', 40000, 730, NULL, 'petrol', 'ai_generated'),
-
-('Renault', 'Megane', 2016, 'Spark Plugs', 60000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Renault', 'Megane', 2016, 'Tire Rotation', 10000, 180, NULL, 'petrol', 'ai_generated'),
-
-('Renault', 'Megane', 2016, 'Brake Fluid', NULL, 730, NULL, 'petrol', 'ai_generated'),
-
-('Renault', 'Megane', 2016, 'Coolant', 160000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Renault', 'Megane', 2016, 'EDC Fluid', 60000, NULL, NULL, 'petrol', 'ai_generated');
-
-
--- Duster HM (2018+) — 1.6 SCe H4M, timing CHAIN
-INSERT INTO maintenance_schedules (brand, model, year_from, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
-('Renault', 'Duster', 2018, 'Engine Oil & Filter', 10000, 365, '5W-40 synthetic', 'petrol', 'ai_generated'),
-
-('Renault', 'Duster', 2018, 'Cabin Air Filter', 15000, 365, NULL, 'petrol', 'ai_generated'),
-
-('Renault', 'Duster', 2018, 'Engine Air Filter', 30000, 730, NULL, 'petrol', 'ai_generated'),
-
-('Renault', 'Duster', 2018, 'Spark Plugs', 60000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Renault', 'Duster', 2018, 'Tire Rotation', 10000, 180, NULL, 'petrol', 'ai_generated'),
-
-('Renault', 'Duster', 2018, 'Brake Fluid', NULL, 730, NULL, 'petrol', 'ai_generated'),
-
-('Renault', 'Duster', 2018, 'Coolant', 160000, NULL, NULL, 'petrol', 'ai_generated');
-
+-- ═══════════════════════════════════════════════════════════════
+-- MG EGYPT — Official Dealer Maintenance Schedule
+-- Source: MG Service Schedule Aug 2026 (official dealer PPTX)
+-- data_source = 'official_dealer' → directly from MG Egypt document
+-- data_source = 'estimated'       → general best practice (not in official doc)
+-- Skipped: MG 4 EV, MG Cyberster (electric — petrol app only)
+-- ═══════════════════════════════════════════════════════════════
 
 -- ─────────────────────────────────────────────────────────────
--- PEUGEOT
--- PureTech 1.2: known oil dilution issue — max 7,500km oil interval
--- 301: 1.6 VTi EP6 — timing CHAIN
--- 3008: 1.6 THP — timing CHAIN
+-- MG 5 (2021+) — 1.5T CVT
 -- ─────────────────────────────────────────────────────────────
-
--- 208 MK2 (2019+) — 1.2 PureTech, timing CHAIN but oil dilution risk
-INSERT INTO maintenance_schedules (brand, model, year_from, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
-('Peugeot', '208', 2019, 'Engine Oil & Filter', 7500, 365, '0W-20 PSA B71 2312 — PureTech oil dilution issue: do not exceed 7,500km or 1 year', 'petrol', 'ai_generated'),
-
-('Peugeot', '208', 2019, 'Cabin Air Filter', 20000, 365, NULL, 'petrol', 'ai_generated'),
-
-('Peugeot', '208', 2019, 'Engine Air Filter', 40000, 730, NULL, 'petrol', 'ai_generated'),
-
-('Peugeot', '208', 2019, 'Spark Plugs', 60000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Peugeot', '208', 2019, 'Tire Rotation', 10000, 180, NULL, 'petrol', 'ai_generated'),
-
-('Peugeot', '208', 2019, 'Brake Fluid', NULL, 730, NULL, 'petrol', 'ai_generated'),
-
-('Peugeot', '208', 2019, 'Coolant', 200000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Peugeot', '208', 2019, 'Transmission Fluid (EAT8)', 80000, NULL, NULL, 'petrol', 'ai_generated');
-
-
--- 301 (2013+) — 1.6 VTi EP6, timing CHAIN
-INSERT INTO maintenance_schedules (brand, model, year_from, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
-('Peugeot', '301', 2013, 'Engine Oil & Filter', 10000, 365, '5W-30 or 5W-40', 'petrol', 'ai_generated'),
-
-('Peugeot', '301', 2013, 'Cabin Air Filter', 20000, 365, NULL, 'petrol', 'ai_generated'),
-
-('Peugeot', '301', 2013, 'Engine Air Filter', 40000, 730, NULL, 'petrol', 'ai_generated'),
-
-('Peugeot', '301', 2013, 'Spark Plugs', 60000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Peugeot', '301', 2013, 'Tire Rotation', 10000, 180, NULL, 'petrol', 'ai_generated'),
-
-('Peugeot', '301', 2013, 'Brake Fluid', NULL, 730, NULL, 'petrol', 'ai_generated'),
-
-('Peugeot', '301', 2013, 'Coolant', 160000, NULL, NULL, 'petrol', 'ai_generated');
-
-
--- 3008 MK2 (2017+) — 1.6 THP / 1.2 PureTech, timing CHAIN
-INSERT INTO maintenance_schedules (brand, model, year_from, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
-('Peugeot', '3008', 2017, 'Engine Oil & Filter', 7500, 365, '0W-20 PSA B71 2312 — if PureTech; 5W-30 for 1.6 THP', 'petrol', 'ai_generated'),
-
-('Peugeot', '3008', 2017, 'Cabin Air Filter', 20000, 365, NULL, 'petrol', 'ai_generated'),
-
-('Peugeot', '3008', 2017, 'Engine Air Filter', 40000, 730, NULL, 'petrol', 'ai_generated'),
-
-('Peugeot', '3008', 2017, 'Spark Plugs', 60000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Peugeot', '3008', 2017, 'Tire Rotation', 10000, 180, NULL, 'petrol', 'ai_generated'),
-
-('Peugeot', '3008', 2017, 'Brake Fluid', NULL, 730, NULL, 'petrol', 'ai_generated'),
-
-('Peugeot', '3008', 2017, 'Coolant', 200000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Peugeot', '3008', 2017, 'Transmission Fluid (EAT6)', 60000, NULL, NULL, 'petrol', 'ai_generated');
-
+INSERT INTO maintenance_schedules (brand, model, year_from, year_to, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
+('MG', 'MG 5', 2021, NULL, 'Engine Oil & Filter',       10000, 183, 'Every 10,000 km or 6 months', 'petrol', 'official_dealer'),
+('MG', 'MG 5', 2021, NULL, 'Engine Air Filter',          30000, NULL, NULL, 'petrol', 'official_dealer'),
+('MG', 'MG 5', 2021, NULL, 'Cabin Air Filter',           20000, NULL, NULL, 'petrol', 'official_dealer'),
+('MG', 'MG 5', 2021, NULL, 'Spark Plugs',                40000, NULL, NULL, 'petrol', 'official_dealer'),
+('MG', 'MG 5', 2021, NULL, 'Fuel Filter',                40000, NULL, NULL, 'petrol', 'official_dealer'),
+('MG', 'MG 5', 2021, NULL, 'Brake Fluid',                40000, 24,  'Every 40,000 km or 2 years', 'petrol', 'official_dealer'),
+('MG', 'MG 5', 2021, NULL, 'CVT Oil & Filter Kit',       60000, 36,  'Includes upper filter, oil seal, silicone, inner filter — every 60,000 km or 3 years', 'petrol', 'official_dealer'),
+('MG', 'MG 5', 2021, NULL, 'Engine Coolant',             100000, NULL, NULL, 'petrol', 'official_dealer'),
+('MG', 'MG 5', 2021, NULL, 'Drive Belt Kit',             100000, 36,  'Every 100,000 km or 3 years', 'petrol', 'official_dealer'),
+('MG', 'MG 5', 2021, NULL, 'Battery',                    NULL,  36,  'Inspect annually', 'petrol', 'estimated'),
+('MG', 'MG 5', 2021, NULL, 'Tires',                      NULL,  60,  'Inspect monthly; replace by 5 years or 50,000 km', 'petrol', 'estimated'),
+('MG', 'MG 5', 2021, NULL, 'Wiper Blades',               NULL,  12,  'Every 12 months', 'petrol', 'estimated'),
+('MG', 'MG 5', 2021, NULL, 'Brake Pads & Discs',         NULL,  NULL,'Inspect every 20,000 km', 'petrol', 'estimated');
 
 -- ─────────────────────────────────────────────────────────────
--- FIAT
--- Tipo / Punto: 1.4 Fire 843A engine — timing BELT
--- Correct interval: first replacement at 45,000km, then every 90,000km
--- 5-year time limit — Egypt heat accelerates rubber degradation
--- Source: fiatworkshop.co.uk official service schedule
+-- MG 6 (2016+) — 1.5T / 2.0T CVT
 -- ─────────────────────────────────────────────────────────────
-
--- Tipo (2016+) — 1.4 843A Fire
-INSERT INTO maintenance_schedules (brand, model, year_from, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
-('Fiat', 'Tipo', 2016, 'Engine Oil & Filter', 10000, 365, '5W-40 synthetic', 'petrol', 'ai_generated'),
-
-('Fiat', 'Tipo', 2016, 'Cabin Air Filter', 20000, 365, NULL, 'petrol', 'ai_generated'),
-
-('Fiat', 'Tipo', 2016, 'Engine Air Filter', 40000, 730, NULL, 'petrol', 'ai_generated'),
-
-('Fiat', 'Tipo', 2016, 'Spark Plugs', 30000, NULL, 'Fire engine — shorter interval than average', 'petrol', 'ai_generated'),
-
-('Fiat', 'Tipo', 2016, 'Timing Belt', 45000, 1825, 'First replacement at 45,000km, then every 90,000km — 5 years max in Egypt', 'petrol', 'ai_generated'),
-
-('Fiat', 'Tipo', 2016, 'Tire Rotation', 10000, 180, NULL, 'petrol', 'ai_generated'),
-
-('Fiat', 'Tipo', 2016, 'Brake Fluid', NULL, 730, NULL, 'petrol', 'ai_generated'),
-
-('Fiat', 'Tipo', 2016, 'Coolant', 160000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Fiat', 'Tipo', 2016, 'Serpentine Belt', 80000, NULL, NULL, 'petrol', 'ai_generated');
-
-
--- Punto (pre-2018) — 1.2 / 1.4 Fire
-INSERT INTO maintenance_schedules (brand, model, year_from, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
-('Fiat', 'Punto', 2005, 'Engine Oil & Filter', 10000, 365, '5W-40', 'petrol', 'ai_generated'),
-
-('Fiat', 'Punto', 2005, 'Cabin Air Filter', 20000, 365, NULL, 'petrol', 'ai_generated'),
-
-('Fiat', 'Punto', 2005, 'Engine Air Filter', 40000, 730, NULL, 'petrol', 'ai_generated'),
-
-('Fiat', 'Punto', 2005, 'Spark Plugs', 30000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Fiat', 'Punto', 2005, 'Timing Belt', 45000, 1825, 'First at 45k, then 90k — 5 years max', 'petrol', 'ai_generated'),
-
-('Fiat', 'Punto', 2005, 'Brake Fluid', NULL, 730, NULL, 'petrol', 'ai_generated'),
-
-('Fiat', 'Punto', 2005, 'Coolant', 160000, NULL, NULL, 'petrol', 'ai_generated'),
-
-('Fiat', 'Punto', 2005, 'Serpentine Belt', 80000, NULL, NULL, 'petrol', 'ai_generated');
-
+INSERT INTO maintenance_schedules (brand, model, year_from, year_to, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
+('MG', 'MG 6', 2016, NULL, 'Engine Oil & Filter',        10000, 183, 'Every 10,000 km or 6 months', 'petrol', 'official_dealer'),
+('MG', 'MG 6', 2016, NULL, 'Engine Air Filter',           30000, NULL, NULL, 'petrol', 'official_dealer'),
+('MG', 'MG 6', 2016, NULL, 'Cabin Air Filter',            20000, NULL, NULL, 'petrol', 'official_dealer'),
+('MG', 'MG 6', 2016, NULL, 'Fuel Filter',                 40000, NULL, NULL, 'petrol', 'official_dealer'),
+('MG', 'MG 6', 2016, NULL, 'Spark Plugs',                 40000, NULL, NULL, 'petrol', 'official_dealer'),
+('MG', 'MG 6', 2016, NULL, 'Brake Fluid',                 40000, 24,  'Every 40,000 km or 2 years', 'petrol', 'official_dealer'),
+('MG', 'MG 6', 2016, NULL, 'CVT Oil',                     60000, 36,  '3 litres — every 60,000 km or 3 years', 'petrol', 'official_dealer'),
+('MG', 'MG 6', 2016, NULL, 'Engine Coolant',              100000, NULL,'5 litres', 'petrol', 'official_dealer'),
+('MG', 'MG 6', 2016, NULL, 'Drive Belt Kit',              100000, 36,  'Every 100,000 km or 3 years', 'petrol', 'official_dealer'),
+('MG', 'MG 6', 2016, NULL, 'Battery',                     NULL,  36,  'Inspect annually', 'petrol', 'estimated'),
+('MG', 'MG 6', 2016, NULL, 'Tires',                       NULL,  60,  'Inspect monthly; replace by 5 years or 50,000 km', 'petrol', 'estimated'),
+('MG', 'MG 6', 2016, NULL, 'Wiper Blades',                NULL,  12,  'Every 12 months', 'petrol', 'estimated'),
+('MG', 'MG 6', 2016, NULL, 'Brake Pads & Discs',          NULL,  NULL,'Inspect every 20,000 km', 'petrol', 'estimated');
 
 -- ─────────────────────────────────────────────────────────────
--- SUZUKI (2015+ petrol — timing CHAIN confirmed for Swift/Vitara/Ciaz)
+-- MG 7 / MG 7 Trophy (2023+) — 2.0T / 3.0T
+-- ─────────────────────────────────────────────────────────────
+INSERT INTO maintenance_schedules (brand, model, year_from, year_to, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
+('MG', 'MG 7', 2023, NULL, 'Engine Oil & Filter',        10000, 183, 'Every 10,000 km or 6 months', 'petrol', 'official_dealer'),
+('MG', 'MG 7', 2023, NULL, 'Cabin Air Filter',           20000, NULL, NULL, 'petrol', 'official_dealer'),
+('MG', 'MG 7', 2023, NULL, 'Engine Air Filter',          30000, NULL, NULL, 'petrol', 'official_dealer'),
+('MG', 'MG 7', 2023, NULL, 'Brake Fluid',                40000, 24,  'Every 40,000 km or 2 years', 'petrol', 'official_dealer'),
+('MG', 'MG 7', 2023, NULL, 'Spark Plugs',                60000, NULL, 'Higher-output engine — longer plug interval', 'petrol', 'official_dealer'),
+('MG', 'MG 7', 2023, NULL, 'CVT Oil & Filter Kit',       90000, 36,  'Includes sump gasket — every 90,000 km or 3 years', 'petrol', 'official_dealer'),
+('MG', 'MG 7', 2023, NULL, 'Clutch Cooler Oil',          90000, 36,  'Replaced with CVT service', 'petrol', 'official_dealer'),
+('MG', 'MG 7', 2023, NULL, 'Fuel Injector Cleaner',      40000, NULL, 'Fuel cleaner additive every 40,000 km', 'petrol', 'official_dealer'),
+('MG', 'MG 7', 2023, NULL, 'Engine Coolant',             100000, NULL, NULL, 'petrol', 'official_dealer'),
+('MG', 'MG 7', 2023, NULL, 'Drive Belt Kit',             100000, 36,  'Every 100,000 km or 3 years', 'petrol', 'official_dealer'),
+('MG', 'MG 7', 2023, NULL, 'Battery',                    NULL,  36,  'Inspect annually', 'petrol', 'estimated'),
+('MG', 'MG 7', 2023, NULL, 'Tires',                      NULL,  60,  'Inspect monthly; replace by 5 years or 50,000 km', 'petrol', 'estimated'),
+('MG', 'MG 7', 2023, NULL, 'Wiper Blades',               NULL,  12,  'Every 12 months', 'petrol', 'estimated'),
+('MG', 'MG 7', 2023, NULL, 'Brake Pads & Discs',         NULL,  NULL,'Inspect every 20,000 km', 'petrol', 'estimated');
+
+-- ─────────────────────────────────────────────────────────────
+-- MG ZS (2018–2020) — 1.5T / 1.0T CVT
+-- ─────────────────────────────────────────────────────────────
+INSERT INTO maintenance_schedules (brand, model, year_from, year_to, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
+('MG', 'MG ZS', 2018, 2020, 'Engine Oil & Filter',       10000, 183, 'Every 10,000 km or 6 months', 'petrol', 'official_dealer'),
+('MG', 'MG ZS', 2018, 2020, 'Engine Air Filter',          30000, NULL, NULL, 'petrol', 'official_dealer'),
+('MG', 'MG ZS', 2018, 2020, 'Cabin Air Filter',           20000, NULL, NULL, 'petrol', 'official_dealer'),
+('MG', 'MG ZS', 2018, 2020, 'Fuel Filter',                40000, NULL, NULL, 'petrol', 'official_dealer'),
+('MG', 'MG ZS', 2018, 2020, 'Spark Plugs',                40000, NULL, NULL, 'petrol', 'official_dealer'),
+('MG', 'MG ZS', 2018, 2020, 'Brake Fluid',                40000, 24,  'Every 40,000 km or 2 years', 'petrol', 'official_dealer'),
+('MG', 'MG ZS', 2018, 2020, 'CVT Oil',                    60000, 36,  'Every 60,000 km or 3 years', 'petrol', 'official_dealer'),
+('MG', 'MG ZS', 2018, 2020, 'Engine Coolant',             100000, NULL, NULL, 'petrol', 'official_dealer'),
+('MG', 'MG ZS', 2018, 2020, 'Drive Belt Kit',             100000, 36,  'Every 100,000 km or 3 years', 'petrol', 'official_dealer'),
+('MG', 'MG ZS', 2018, 2020, 'Battery',                    NULL,  36,  'Inspect annually', 'petrol', 'estimated'),
+('MG', 'MG ZS', 2018, 2020, 'Tires',                      NULL,  60,  'Inspect monthly; replace by 5 years or 50,000 km', 'petrol', 'estimated'),
+('MG', 'MG ZS', 2018, 2020, 'Wiper Blades',               NULL,  12,  'Every 12 months', 'petrol', 'estimated'),
+('MG', 'MG ZS', 2018, 2020, 'Brake Pads & Discs',         NULL,  NULL,'Inspect every 20,000 km', 'petrol', 'estimated');
+
+-- ─────────────────────────────────────────────────────────────
+-- MG ZS FL — Facelift (2021+) — 1.5T CVT
+-- More comprehensive CVT filter kit vs original ZS
+-- ─────────────────────────────────────────────────────────────
+INSERT INTO maintenance_schedules (brand, model, year_from, year_to, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
+('MG', 'MG ZS FL', 2021, NULL, 'Engine Oil & Filter',    10000, 183, 'Every 10,000 km or 6 months', 'petrol', 'official_dealer'),
+('MG', 'MG ZS FL', 2021, NULL, 'Engine Air Filter',       30000, NULL, NULL, 'petrol', 'official_dealer'),
+('MG', 'MG ZS FL', 2021, NULL, 'Cabin Air Filter',        20000, NULL, NULL, 'petrol', 'official_dealer'),
+('MG', 'MG ZS FL', 2021, NULL, 'Fuel Filter',             40000, NULL, NULL, 'petrol', 'official_dealer'),
+('MG', 'MG ZS FL', 2021, NULL, 'Spark Plugs',             40000, NULL, NULL, 'petrol', 'official_dealer'),
+('MG', 'MG ZS FL', 2021, NULL, 'Brake Fluid',             40000, 24,  'Every 40,000 km or 2 years', 'petrol', 'official_dealer'),
+('MG', 'MG ZS FL', 2021, NULL, 'CVT Oil & Filter Kit',    60000, 36,  'Full kit: upper filter, oil seal, silicone, inner filter — every 60,000 km or 3 years', 'petrol', 'official_dealer'),
+('MG', 'MG ZS FL', 2021, NULL, 'Engine Coolant',          100000, NULL, NULL, 'petrol', 'official_dealer'),
+('MG', 'MG ZS FL', 2021, NULL, 'Drive Belt Kit',          100000, 36,  'Every 100,000 km or 3 years', 'petrol', 'official_dealer'),
+('MG', 'MG ZS FL', 2021, NULL, 'Battery',                 NULL,  36,  'Inspect annually', 'petrol', 'estimated'),
+('MG', 'MG ZS FL', 2021, NULL, 'Tires',                   NULL,  60,  'Inspect monthly; replace by 5 years or 50,000 km', 'petrol', 'estimated'),
+('MG', 'MG ZS FL', 2021, NULL, 'Wiper Blades',            NULL,  12,  'Every 12 months', 'petrol', 'estimated'),
+('MG', 'MG ZS FL', 2021, NULL, 'Brake Pads & Discs',      NULL,  NULL,'Inspect every 20,000 km', 'petrol', 'estimated');
+
+-- ─────────────────────────────────────────────────────────────
+-- MG HS (2019+) — 1.5T / 2.0T CVT
+-- Covers HS, HS+ (current gen) from slide: HS & HS+
+-- ─────────────────────────────────────────────────────────────
+INSERT INTO maintenance_schedules (brand, model, year_from, year_to, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
+('MG', 'MG HS', 2019, NULL, 'Engine Oil & Filter',        10000, 183, 'Every 10,000 km or 6 months', 'petrol', 'official_dealer'),
+('MG', 'MG HS', 2019, NULL, 'Engine Air Filter',           30000, NULL, NULL, 'petrol', 'official_dealer'),
+('MG', 'MG HS', 2019, NULL, 'Cabin Air Filter',            20000, NULL, NULL, 'petrol', 'official_dealer'),
+('MG', 'MG HS', 2019, NULL, 'Carbon Air Purifier Filter',  20000, NULL, 'HS+ trim — activated carbon cabin filter', 'petrol', 'official_dealer'),
+('MG', 'MG HS', 2019, NULL, 'Spark Plugs',                 40000, NULL, NULL, 'petrol', 'official_dealer'),
+('MG', 'MG HS', 2019, NULL, 'Brake Fluid',                 40000, 24,  'Every 40,000 km or 2 years', 'petrol', 'official_dealer'),
+('MG', 'MG HS', 2019, NULL, 'CVT Oil',                     60000, 36,  'Every 60,000 km or 3 years', 'petrol', 'official_dealer'),
+('MG', 'MG HS', 2019, NULL, 'Engine Coolant',              100000, NULL, NULL, 'petrol', 'official_dealer'),
+('MG', 'MG HS', 2019, NULL, 'Drive Belt Kit',              100000, 36,  'Every 100,000 km or 3 years', 'petrol', 'official_dealer'),
+('MG', 'MG HS', 2019, NULL, 'Battery',                     NULL,  36,  'Inspect annually', 'petrol', 'estimated'),
+('MG', 'MG HS', 2019, NULL, 'Tires',                       NULL,  60,  'Inspect monthly; replace by 5 years or 50,000 km', 'petrol', 'estimated'),
+('MG', 'MG HS', 2019, NULL, 'Wiper Blades',                NULL,  12,  'Every 12 months', 'petrol', 'estimated'),
+('MG', 'MG HS', 2019, NULL, 'Brake Pads & Discs',          NULL,  NULL,'Inspect every 20,000 km', 'petrol', 'estimated');
+
+-- ─────────────────────────────────────────────────────────────
+-- MG One (2022+) — 1.5T CVT
+-- ─────────────────────────────────────────────────────────────
+INSERT INTO maintenance_schedules (brand, model, year_from, year_to, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
+('MG', 'MG One', 2022, NULL, 'Engine Oil & Filter',       10000, 183, 'Every 10,000 km or 6 months', 'petrol', 'official_dealer'),
+('MG', 'MG One', 2022, NULL, 'Engine Air Filter',          30000, NULL, NULL, 'petrol', 'official_dealer'),
+('MG', 'MG One', 2022, NULL, 'Cabin Air Filter',           20000, NULL, NULL, 'petrol', 'official_dealer'),
+('MG', 'MG One', 2022, NULL, 'Spark Plugs',                40000, NULL, NULL, 'petrol', 'official_dealer'),
+('MG', 'MG One', 2022, NULL, 'Brake Fluid',                40000, 24,  'Every 40,000 km or 2 years', 'petrol', 'official_dealer'),
+('MG', 'MG One', 2022, NULL, 'CVT Oil & Filter Kit',       60000, 36,  'CVT oil + filters — every 60,000 km or 3 years', 'petrol', 'official_dealer'),
+('MG', 'MG One', 2022, NULL, 'Engine Coolant',             100000, NULL, NULL, 'petrol', 'official_dealer'),
+('MG', 'MG One', 2022, NULL, 'Drive Belt Kit',             100000, 36,  'Every 100,000 km or 3 years', 'petrol', 'official_dealer'),
+('MG', 'MG One', 2022, NULL, 'Battery',                    NULL,  36,  'Inspect annually', 'petrol', 'estimated'),
+('MG', 'MG One', 2022, NULL, 'Tires',                      NULL,  60,  'Inspect monthly; replace by 5 years or 50,000 km', 'petrol', 'estimated'),
+('MG', 'MG One', 2022, NULL, 'Wiper Blades',               NULL,  12,  'Every 12 months', 'petrol', 'estimated'),
+('MG', 'MG One', 2022, NULL, 'Brake Pads & Discs',         NULL,  NULL,'Inspect every 20,000 km', 'petrol', 'estimated');
+
+-- ─────────────────────────────────────────────────────────────
+-- MG RX5 (2017–2022) — 1.5T CVT
+-- ─────────────────────────────────────────────────────────────
+INSERT INTO maintenance_schedules (brand, model, year_from, year_to, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
+('MG', 'MG RX5', 2017, 2022, 'Engine Oil & Filter',       10000, 183, 'Every 10,000 km or 6 months', 'petrol', 'official_dealer'),
+('MG', 'MG RX5', 2017, 2022, 'Engine Air Filter',          30000, NULL, NULL, 'petrol', 'official_dealer'),
+('MG', 'MG RX5', 2017, 2022, 'Cabin Air Filter',           20000, NULL, NULL, 'petrol', 'official_dealer'),
+('MG', 'MG RX5', 2017, 2022, 'Fuel Filter',                40000, NULL, NULL, 'petrol', 'official_dealer'),
+('MG', 'MG RX5', 2017, 2022, 'Spark Plugs',                40000, NULL, NULL, 'petrol', 'official_dealer'),
+('MG', 'MG RX5', 2017, 2022, 'Brake Fluid',                40000, 24,  'Every 40,000 km or 2 years', 'petrol', 'official_dealer'),
+('MG', 'MG RX5', 2017, 2022, 'CVT Oil',                    60000, 36,  'Every 60,000 km or 3 years', 'petrol', 'official_dealer'),
+('MG', 'MG RX5', 2017, 2022, 'Engine Coolant',             100000, NULL, NULL, 'petrol', 'official_dealer'),
+('MG', 'MG RX5', 2017, 2022, 'Drive Belt Kit',             100000, 36,  'Every 100,000 km or 3 years', 'petrol', 'official_dealer'),
+('MG', 'MG RX5', 2017, 2022, 'Battery',                    NULL,  36,  'Inspect annually', 'petrol', 'estimated'),
+('MG', 'MG RX5', 2017, 2022, 'Tires',                      NULL,  60,  'Inspect monthly; replace by 5 years or 50,000 km', 'petrol', 'estimated'),
+('MG', 'MG RX5', 2017, 2022, 'Wiper Blades',               NULL,  12,  'Every 12 months', 'petrol', 'estimated'),
+('MG', 'MG RX5', 2017, 2022, 'Brake Pads & Discs',         NULL,  NULL,'Inspect every 20,000 km', 'petrol', 'estimated');
+
+-- ─────────────────────────────────────────────────────────────
+-- MG RX5+ (2021+) — 2.0T — upgraded gearbox vs RX5
+-- ─────────────────────────────────────────────────────────────
+INSERT INTO maintenance_schedules (brand, model, year_from, year_to, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
+('MG', 'MG RX5+', 2021, NULL, 'Engine Oil & Filter',      10000, 183, 'Every 10,000 km or 6 months', 'petrol', 'official_dealer'),
+('MG', 'MG RX5+', 2021, NULL, 'Engine Air Filter',         30000, NULL, NULL, 'petrol', 'official_dealer'),
+('MG', 'MG RX5+', 2021, NULL, 'Cabin Air Filter',          20000, NULL, NULL, 'petrol', 'official_dealer'),
+('MG', 'MG RX5+', 2021, NULL, 'Spark Plugs',               40000, NULL, NULL, 'petrol', 'official_dealer'),
+('MG', 'MG RX5+', 2021, NULL, 'Brake Fluid',               40000, 24,  'Every 40,000 km or 2 years', 'petrol', 'official_dealer'),
+('MG', 'MG RX5+', 2021, NULL, 'CVT Oil & Filter Kit',      60000, 36,  'Includes sump gasket and filter — every 60,000 km or 3 years', 'petrol', 'official_dealer'),
+('MG', 'MG RX5+', 2021, NULL, 'Clutch Oil',                60000, 36,  '3 litres — replaced with CVT service', 'petrol', 'official_dealer'),
+('MG', 'MG RX5+', 2021, NULL, 'Engine Coolant',            100000, NULL, NULL, 'petrol', 'official_dealer'),
+('MG', 'MG RX5+', 2021, NULL, 'Drive Belt Kit',            100000, 36,  'Every 100,000 km or 3 years', 'petrol', 'official_dealer'),
+('MG', 'MG RX5+', 2021, NULL, 'Battery',                   NULL,  36,  'Inspect annually', 'petrol', 'estimated'),
+('MG', 'MG RX5+', 2021, NULL, 'Tires',                     NULL,  60,  'Inspect monthly; replace by 5 years or 50,000 km', 'petrol', 'estimated'),
+('MG', 'MG RX5+', 2021, NULL, 'Wiper Blades',              NULL,  12,  'Every 12 months', 'petrol', 'estimated'),
+('MG', 'MG RX5+', 2021, NULL, 'Brake Pads & Discs',        NULL,  NULL,'Inspect every 20,000 km', 'petrol', 'estimated');
+
+-- ─────────────────────────────────────────────────────────────
+-- MG GT (2016+) — 1.5T CVT / DCT
+-- ─────────────────────────────────────────────────────────────
+INSERT INTO maintenance_schedules (brand, model, year_from, year_to, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
+('MG', 'MG GT', 2016, NULL, 'Engine Oil & Filter',         10000, 183, 'Every 10,000 km or 6 months', 'petrol', 'official_dealer'),
+('MG', 'MG GT', 2016, NULL, 'Engine Air Filter',            30000, NULL, NULL, 'petrol', 'official_dealer'),
+('MG', 'MG GT', 2016, NULL, 'Cabin Air Filter',             20000, NULL, NULL, 'petrol', 'official_dealer'),
+('MG', 'MG GT', 2016, NULL, 'Spark Plugs',                  40000, NULL, NULL, 'petrol', 'official_dealer'),
+('MG', 'MG GT', 2016, NULL, 'Brake Fluid',                  40000, 24,  'Every 40,000 km or 2 years', 'petrol', 'official_dealer'),
+('MG', 'MG GT', 2016, NULL, 'CVT Oil & Filter Kit',         60000, 36,  'Includes gearbox filter and clutch oil — every 60,000 km or 3 years', 'petrol', 'official_dealer'),
+('MG', 'MG GT', 2016, NULL, 'Engine Coolant',               100000, NULL, NULL, 'petrol', 'official_dealer'),
+('MG', 'MG GT', 2016, NULL, 'Drive Belt Kit',               100000, 36,  'Every 100,000 km or 3 years', 'petrol', 'official_dealer'),
+('MG', 'MG GT', 2016, NULL, 'Battery',                      NULL,  36,  'Inspect annually', 'petrol', 'estimated'),
+('MG', 'MG GT', 2016, NULL, 'Tires',                        NULL,  60,  'Inspect monthly; replace by 5 years or 50,000 km', 'petrol', 'estimated'),
+('MG', 'MG GT', 2016, NULL, 'Wiper Blades',                 NULL,  12,  'Every 12 months', 'petrol', 'estimated'),
+('MG', 'MG GT', 2016, NULL, 'Brake Pads & Discs',           NULL,  NULL,'Inspect every 20,000 km', 'petrol', 'estimated');
+
+-- ─────────────────────────────────────────────────────────────
+-- MG G50 Plus (2022+) — 1.5T CVT
+-- Has 3,000 km initial break-in service + dual cooling system
+-- ─────────────────────────────────────────────────────────────
+INSERT INTO maintenance_schedules (brand, model, year_from, year_to, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
+('MG', 'MG G50 Plus', 2022, NULL, 'Engine Oil & Filter — Initial', 3000, NULL, 'First service at 3,000 km only (break-in)', 'petrol', 'official_dealer'),
+('MG', 'MG G50 Plus', 2022, NULL, 'Engine Oil & Filter',    10000, 183, 'Every 10,000 km or 6 months after initial service', 'petrol', 'official_dealer'),
+('MG', 'MG G50 Plus', 2022, NULL, 'Engine Air Filter',       30000, NULL, NULL, 'petrol', 'official_dealer'),
+('MG', 'MG G50 Plus', 2022, NULL, 'Cabin Air Filter',        20000, NULL, NULL, 'petrol', 'official_dealer'),
+('MG', 'MG G50 Plus', 2022, NULL, 'Fuel Filter',             40000, NULL, NULL, 'petrol', 'official_dealer'),
+('MG', 'MG G50 Plus', 2022, NULL, 'Spark Plugs',             40000, NULL, NULL, 'petrol', 'official_dealer'),
+('MG', 'MG G50 Plus', 2022, NULL, 'Brake Fluid',             40000, 24,  'Every 40,000 km or 2 years', 'petrol', 'official_dealer'),
+('MG', 'MG G50 Plus', 2022, NULL, 'CVT Oil & Filter Kit',    80000, 36,  'Every 80,000 km or 3 years', 'petrol', 'official_dealer'),
+('MG', 'MG G50 Plus', 2022, NULL, 'Clutch Oil',              80000, 36,  'Replaced with CVT service', 'petrol', 'official_dealer'),
+('MG', 'MG G50 Plus', 2022, NULL, 'Engine Coolant',          100000, NULL,'Two cooling circuits — engine + HVAC', 'petrol', 'official_dealer'),
+('MG', 'MG G50 Plus', 2022, NULL, 'Drive Belt Kit',          100000, 36,  'Every 100,000 km or 3 years', 'petrol', 'official_dealer'),
+('MG', 'MG G50 Plus', 2022, NULL, 'Battery',                 NULL,  36,  'Inspect annually', 'petrol', 'estimated'),
+('MG', 'MG G50 Plus', 2022, NULL, 'Tires',                   NULL,  60,  'Inspect monthly; replace by 5 years or 50,000 km', 'petrol', 'estimated'),
+('MG', 'MG G50 Plus', 2022, NULL, 'Wiper Blades',            NULL,  12,  'Every 12 months', 'petrol', 'estimated'),
+('MG', 'MG G50 Plus', 2022, NULL, 'Brake Pads & Discs',      NULL,  NULL,'Inspect every 20,000 km', 'petrol', 'estimated');
+
+-- ─────────────────────────────────────────────────────────────
+-- MG RX9 (2024+) — 1.5T Hybrid / PHEV
+-- Still has full petrol engine maintenance
+-- ─────────────────────────────────────────────────────────────
+INSERT INTO maintenance_schedules (brand, model, year_from, year_to, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
+('MG', 'MG RX9', 2024, NULL, 'Engine Oil & Filter',        10000, 183, 'Every 10,000 km or 6 months — first service at 5,000 km', 'petrol', 'official_dealer'),
+('MG', 'MG RX9', 2024, NULL, 'Engine Air Filter',           30000, NULL, NULL, 'petrol', 'official_dealer'),
+('MG', 'MG RX9', 2024, NULL, 'Cabin Air Filter',            20000, NULL, NULL, 'petrol', 'official_dealer'),
+('MG', 'MG RX9', 2024, NULL, 'Spark Plugs',                 40000, NULL, NULL, 'petrol', 'official_dealer'),
+('MG', 'MG RX9', 2024, NULL, 'Fuel Filter',                 40000, NULL, NULL, 'petrol', 'official_dealer'),
+('MG', 'MG RX9', 2024, NULL, 'Brake Fluid',                 40000, 24,  'Every 40,000 km or 2 years', 'petrol', 'official_dealer'),
+('MG', 'MG RX9', 2024, NULL, 'CVT Oil & Filter Kit',        60000, 36,  'Every 60,000 km or 3 years', 'petrol', 'official_dealer'),
+('MG', 'MG RX9', 2024, NULL, 'Engine Coolant',              100000, NULL,'Includes electric drive cooling system', 'petrol', 'official_dealer'),
+('MG', 'MG RX9', 2024, NULL, 'Battery',                     NULL,  36,  'Inspect annually', 'petrol', 'estimated'),
+('MG', 'MG RX9', 2024, NULL, 'Tires',                       NULL,  60,  'Inspect monthly; replace by 5 years or 50,000 km', 'petrol', 'estimated'),
+('MG', 'MG RX9', 2024, NULL, 'Wiper Blades',                NULL,  12,  'Every 12 months', 'petrol', 'estimated'),
+('MG', 'MG RX9', 2024, NULL, 'Brake Pads & Discs',          NULL,  NULL,'Inspect every 20,000 km', 'petrol', 'estimated');
+
+-- ─────────────────────────────────────────────────────────────
+-- SKODA — Official Kayan Egypt dealer maintenance schedules
+-- Source: Kayan Egypt for Trading & Investment official documents
+-- Models: Kodiaq (2025+), Octavia (2021+), Superb (2025+)
 -- ─────────────────────────────────────────────────────────────
 
-INSERT INTO maintenance_schedules (brand, model, year_from, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
-('Suzuki', 'Swift', 2017, 'Engine Oil & Filter', 10000, 365, '0W-20 or 5W-30 synthetic', 'petrol', 'ai_generated'),
+-- Kodiaq (2025+) — 1.4L TSI DJKA, 7-Speed DSG, Timing Belt
+INSERT INTO maintenance_schedules (brand, model, year_from, year_to, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
+('Skoda', 'Kodiaq', 2025, NULL, 'Engine Oil & Filter',    10000, 183, 'Every 10,000 km or 6 months', 'petrol', 'official_dealer'),
+('Skoda', 'Kodiaq', 2025, NULL, 'Engine Air Filter',      30000, 730, 'Every 30,000 km or 24 months', 'petrol', 'official_dealer'),
+('Skoda', 'Kodiaq', 2025, NULL, 'Cabin Air Filter',       20000, NULL, NULL, 'petrol', 'official_dealer'),
+('Skoda', 'Kodiaq', 2025, NULL, 'Spark Plugs',            30000, 730, 'Every 30,000 km or 24 months', 'petrol', 'official_dealer'),
+('Skoda', 'Kodiaq', 2025, NULL, 'Serpentine Belt',        60000, NULL, 'Accessory belt + pulley', 'petrol', 'official_dealer'),
+('Skoda', 'Kodiaq', 2025, NULL, 'Timing Belt',           100000, NULL, 'Includes coolant pump belt, tensioner, fixed pulley, screw', 'petrol', 'official_dealer'),
+('Skoda', 'Kodiaq', 2025, NULL, 'DSG Fluid',             120000, NULL, 'ATF 6L Q381 + filter, seal, plug washer', 'petrol', 'official_dealer'),
+('Skoda', 'Kodiaq', 2025, NULL, 'Brake Fluid',            50000, 730, 'Every 50,000 km or 2 years', 'petrol', 'official_dealer'),
+('Skoda', 'Kodiaq', 2025, NULL, 'Coolant',                50000, NULL, NULL, 'petrol', 'official_dealer');
 
-('Suzuki', 'Swift', 2017, 'Cabin Air Filter', 15000, 365, NULL, 'petrol', 'ai_generated'),
+-- Octavia (2021+) — 1.4L TSI DJKA, 8-Speed Automatic, Timing Belt
+INSERT INTO maintenance_schedules (brand, model, year_from, year_to, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
+('Skoda', 'Octavia', 2021, NULL, 'Engine Oil & Filter',    10000, 183, 'Every 10,000 km or 6 months', 'petrol', 'official_dealer'),
+('Skoda', 'Octavia', 2021, NULL, 'Engine Air Filter',      30000, 365, 'Every 30,000 km or 12 months', 'petrol', 'official_dealer'),
+('Skoda', 'Octavia', 2021, NULL, 'Cabin Air Filter',       20000, 365, 'Every 20,000 km or 12 months', 'petrol', 'official_dealer'),
+('Skoda', 'Octavia', 2021, NULL, 'Spark Plugs',            30000, 730, 'Every 30,000 km or 24 months', 'petrol', 'official_dealer'),
+('Skoda', 'Octavia', 2021, NULL, 'Serpentine Belt',        60000, NULL, 'Accessory belt + pulley', 'petrol', 'official_dealer'),
+('Skoda', 'Octavia', 2021, NULL, 'Timing Belt',           100000, NULL, 'Includes coolant pump belt + seal, tensioner, fixed pulley, screw', 'petrol', 'official_dealer'),
+('Skoda', 'Octavia', 2021, NULL, 'Transmission Fluid (AT)', 50000, NULL, 'ATF 3L', 'petrol', 'official_dealer'),
+('Skoda', 'Octavia', 2021, NULL, 'Brake Fluid',            50000, 730, 'Every 50,000 km or 2 years', 'petrol', 'official_dealer'),
+('Skoda', 'Octavia', 2021, NULL, 'Coolant',                50000, NULL, NULL, 'petrol', 'official_dealer');
 
-('Suzuki', 'Swift', 2017, 'Engine Air Filter', 30000, 730, NULL, 'petrol', 'ai_generated'),
+-- Superb (2025+) — 2.0L TSI DLBC, 7-Speed DSG, Timing Chain
+INSERT INTO maintenance_schedules (brand, model, year_from, year_to, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
+('Skoda', 'Superb', 2025, NULL, 'Engine Oil & Filter',    10000, 183, 'Every 10,000 km or 6 months', 'petrol', 'official_dealer'),
+('Skoda', 'Superb', 2025, NULL, 'Engine Air Filter',      30000, 730, 'Every 30,000 km or 24 months', 'petrol', 'official_dealer'),
+('Skoda', 'Superb', 2025, NULL, 'Cabin Air Filter',       20000, NULL, NULL, 'petrol', 'official_dealer'),
+('Skoda', 'Superb', 2025, NULL, 'Spark Plugs',            30000, 730, 'Every 30,000 km or 24 months', 'petrol', 'official_dealer'),
+('Skoda', 'Superb', 2025, NULL, 'Serpentine Belt',        60000, NULL, 'Accessory belt + pulley', 'petrol', 'official_dealer'),
+('Skoda', 'Superb', 2025, NULL, 'DSG Fluid',             120000, NULL, 'ATF 6L Q381 + filter, seal, plug washer', 'petrol', 'official_dealer'),
+('Skoda', 'Superb', 2025, NULL, 'Brake Fluid',            50000, 730, 'Every 50,000 km or 2 years', 'petrol', 'official_dealer'),
+('Skoda', 'Superb', 2025, NULL, 'Coolant',                50000, NULL, NULL, 'petrol', 'official_dealer');
 
-('Suzuki', 'Swift', 2017, 'Spark Plugs (Iridium)', 60000, NULL, NULL, 'petrol', 'ai_generated'),
+-- ─────────────────────────────────────────────────────────────
+-- VOLKSWAGEN — Official Kayan Egypt dealer maintenance schedules
+-- Source: Kayan Egypt for Trading & Investment official documents
+-- 14 model variants covering Golf, Tiguan, Jetta, Passat, T-ROC, Touareg, Tayron
+-- ─────────────────────────────────────────────────────────────
 
-('Suzuki', 'Swift', 2017, 'Tire Rotation', 10000, 180, NULL, 'petrol', 'ai_generated'),
+-- Golf MK6 · 1.6 MPI (2009–2013) — 7-speed DSG dry clutch, Timing Belt 100k
+INSERT INTO maintenance_schedules (brand, model, year_from, year_to, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
+('Volkswagen', 'Golf MK6 · 1.6 MPI', 2009, 2013, 'Engine Oil & Filter',   10000, 365, NULL, 'petrol', 'official_dealer'),
+('Volkswagen', 'Golf MK6 · 1.6 MPI', 2009, 2013, 'Engine Air Filter',     30000, NULL, NULL, 'petrol', 'official_dealer'),
+('Volkswagen', 'Golf MK6 · 1.6 MPI', 2009, 2013, 'Cabin Air Filter',      30000, NULL, NULL, 'petrol', 'official_dealer'),
+('Volkswagen', 'Golf MK6 · 1.6 MPI', 2009, 2013, 'Spark Plugs',           30000, NULL, NULL, 'petrol', 'official_dealer'),
+('Volkswagen', 'Golf MK6 · 1.6 MPI', 2009, 2013, 'Serpentine Belt',       60000, NULL, 'Poly V-belt', 'petrol', 'official_dealer'),
+('Volkswagen', 'Golf MK6 · 1.6 MPI', 2009, 2013, 'Timing Belt',          100000, NULL, 'Camshaft drive toothed belt', 'petrol', 'official_dealer'),
+('Volkswagen', 'Golf MK6 · 1.6 MPI', 2009, 2013, 'Brake Fluid',           50000, 730, NULL, 'petrol', 'official_dealer');
 
-('Suzuki', 'Swift', 2017, 'Brake Fluid', NULL, 730, NULL, 'petrol', 'ai_generated'),
+-- Golf MK6 · 1.4T TSI (2009–2011) — 7-speed DSG dry clutch, Timing Belt 60k
+INSERT INTO maintenance_schedules (brand, model, year_from, year_to, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
+('Volkswagen', 'Golf MK6 · 1.4T TSI', 2009, 2011, 'Engine Oil & Filter',  10000, 365, NULL, 'petrol', 'official_dealer'),
+('Volkswagen', 'Golf MK6 · 1.4T TSI', 2009, 2011, 'Engine Air Filter',    30000, NULL, NULL, 'petrol', 'official_dealer'),
+('Volkswagen', 'Golf MK6 · 1.4T TSI', 2009, 2011, 'Cabin Air Filter',     30000, NULL, NULL, 'petrol', 'official_dealer'),
+('Volkswagen', 'Golf MK6 · 1.4T TSI', 2009, 2011, 'Spark Plugs',          30000, NULL, NULL, 'petrol', 'official_dealer'),
+('Volkswagen', 'Golf MK6 · 1.4T TSI', 2009, 2011, 'Serpentine Belt',      60000, NULL, 'Poly V-belt', 'petrol', 'official_dealer'),
+('Volkswagen', 'Golf MK6 · 1.4T TSI', 2009, 2011, 'Timing Belt',          60000, NULL, 'Belt kit — includes tensioner, idler', 'petrol', 'official_dealer'),
+('Volkswagen', 'Golf MK6 · 1.4T TSI', 2009, 2011, 'DSG Fluid',            60000, NULL, NULL, 'petrol', 'official_dealer'),
+('Volkswagen', 'Golf MK6 · 1.4T TSI', 2009, 2011, 'Brake Fluid',          50000, 730, NULL, 'petrol', 'official_dealer');
 
-('Suzuki', 'Swift', 2017, 'Coolant', 160000, NULL, NULL, 'petrol', 'ai_generated'),
+-- Golf MK7 · 1.6 MPI (2013+) — 6-speed conventional automatic, Timing Belt 100k
+INSERT INTO maintenance_schedules (brand, model, year_from, year_to, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
+('Volkswagen', 'Golf MK7 · 1.6 MPI', 2013, NULL, 'Engine Oil & Filter',   10000, 365, NULL, 'petrol', 'official_dealer'),
+('Volkswagen', 'Golf MK7 · 1.6 MPI', 2013, NULL, 'Engine Air Filter',     30000, NULL, NULL, 'petrol', 'official_dealer'),
+('Volkswagen', 'Golf MK7 · 1.6 MPI', 2013, NULL, 'Cabin Air Filter',      30000, NULL, NULL, 'petrol', 'official_dealer'),
+('Volkswagen', 'Golf MK7 · 1.6 MPI', 2013, NULL, 'Spark Plugs',           30000, NULL, NULL, 'petrol', 'official_dealer'),
+('Volkswagen', 'Golf MK7 · 1.6 MPI', 2013, NULL, 'Serpentine Belt',       60000, NULL, 'Poly V-belt', 'petrol', 'official_dealer'),
+('Volkswagen', 'Golf MK7 · 1.6 MPI', 2013, NULL, 'Timing Belt',          100000, NULL, 'Camshaft drive toothed belt', 'petrol', 'official_dealer'),
+('Volkswagen', 'Golf MK7 · 1.6 MPI', 2013, NULL, 'Transmission Fluid (AT)', 60000, NULL, 'Gearbox oil 09G + strainer', 'petrol', 'official_dealer'),
+('Volkswagen', 'Golf MK7 · 1.6 MPI', 2013, NULL, 'Brake Fluid',           50000, 730, NULL, 'petrol', 'official_dealer'),
+('Volkswagen', 'Golf MK7 · 1.6 MPI', 2013, NULL, 'Coolant',               90000, NULL, NULL, 'petrol', 'official_dealer');
 
-('Suzuki', 'Swift', 2017, 'CVT Fluid', 40000, NULL, NULL, 'petrol', 'ai_generated');
+-- Golf MK7 · 1.2T TSI (2013+) — 7-speed DSG, Timing Belt 100k
+INSERT INTO maintenance_schedules (brand, model, year_from, year_to, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
+('Volkswagen', 'Golf MK7 · 1.2T TSI', 2013, NULL, 'Engine Oil & Filter',  10000, 365, NULL, 'petrol', 'official_dealer'),
+('Volkswagen', 'Golf MK7 · 1.2T TSI', 2013, NULL, 'Engine Air Filter',    30000, NULL, NULL, 'petrol', 'official_dealer'),
+('Volkswagen', 'Golf MK7 · 1.2T TSI', 2013, NULL, 'Cabin Air Filter',     30000, NULL, NULL, 'petrol', 'official_dealer'),
+('Volkswagen', 'Golf MK7 · 1.2T TSI', 2013, NULL, 'Spark Plugs',          30000, NULL, NULL, 'petrol', 'official_dealer'),
+('Volkswagen', 'Golf MK7 · 1.2T TSI', 2013, NULL, 'Serpentine Belt',      60000, NULL, 'Poly V-belt', 'petrol', 'official_dealer'),
+('Volkswagen', 'Golf MK7 · 1.2T TSI', 2013, NULL, 'Timing Belt',         100000, NULL, 'Camshaft drive toothed belt', 'petrol', 'official_dealer'),
+('Volkswagen', 'Golf MK7 · 1.2T TSI', 2013, NULL, 'DSG Fluid',            60000, NULL, NULL, 'petrol', 'official_dealer'),
+('Volkswagen', 'Golf MK7 · 1.2T TSI', 2013, NULL, 'Brake Fluid',          50000, 730, NULL, 'petrol', 'official_dealer'),
+('Volkswagen', 'Golf MK7 · 1.2T TSI', 2013, NULL, 'Coolant',              90000, NULL, NULL, 'petrol', 'official_dealer');
 
+-- Golf MK7 · 1.4T TSI (2013+) — 7-speed DSG, Timing Belt 100k
+INSERT INTO maintenance_schedules (brand, model, year_from, year_to, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
+('Volkswagen', 'Golf MK7 · 1.4T TSI', 2013, NULL, 'Engine Oil & Filter',  10000, 365, NULL, 'petrol', 'official_dealer'),
+('Volkswagen', 'Golf MK7 · 1.4T TSI', 2013, NULL, 'Engine Air Filter',    30000, NULL, NULL, 'petrol', 'official_dealer'),
+('Volkswagen', 'Golf MK7 · 1.4T TSI', 2013, NULL, 'Cabin Air Filter',     30000, NULL, NULL, 'petrol', 'official_dealer'),
+('Volkswagen', 'Golf MK7 · 1.4T TSI', 2013, NULL, 'Spark Plugs',          30000, NULL, NULL, 'petrol', 'official_dealer'),
+('Volkswagen', 'Golf MK7 · 1.4T TSI', 2013, NULL, 'Serpentine Belt',      60000, NULL, 'Poly V-belt', 'petrol', 'official_dealer'),
+('Volkswagen', 'Golf MK7 · 1.4T TSI', 2013, NULL, 'Timing Belt',         100000, NULL, 'Camshaft drive toothed belt', 'petrol', 'official_dealer'),
+('Volkswagen', 'Golf MK7 · 1.4T TSI', 2013, NULL, 'DSG Fluid',            60000, NULL, NULL, 'petrol', 'official_dealer'),
+('Volkswagen', 'Golf MK7 · 1.4T TSI', 2013, NULL, 'Brake Fluid',          50000, 730, NULL, 'petrol', 'official_dealer'),
+('Volkswagen', 'Golf MK7 · 1.4T TSI', 2013, NULL, 'Coolant',              90000, NULL, NULL, 'petrol', 'official_dealer');
 
-INSERT INTO maintenance_schedules (brand, model, year_from, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
-('Suzuki', 'Vitara', 2015, 'Engine Oil & Filter', 10000, 365, '0W-20 or 5W-30 synthetic', 'petrol', 'ai_generated'),
+-- Golf MK8 · 1.6 MPI (2022+) — 6-speed automatic, Timing Belt 100k
+INSERT INTO maintenance_schedules (brand, model, year_from, year_to, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
+('Volkswagen', 'Golf MK8 · 1.6 MPI', 2022, NULL, 'Engine Oil & Filter',   10000, 365, NULL, 'petrol', 'official_dealer'),
+('Volkswagen', 'Golf MK8 · 1.6 MPI', 2022, NULL, 'Engine Air Filter',     30000, NULL, NULL, 'petrol', 'official_dealer'),
+('Volkswagen', 'Golf MK8 · 1.6 MPI', 2022, NULL, 'Cabin Air Filter',      30000, NULL, NULL, 'petrol', 'official_dealer'),
+('Volkswagen', 'Golf MK8 · 1.6 MPI', 2022, NULL, 'Spark Plugs',           30000, NULL, NULL, 'petrol', 'official_dealer'),
+('Volkswagen', 'Golf MK8 · 1.6 MPI', 2022, NULL, 'Serpentine Belt',       60000, NULL, 'Poly V-belt', 'petrol', 'official_dealer'),
+('Volkswagen', 'Golf MK8 · 1.6 MPI', 2022, NULL, 'Timing Belt',          100000, NULL, 'Camshaft drive toothed belt', 'petrol', 'official_dealer'),
+('Volkswagen', 'Golf MK8 · 1.6 MPI', 2022, NULL, 'Transmission Fluid (AT)', 50000, 730, NULL, 'petrol', 'official_dealer'),
+('Volkswagen', 'Golf MK8 · 1.6 MPI', 2022, NULL, 'Brake Fluid',           50000, 730, NULL, 'petrol', 'official_dealer');
 
-('Suzuki', 'Vitara', 2015, 'Cabin Air Filter', 15000, 365, NULL, 'petrol', 'ai_generated'),
+-- Tiguan MK2 · 1.4T DSG (2013+) — 6-speed DSG wet clutch, Timing Chain (no belt)
+INSERT INTO maintenance_schedules (brand, model, year_from, year_to, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
+('Volkswagen', 'Tiguan MK2 · 1.4T DSG', 2013, NULL, 'Engine Oil & Filter', 10000, 365, NULL, 'petrol', 'official_dealer'),
+('Volkswagen', 'Tiguan MK2 · 1.4T DSG', 2013, NULL, 'Engine Air Filter',   60000, NULL, 'Every 60,000 km per official schedule', 'petrol', 'official_dealer'),
+('Volkswagen', 'Tiguan MK2 · 1.4T DSG', 2013, NULL, 'Cabin Air Filter',    30000, NULL, NULL, 'petrol', 'official_dealer'),
+('Volkswagen', 'Tiguan MK2 · 1.4T DSG', 2013, NULL, 'Spark Plugs',         30000, NULL, NULL, 'petrol', 'official_dealer'),
+('Volkswagen', 'Tiguan MK2 · 1.4T DSG', 2013, NULL, 'Serpentine Belt',     60000, NULL, 'Poly V-belt kit', 'petrol', 'official_dealer'),
+('Volkswagen', 'Tiguan MK2 · 1.4T DSG', 2013, NULL, 'DSG Fluid',           50000, NULL, 'DSG 09G/02E — gearbox oil + strainer', 'petrol', 'official_dealer'),
+('Volkswagen', 'Tiguan MK2 · 1.4T DSG', 2013, NULL, 'Brake Fluid',         30000, NULL, 'Every 30,000 km per official schedule', 'petrol', 'official_dealer');
 
-('Suzuki', 'Vitara', 2015, 'Engine Air Filter', 30000, 730, NULL, 'petrol', 'ai_generated'),
+-- Tiguan MK3 · 1.4T DSG (2015+) — 6-speed DSG wet clutch ACT, Timing Belt 100k
+INSERT INTO maintenance_schedules (brand, model, year_from, year_to, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
+('Volkswagen', 'Tiguan MK3 · 1.4T DSG', 2015, NULL, 'Engine Oil & Filter', 10000, 365, NULL, 'petrol', 'official_dealer'),
+('Volkswagen', 'Tiguan MK3 · 1.4T DSG', 2015, NULL, 'Engine Air Filter',   30000, NULL, NULL, 'petrol', 'official_dealer'),
+('Volkswagen', 'Tiguan MK3 · 1.4T DSG', 2015, NULL, 'Cabin Air Filter',    30000, NULL, NULL, 'petrol', 'official_dealer'),
+('Volkswagen', 'Tiguan MK3 · 1.4T DSG', 2015, NULL, 'Spark Plugs',         30000, NULL, NULL, 'petrol', 'official_dealer'),
+('Volkswagen', 'Tiguan MK3 · 1.4T DSG', 2015, NULL, 'Serpentine Belt',     60000, NULL, 'Poly V-belt', 'petrol', 'official_dealer'),
+('Volkswagen', 'Tiguan MK3 · 1.4T DSG', 2015, NULL, 'Timing Belt',        100000, NULL, 'Camshaft drive toothed belt', 'petrol', 'official_dealer'),
+('Volkswagen', 'Tiguan MK3 · 1.4T DSG', 2015, NULL, 'DSG Fluid',           50000, NULL, 'DSG 09G/02E + gearbox strainer', 'petrol', 'official_dealer'),
+('Volkswagen', 'Tiguan MK3 · 1.4T DSG', 2015, NULL, 'Brake Fluid',         50000, 730, NULL, 'petrol', 'official_dealer'),
+('Volkswagen', 'Tiguan MK3 · 1.4T DSG', 2015, NULL, 'Coolant',             90000, NULL, NULL, 'petrol', 'official_dealer');
 
-('Suzuki', 'Vitara', 2015, 'Spark Plugs (Iridium)', 60000, NULL, NULL, 'petrol', 'ai_generated'),
+-- Tiguan 2024 · 1.4T DSG (2024+) — 7-speed DSG DQ381, Timing Belt 120k
+INSERT INTO maintenance_schedules (brand, model, year_from, year_to, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
+('Volkswagen', 'Tiguan 2024 · 1.4T DSG', 2024, NULL, 'Engine Oil & Filter', 10000, 365, NULL, 'petrol', 'official_dealer'),
+('Volkswagen', 'Tiguan 2024 · 1.4T DSG', 2024, NULL, 'Engine Air Filter',   30000, NULL, NULL, 'petrol', 'official_dealer'),
+('Volkswagen', 'Tiguan 2024 · 1.4T DSG', 2024, NULL, 'Cabin Air Filter',    30000, NULL, NULL, 'petrol', 'official_dealer'),
+('Volkswagen', 'Tiguan 2024 · 1.4T DSG', 2024, NULL, 'Spark Plugs',         30000, NULL, NULL, 'petrol', 'official_dealer'),
+('Volkswagen', 'Tiguan 2024 · 1.4T DSG', 2024, NULL, 'Serpentine Belt',     60000, NULL, 'Poly V-belt', 'petrol', 'official_dealer'),
+('Volkswagen', 'Tiguan 2024 · 1.4T DSG', 2024, NULL, 'Timing Belt',        120000, NULL, 'Camshaft drive toothed belt + coolant pump belt', 'petrol', 'official_dealer'),
+('Volkswagen', 'Tiguan 2024 · 1.4T DSG', 2024, NULL, 'DSG Fluid',          100000, NULL, 'DSG DQ381 — ATF + filter + seal ring', 'petrol', 'official_dealer'),
+('Volkswagen', 'Tiguan 2024 · 1.4T DSG', 2024, NULL, 'Brake Fluid',         50000, 730, NULL, 'petrol', 'official_dealer'),
+('Volkswagen', 'Tiguan 2024 · 1.4T DSG', 2024, NULL, 'Coolant',             80000, NULL, NULL, 'petrol', 'official_dealer');
 
-('Suzuki', 'Vitara', 2015, 'Tire Rotation', 10000, 180, NULL, 'petrol', 'ai_generated'),
+-- Jetta MK6 · 1.4T DSG (2013+) — 7-speed DSG dry clutch, Timing Belt 60k
+INSERT INTO maintenance_schedules (brand, model, year_from, year_to, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
+('Volkswagen', 'Jetta MK6 · 1.4T DSG', 2013, NULL, 'Engine Oil & Filter',  10000, 365, NULL, 'petrol', 'official_dealer'),
+('Volkswagen', 'Jetta MK6 · 1.4T DSG', 2013, NULL, 'Engine Air Filter',    30000, NULL, NULL, 'petrol', 'official_dealer'),
+('Volkswagen', 'Jetta MK6 · 1.4T DSG', 2013, NULL, 'Cabin Air Filter',     30000, NULL, NULL, 'petrol', 'official_dealer'),
+('Volkswagen', 'Jetta MK6 · 1.4T DSG', 2013, NULL, 'Spark Plugs',          30000, NULL, NULL, 'petrol', 'official_dealer'),
+('Volkswagen', 'Jetta MK6 · 1.4T DSG', 2013, NULL, 'Serpentine Belt',      60000, NULL, 'Accessory belt', 'petrol', 'official_dealer'),
+('Volkswagen', 'Jetta MK6 · 1.4T DSG', 2013, NULL, 'Timing Belt',          60000, NULL, 'Belt kit — timing belt + tensioner + idler', 'petrol', 'official_dealer'),
+('Volkswagen', 'Jetta MK6 · 1.4T DSG', 2013, NULL, 'DSG Fluid',            60000, NULL, 'Included in belt kit service interval', 'petrol', 'official_dealer'),
+('Volkswagen', 'Jetta MK6 · 1.4T DSG', 2013, NULL, 'Brake Fluid',          50000, 730, NULL, 'petrol', 'official_dealer');
 
-('Suzuki', 'Vitara', 2015, 'Brake Fluid', NULL, 730, NULL, 'petrol', 'ai_generated'),
+-- Passat B7 · 1.4T DSG (2013+) — 7-speed DSG dry clutch, Timing Belt 60k
+INSERT INTO maintenance_schedules (brand, model, year_from, year_to, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
+('Volkswagen', 'Passat B7 · 1.4T DSG', 2013, NULL, 'Engine Oil & Filter',  10000, 365, NULL, 'petrol', 'official_dealer'),
+('Volkswagen', 'Passat B7 · 1.4T DSG', 2013, NULL, 'Engine Air Filter',    30000, NULL, NULL, 'petrol', 'official_dealer'),
+('Volkswagen', 'Passat B7 · 1.4T DSG', 2013, NULL, 'Cabin Air Filter',     30000, NULL, NULL, 'petrol', 'official_dealer'),
+('Volkswagen', 'Passat B7 · 1.4T DSG', 2013, NULL, 'Spark Plugs',          30000, NULL, NULL, 'petrol', 'official_dealer'),
+('Volkswagen', 'Passat B7 · 1.4T DSG', 2013, NULL, 'Serpentine Belt',      60000, NULL, 'Accessory belt', 'petrol', 'official_dealer'),
+('Volkswagen', 'Passat B7 · 1.4T DSG', 2013, NULL, 'Timing Belt',          60000, NULL, 'Belt kit — timing belt + tensioner + idler', 'petrol', 'official_dealer'),
+('Volkswagen', 'Passat B7 · 1.4T DSG', 2013, NULL, 'DSG Fluid',            60000, NULL, NULL, 'petrol', 'official_dealer'),
+('Volkswagen', 'Passat B7 · 1.4T DSG', 2013, NULL, 'Brake Fluid',          50000, 730, NULL, 'petrol', 'official_dealer');
 
-('Suzuki', 'Vitara', 2015, 'Coolant', 160000, NULL, NULL, 'petrol', 'ai_generated'),
+-- T-ROC · 1.4T (2022+) — 8-speed automatic, Timing Belt 100k
+INSERT INTO maintenance_schedules (brand, model, year_from, year_to, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
+('Volkswagen', 'T-ROC · 1.4T',  2022, NULL, 'Engine Oil & Filter',         10000, 365, NULL, 'petrol', 'official_dealer'),
+('Volkswagen', 'T-ROC · 1.4T',  2022, NULL, 'Engine Air Filter',           30000, NULL, NULL, 'petrol', 'official_dealer'),
+('Volkswagen', 'T-ROC · 1.4T',  2022, NULL, 'Cabin Air Filter',            30000, NULL, NULL, 'petrol', 'official_dealer'),
+('Volkswagen', 'T-ROC · 1.4T',  2022, NULL, 'Spark Plugs',                 30000, NULL, NULL, 'petrol', 'official_dealer'),
+('Volkswagen', 'T-ROC · 1.4T',  2022, NULL, 'Serpentine Belt',             60000, NULL, 'Poly V-belt', 'petrol', 'official_dealer'),
+('Volkswagen', 'T-ROC · 1.4T',  2022, NULL, 'Timing Belt',                100000, NULL, 'Camshaft drive toothed belt', 'petrol', 'official_dealer'),
+('Volkswagen', 'T-ROC · 1.4T',  2022, NULL, 'Transmission Fluid (AT)',     50000, NULL, 'Automatic gearbox ATF', 'petrol', 'official_dealer'),
+('Volkswagen', 'T-ROC · 1.4T',  2022, NULL, 'Brake Fluid',                 50000, 730, NULL, 'petrol', 'official_dealer'),
+('Volkswagen', 'T-ROC · 1.4T',  2022, NULL, 'Coolant',                     90000, NULL, NULL, 'petrol', 'official_dealer');
 
-('Suzuki', 'Vitara', 2015, 'CVT Fluid', 40000, NULL, NULL, 'petrol', 'ai_generated');
+-- Touareg · 2.0T (2024+) — 8-speed automatic, Timing Belt 100k
+INSERT INTO maintenance_schedules (brand, model, year_from, year_to, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
+('Volkswagen', 'Touareg · 2.0T', 2024, NULL, 'Engine Oil & Filter',        10000, 365, NULL, 'petrol', 'official_dealer'),
+('Volkswagen', 'Touareg · 2.0T', 2024, NULL, 'Engine Air Filter',          30000, NULL, NULL, 'petrol', 'official_dealer'),
+('Volkswagen', 'Touareg · 2.0T', 2024, NULL, 'Cabin Air Filter',           20000, NULL, 'Every 20,000 km per official schedule', 'petrol', 'official_dealer'),
+('Volkswagen', 'Touareg · 2.0T', 2024, NULL, 'Spark Plugs',                30000, NULL, NULL, 'petrol', 'official_dealer'),
+('Volkswagen', 'Touareg · 2.0T', 2024, NULL, 'Serpentine Belt',            60000, NULL, 'Accessory belt', 'petrol', 'official_dealer'),
+('Volkswagen', 'Touareg · 2.0T', 2024, NULL, 'Timing Belt',               100000, NULL, 'Camshaft drive toothed belt', 'petrol', 'official_dealer'),
+('Volkswagen', 'Touareg · 2.0T', 2024, NULL, 'Transmission Fluid (AT)',    50000, 730, 'Automatic gearbox 0D9 ATF', 'petrol', 'official_dealer'),
+('Volkswagen', 'Touareg · 2.0T', 2024, NULL, 'Brake Fluid',                50000, 730, NULL, 'petrol', 'official_dealer');
 
+-- Tayron · 1.4T DSG (2026+) — 7-speed DSG DQ381, Timing Belt 120k
+INSERT INTO maintenance_schedules (brand, model, year_from, year_to, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
+('Volkswagen', 'Tayron · 1.4T DSG', 2026, NULL, 'Engine Oil & Filter',     10000, 365, NULL, 'petrol', 'official_dealer'),
+('Volkswagen', 'Tayron · 1.4T DSG', 2026, NULL, 'Engine Air Filter',       30000, NULL, NULL, 'petrol', 'official_dealer'),
+('Volkswagen', 'Tayron · 1.4T DSG', 2026, NULL, 'Cabin Air Filter',        20000, NULL, NULL, 'petrol', 'official_dealer'),
+('Volkswagen', 'Tayron · 1.4T DSG', 2026, NULL, 'Spark Plugs',             30000, NULL, NULL, 'petrol', 'official_dealer'),
+('Volkswagen', 'Tayron · 1.4T DSG', 2026, NULL, 'Serpentine Belt',         60000, NULL, 'Poly V-belt', 'petrol', 'official_dealer'),
+('Volkswagen', 'Tayron · 1.4T DSG', 2026, NULL, 'Timing Belt',            120000, NULL, 'Camshaft drive toothed belt + coolant pump belt', 'petrol', 'official_dealer'),
+('Volkswagen', 'Tayron · 1.4T DSG', 2026, NULL, 'DSG Fluid',              100000, NULL, 'DSG DQ381 — ATF + filter + seal ring', 'petrol', 'official_dealer'),
+('Volkswagen', 'Tayron · 1.4T DSG', 2026, NULL, 'Brake Fluid',             50000, 730, NULL, 'petrol', 'official_dealer');
 
-INSERT INTO maintenance_schedules (brand, model, year_from, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
-('Suzuki', 'Ciaz', 2015, 'Engine Oil & Filter', 10000, 365, '5W-30 synthetic', 'petrol', 'ai_generated'),
+-- ─────────────────────────────────────────────────────────────
+-- AUDI — Official Kayan Egypt dealer maintenance schedules
+-- Source: Kayan Egypt for Trading & Investment official documents
+-- 10k–60k service cycle; belt only on 1.0T/1.4T engines
+-- ─────────────────────────────────────────────────────────────
 
-('Suzuki', 'Ciaz', 2015, 'Cabin Air Filter', 15000, 365, NULL, 'petrol', 'ai_generated'),
+-- A3 · 1.4T TSI · DSG (2013+) — 7-speed DSG dry clutch, Timing Belt 60k
+INSERT INTO maintenance_schedules (brand, model, year_from, year_to, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
+('Audi', 'A3 · 1.4T TSI · DSG', 2013, NULL, 'Engine Oil & Filter',  10000, 365, NULL, 'petrol', 'official_dealer'),
+('Audi', 'A3 · 1.4T TSI · DSG', 2013, NULL, 'Engine Air Filter',    30000, NULL, NULL, 'petrol', 'official_dealer'),
+('Audi', 'A3 · 1.4T TSI · DSG', 2013, NULL, 'Cabin Air Filter',     20000, NULL, NULL, 'petrol', 'official_dealer'),
+('Audi', 'A3 · 1.4T TSI · DSG', 2013, NULL, 'Spark Plugs',          60000, NULL, NULL, 'petrol', 'official_dealer'),
+('Audi', 'A3 · 1.4T TSI · DSG', 2013, NULL, 'Serpentine Belt',      60000, NULL, 'Accessory belt', 'petrol', 'official_dealer'),
+('Audi', 'A3 · 1.4T TSI · DSG', 2013, NULL, 'Timing Belt',          60000, NULL, 'Belt kit — critical replacement', 'petrol', 'official_dealer'),
+('Audi', 'A3 · 1.4T TSI · DSG', 2013, NULL, 'DSG Fluid',            60000, NULL, NULL, 'petrol', 'official_dealer'),
+('Audi', 'A3 · 1.4T TSI · DSG', 2013, NULL, 'Brake Fluid',          40000, 730, NULL, 'petrol', 'official_dealer'),
+('Audi', 'A3 · 1.4T TSI · DSG', 2013, NULL, 'Coolant',              60000, NULL, NULL, 'petrol', 'official_dealer');
 
-('Suzuki', 'Ciaz', 2015, 'Engine Air Filter', 30000, 730, NULL, 'petrol', 'ai_generated'),
+-- A4 · 2.0T TFSI · DSG (2016+) — 7-speed DSG, Timing Chain (no belt)
+INSERT INTO maintenance_schedules (brand, model, year_from, year_to, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
+('Audi', 'A4 · 2.0T TFSI · DSG', 2016, NULL, 'Engine Oil & Filter',  10000, 365, NULL, 'petrol', 'official_dealer'),
+('Audi', 'A4 · 2.0T TFSI · DSG', 2016, NULL, 'Engine Air Filter',    30000, NULL, NULL, 'petrol', 'official_dealer'),
+('Audi', 'A4 · 2.0T TFSI · DSG', 2016, NULL, 'Cabin Air Filter',     20000, NULL, NULL, 'petrol', 'official_dealer'),
+('Audi', 'A4 · 2.0T TFSI · DSG', 2016, NULL, 'Spark Plugs',          60000, NULL, NULL, 'petrol', 'official_dealer'),
+('Audi', 'A4 · 2.0T TFSI · DSG', 2016, NULL, 'Serpentine Belt',      60000, NULL, 'Accessory belt', 'petrol', 'official_dealer'),
+('Audi', 'A4 · 2.0T TFSI · DSG', 2016, NULL, 'DSG Fluid',            60000, NULL, NULL, 'petrol', 'official_dealer'),
+('Audi', 'A4 · 2.0T TFSI · DSG', 2016, NULL, 'Brake Fluid',          40000, 730, NULL, 'petrol', 'official_dealer'),
+('Audi', 'A4 · 2.0T TFSI · DSG', 2016, NULL, 'Coolant',              60000, NULL, NULL, 'petrol', 'official_dealer');
 
-('Suzuki', 'Ciaz', 2015, 'Spark Plugs (Iridium)', 60000, NULL, NULL, 'petrol', 'ai_generated'),
+-- A5 · 2.0T TFSI · DSG (2017+) — 7-speed DSG, Timing Chain
+INSERT INTO maintenance_schedules (brand, model, year_from, year_to, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
+('Audi', 'A5 · 2.0T TFSI · DSG', 2017, NULL, 'Engine Oil & Filter',  10000, 365, NULL, 'petrol', 'official_dealer'),
+('Audi', 'A5 · 2.0T TFSI · DSG', 2017, NULL, 'Engine Air Filter',    30000, NULL, NULL, 'petrol', 'official_dealer'),
+('Audi', 'A5 · 2.0T TFSI · DSG', 2017, NULL, 'Cabin Air Filter',     20000, NULL, NULL, 'petrol', 'official_dealer'),
+('Audi', 'A5 · 2.0T TFSI · DSG', 2017, NULL, 'Spark Plugs',          60000, NULL, NULL, 'petrol', 'official_dealer'),
+('Audi', 'A5 · 2.0T TFSI · DSG', 2017, NULL, 'Serpentine Belt',      60000, NULL, 'Accessory belt', 'petrol', 'official_dealer'),
+('Audi', 'A5 · 2.0T TFSI · DSG', 2017, NULL, 'DSG Fluid',            60000, NULL, NULL, 'petrol', 'official_dealer'),
+('Audi', 'A5 · 2.0T TFSI · DSG', 2017, NULL, 'Brake Fluid',          40000, 730, NULL, 'petrol', 'official_dealer'),
+('Audi', 'A5 · 2.0T TFSI · DSG', 2017, NULL, 'Coolant',              60000, NULL, NULL, 'petrol', 'official_dealer');
 
-('Suzuki', 'Ciaz', 2015, 'Tire Rotation', 10000, 180, NULL, 'petrol', 'ai_generated'),
+-- A6 · 2.0T TFSI · Automatic (2016+) — 8-speed AT, Timing Chain
+INSERT INTO maintenance_schedules (brand, model, year_from, year_to, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
+('Audi', 'A6 · 2.0T TFSI · Automatic', 2016, NULL, 'Engine Oil & Filter',       10000, 365, NULL, 'petrol', 'official_dealer'),
+('Audi', 'A6 · 2.0T TFSI · Automatic', 2016, NULL, 'Engine Air Filter',         30000, NULL, NULL, 'petrol', 'official_dealer'),
+('Audi', 'A6 · 2.0T TFSI · Automatic', 2016, NULL, 'Cabin Air Filter',          20000, NULL, NULL, 'petrol', 'official_dealer'),
+('Audi', 'A6 · 2.0T TFSI · Automatic', 2016, NULL, 'Spark Plugs',               60000, NULL, NULL, 'petrol', 'official_dealer'),
+('Audi', 'A6 · 2.0T TFSI · Automatic', 2016, NULL, 'Serpentine Belt',           60000, NULL, 'Accessory belt', 'petrol', 'official_dealer'),
+('Audi', 'A6 · 2.0T TFSI · Automatic', 2016, NULL, 'Transmission Fluid (AT)',   60000, NULL, NULL, 'petrol', 'official_dealer'),
+('Audi', 'A6 · 2.0T TFSI · Automatic', 2016, NULL, 'Brake Fluid',               40000, 730, NULL, 'petrol', 'official_dealer'),
+('Audi', 'A6 · 2.0T TFSI · Automatic', 2016, NULL, 'Coolant',                   60000, NULL, NULL, 'petrol', 'official_dealer');
 
-('Suzuki', 'Ciaz', 2015, 'Brake Fluid', NULL, 730, NULL, 'petrol', 'ai_generated'),
+-- Q2 · 1.0T TFSI · DSG (2021+) — 7-speed DSG dry clutch, Timing Belt 60k
+INSERT INTO maintenance_schedules (brand, model, year_from, year_to, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
+('Audi', 'Q2 · 1.0T TFSI · DSG', 2021, NULL, 'Engine Oil & Filter',  10000, 365, NULL, 'petrol', 'official_dealer'),
+('Audi', 'Q2 · 1.0T TFSI · DSG', 2021, NULL, 'Engine Air Filter',    30000, NULL, NULL, 'petrol', 'official_dealer'),
+('Audi', 'Q2 · 1.0T TFSI · DSG', 2021, NULL, 'Cabin Air Filter',     20000, NULL, NULL, 'petrol', 'official_dealer'),
+('Audi', 'Q2 · 1.0T TFSI · DSG', 2021, NULL, 'Spark Plugs',          60000, NULL, NULL, 'petrol', 'official_dealer'),
+('Audi', 'Q2 · 1.0T TFSI · DSG', 2021, NULL, 'Serpentine Belt',      60000, NULL, 'Accessory belt', 'petrol', 'official_dealer'),
+('Audi', 'Q2 · 1.0T TFSI · DSG', 2021, NULL, 'Timing Belt',          60000, NULL, 'Belt kit — critical replacement', 'petrol', 'official_dealer'),
+('Audi', 'Q2 · 1.0T TFSI · DSG', 2021, NULL, 'DSG Fluid',            60000, NULL, NULL, 'petrol', 'official_dealer'),
+('Audi', 'Q2 · 1.0T TFSI · DSG', 2021, NULL, 'Brake Fluid',          40000, 730, NULL, 'petrol', 'official_dealer'),
+('Audi', 'Q2 · 1.0T TFSI · DSG', 2021, NULL, 'Coolant',              60000, NULL, NULL, 'petrol', 'official_dealer');
 
-('Suzuki', 'Ciaz', 2015, 'Coolant', 160000, NULL, NULL, 'petrol', 'ai_generated'),
+-- Q3 · 1.4T TFSI · DSG (2012+) — 6-speed DSG, Timing Belt 60k
+INSERT INTO maintenance_schedules (brand, model, year_from, year_to, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
+('Audi', 'Q3 · 1.4T TFSI · DSG', 2012, NULL, 'Engine Oil & Filter',  10000, 365, NULL, 'petrol', 'official_dealer'),
+('Audi', 'Q3 · 1.4T TFSI · DSG', 2012, NULL, 'Engine Air Filter',    30000, NULL, NULL, 'petrol', 'official_dealer'),
+('Audi', 'Q3 · 1.4T TFSI · DSG', 2012, NULL, 'Cabin Air Filter',     20000, NULL, NULL, 'petrol', 'official_dealer'),
+('Audi', 'Q3 · 1.4T TFSI · DSG', 2012, NULL, 'Spark Plugs',          60000, NULL, NULL, 'petrol', 'official_dealer'),
+('Audi', 'Q3 · 1.4T TFSI · DSG', 2012, NULL, 'Serpentine Belt',      60000, NULL, 'Accessory belt', 'petrol', 'official_dealer'),
+('Audi', 'Q3 · 1.4T TFSI · DSG', 2012, NULL, 'Timing Belt',          60000, NULL, 'Belt kit — critical replacement', 'petrol', 'official_dealer'),
+('Audi', 'Q3 · 1.4T TFSI · DSG', 2012, NULL, 'DSG Fluid',            60000, NULL, NULL, 'petrol', 'official_dealer'),
+('Audi', 'Q3 · 1.4T TFSI · DSG', 2012, NULL, 'Brake Fluid',          40000, 730, NULL, 'petrol', 'official_dealer'),
+('Audi', 'Q3 · 1.4T TFSI · DSG', 2012, NULL, 'Coolant',              60000, NULL, NULL, 'petrol', 'official_dealer');
 
-('Suzuki', 'Ciaz', 2015, 'CVT Fluid', 40000, NULL, NULL, 'petrol', 'ai_generated');
+-- Q3 · 2.0T TFSI · Automatic (2015+) — 6-speed AT, Timing Chain
+INSERT INTO maintenance_schedules (brand, model, year_from, year_to, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
+('Audi', 'Q3 · 2.0T TFSI · Automatic', 2015, NULL, 'Engine Oil & Filter',       10000, 365, NULL, 'petrol', 'official_dealer'),
+('Audi', 'Q3 · 2.0T TFSI · Automatic', 2015, NULL, 'Engine Air Filter',         30000, NULL, NULL, 'petrol', 'official_dealer'),
+('Audi', 'Q3 · 2.0T TFSI · Automatic', 2015, NULL, 'Cabin Air Filter',          20000, NULL, NULL, 'petrol', 'official_dealer'),
+('Audi', 'Q3 · 2.0T TFSI · Automatic', 2015, NULL, 'Spark Plugs',               60000, NULL, NULL, 'petrol', 'official_dealer'),
+('Audi', 'Q3 · 2.0T TFSI · Automatic', 2015, NULL, 'Serpentine Belt',           60000, NULL, 'Accessory belt', 'petrol', 'official_dealer'),
+('Audi', 'Q3 · 2.0T TFSI · Automatic', 2015, NULL, 'Transmission Fluid (AT)',   60000, NULL, NULL, 'petrol', 'official_dealer'),
+('Audi', 'Q3 · 2.0T TFSI · Automatic', 2015, NULL, 'Brake Fluid',               40000, 730, NULL, 'petrol', 'official_dealer'),
+('Audi', 'Q3 · 2.0T TFSI · Automatic', 2015, NULL, 'Coolant',                   60000, NULL, NULL, 'petrol', 'official_dealer');
 
+-- Q5 · 2.0T TFSI · DSG (2017+) — 7-speed DSG, Timing Chain
+INSERT INTO maintenance_schedules (brand, model, year_from, year_to, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
+('Audi', 'Q5 · 2.0T TFSI · DSG', 2017, NULL, 'Engine Oil & Filter',  10000, 365, NULL, 'petrol', 'official_dealer'),
+('Audi', 'Q5 · 2.0T TFSI · DSG', 2017, NULL, 'Engine Air Filter',    30000, NULL, NULL, 'petrol', 'official_dealer'),
+('Audi', 'Q5 · 2.0T TFSI · DSG', 2017, NULL, 'Cabin Air Filter',     20000, NULL, NULL, 'petrol', 'official_dealer'),
+('Audi', 'Q5 · 2.0T TFSI · DSG', 2017, NULL, 'Spark Plugs',          60000, NULL, NULL, 'petrol', 'official_dealer'),
+('Audi', 'Q5 · 2.0T TFSI · DSG', 2017, NULL, 'Serpentine Belt',      60000, NULL, 'Accessory belt', 'petrol', 'official_dealer'),
+('Audi', 'Q5 · 2.0T TFSI · DSG', 2017, NULL, 'DSG Fluid',            60000, NULL, NULL, 'petrol', 'official_dealer'),
+('Audi', 'Q5 · 2.0T TFSI · DSG', 2017, NULL, 'Brake Fluid',          40000, 730, NULL, 'petrol', 'official_dealer'),
+('Audi', 'Q5 · 2.0T TFSI · DSG', 2017, NULL, 'Coolant',              60000, NULL, NULL, 'petrol', 'official_dealer');
+
+-- Q7 · 2.0T TFSI · Automatic (2015+) — 8-speed AT, Timing Chain
+INSERT INTO maintenance_schedules (brand, model, year_from, year_to, name, interval_km, interval_days, notes, engine_type, data_source) VALUES
+('Audi', 'Q7 · 2.0T TFSI · Automatic', 2015, NULL, 'Engine Oil & Filter',       10000, 365, NULL, 'petrol', 'official_dealer'),
+('Audi', 'Q7 · 2.0T TFSI · Automatic', 2015, NULL, 'Engine Air Filter',         30000, NULL, NULL, 'petrol', 'official_dealer'),
+('Audi', 'Q7 · 2.0T TFSI · Automatic', 2015, NULL, 'Cabin Air Filter',          20000, NULL, NULL, 'petrol', 'official_dealer'),
+('Audi', 'Q7 · 2.0T TFSI · Automatic', 2015, NULL, 'Spark Plugs',               60000, NULL, NULL, 'petrol', 'official_dealer'),
+('Audi', 'Q7 · 2.0T TFSI · Automatic', 2015, NULL, 'Serpentine Belt',           60000, NULL, 'Accessory belt', 'petrol', 'official_dealer'),
+('Audi', 'Q7 · 2.0T TFSI · Automatic', 2015, NULL, 'Transmission Fluid (AT)',   60000, NULL, NULL, 'petrol', 'official_dealer'),
+('Audi', 'Q7 · 2.0T TFSI · Automatic', 2015, NULL, 'Brake Fluid',               40000, 730, NULL, 'petrol', 'official_dealer'),
+('Audi', 'Q7 · 2.0T TFSI · Automatic', 2015, NULL, 'Coolant',                   60000, NULL, NULL, 'petrol', 'official_dealer');

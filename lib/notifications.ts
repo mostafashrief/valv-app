@@ -5,16 +5,18 @@ import type { MaintenanceItem } from '../types/car';
 import { calcItemStatus } from './maintenance';
 import { supabase } from './supabase';
 
-// Show notification banners when app is in foreground
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: true,
-    shouldSetBadge: true,
-    shouldShowBanner: true,
-    shouldShowList: true,
-  }),
-});
+// Show notification banners when app is in foreground (native only)
+if (Platform.OS !== 'web') {
+  Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+      shouldShowAlert: true,
+      shouldPlaySound: true,
+      shouldSetBadge: true,
+      shouldShowBanner: true,
+      shouldShowList: true,
+    }),
+  });
+}
 
 export type MileageReminderFrequency = 'daily' | 'weekly' | 'biweekly' | 'monthly';
 

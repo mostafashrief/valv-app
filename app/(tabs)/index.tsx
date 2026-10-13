@@ -32,14 +32,20 @@ interface ItemRow {
   source: 'estimated' | 'verified';
 }
 
-function ItemCard({ s, onPress, statusLabel, estimatedLabel, tapLabel }: {
+function sourceBadge(source: string): { label: string; color: string } | null {
+  if (source === 'estimated') return { label: 'Est.', color: '#888' };
+  if (source && source !== 'verified') return { label: `${source} Official`, color: '#2EC4B6' };
+  return null;
+}
+
+function ItemCard({ s, onPress, statusLabel, tapLabel }: {
   s: MaintenanceItemStatus;
   onPress: () => void;
   statusLabel: string;
-  estimatedLabel: string;
   tapLabel: string;
 }) {
   const accent = STATUS_COLOR[s.status];
+  const src = sourceBadge(s.item.source ?? '');
   return (
     <Pressable
       style={({ pressed }) => [styles.card, { borderLeftColor: accent, opacity: pressed ? 0.85 : 1 }]}
@@ -53,8 +59,10 @@ function ItemCard({ s, onPress, statusLabel, estimatedLabel, tapLabel }: {
       </View>
       <Text style={styles.cardLine}>{s.overdueLine}</Text>
       <View style={styles.cardBottom}>
-        {s.item.source === 'estimated' && (
-          <Text style={styles.estimated}>{estimatedLabel}</Text>
+        {src && (
+          <View style={[styles.sourceBadge, { backgroundColor: src.color + '22' }]}>
+            <Text style={[styles.sourceBadgeText, { color: src.color }]}>{src.label}</Text>
+          </View>
         )}
         <Text style={styles.tapHint}>{tapLabel}</Text>
       </View>
@@ -93,7 +101,7 @@ export default function Home() {
   const [newItemDays, setNewItemDays] = useState('');
 
   useEffect(() => {
-    if (!activeCar) return;
+    if (!activeCar) { setLoading(false); return; }
     loadItems(activeCar.id, activeCar.current_mileage_km);
     loadStreak(activeCar.id);
   }, [activeCar]);
@@ -344,7 +352,6 @@ export default function Home() {
               s={s}
               onPress={() => router.push(`/item/${s.item.id}`)}
               statusLabel={STATUS_LABEL[s.status]}
-              estimatedLabel={t('home.estimatedInterval')}
               tapLabel={t('home.tapToLog')}
             />
           )}
@@ -486,6 +493,17 @@ const styles = StyleSheet.create({
   cardLine: { ...typography.body, color: colors.textMuted, marginTop: 4 },
   cardBottom: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 8 },
   estimated: { ...typography.label, color: colors.steel, fontSize: 9 },
+  sourceBadge: {
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 4,
+    marginRight: 6,
+  },
+  sourceBadgeText: {
+    fontSize: 9,
+    fontWeight: '600',
+    letterSpacing: 0.3,
+  },
   tapHint: { ...typography.label, color: colors.orange, fontSize: 10, marginLeft: 'auto' },
 
   estimatedBanner: {

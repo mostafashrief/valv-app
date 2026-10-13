@@ -19,8 +19,8 @@ create table if not exists public.cars (
 );
 
 -- The maintenance plan generated for a car: one row per part/service type.
--- `source` distinguishes generic rule-of-thumb defaults from confirmed OEM
--- data so the UI/notifications can be honest about confidence level.
+-- `source` stores the brand name (e.g. 'Volkswagen', 'Hyundai') for items
+-- from official dealer schedules. All items in the app are official-only.
 create table if not exists public.maintenance_items (
   id uuid primary key default uuid_generate_v4(),
   car_id uuid not null references public.cars (id) on delete cascade,
@@ -29,7 +29,7 @@ create table if not exists public.maintenance_items (
   interval_days int,
   last_done_at_km int,
   last_done_at timestamptz,
-  source text not null default 'estimated' check (source in ('estimated', 'verified')),
+  source text not null,
   created_at timestamptz not null default now()
 );
 
