@@ -79,7 +79,7 @@ export default function Paywall() {
           >
             <View style={styles.planLeft}>
               <Text style={[styles.planName, selected === 'yearly' && styles.planNameActive]}>Yearly</Text>
-              <Text style={styles.planSub}>229 EGP / year — save 34%</Text>
+              <Text style={styles.planSub}>249.99 EGP / year — save 31%</Text>
             </View>
             <View style={styles.planRight}>
               <View style={styles.bestValueBadge}>
@@ -95,7 +95,7 @@ export default function Paywall() {
           >
             <View style={styles.planLeft}>
               <Text style={[styles.planName, selected === 'monthly' && styles.planNameActive]}>Monthly</Text>
-              <Text style={styles.planSub}>29 EGP / month</Text>
+              <Text style={styles.planSub}>29.99 EGP / month</Text>
             </View>
             {selected === 'monthly' && <Text style={styles.planCheck}>✓</Text>}
           </Pressable>
@@ -109,7 +109,7 @@ export default function Paywall() {
           }
         </Pressable>
         <Text style={styles.ctaHint}>
-          No charge today. {selected === 'yearly' ? '229 EGP/year' : '29 EGP/month'} after trial ends.
+          No charge today. {selected === 'yearly' ? '249.99 EGP/year' : '29.99 EGP/month'} after trial ends.
         </Text>
 
         {/* Restore */}
