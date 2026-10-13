@@ -1,7 +1,9 @@
 import * as Notifications from 'expo-notifications';
 import { Platform } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import type { MaintenanceItem } from '../types/car';
 import { calcItemStatus } from './maintenance';
+import { supabase } from './supabase';
 
 // Show notification banners when app is in foreground
 Notifications.setNotificationHandler({
@@ -129,6 +131,41 @@ export async function scheduleMileageReminder(frequency: MileageReminderFrequenc
       repeats: true,
     },
   });
+}
+
+// ─── foreground reschedule ────────────────────────────────────────────────────
+
+const RESCHEDULE_KEY = 'last_maintenance_reschedule';
+const RESCHEDULE_INTERVAL_MS = 12 * 60 * 60 * 1000; // 12 hours
+
+export async function rescheduleMaintenanceIfNeeded() {
+  try {
+    const raw = await AsyncStorage.getItem(RESCHEDULE_KEY);
+    const last = raw ? parseInt(raw, 10) : 0;
+    if (Date.now() - last < RESCHEDULE_INTERVAL_MS) return;
+
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
+
+    const { data: cars } = await supabase
+      .from('cars')
+      .select('id, current_mileage_km')
+      .eq('user_id', user.id)
+      .limit(1);
+    if (!cars || cars.length === 0) return;
+
+    const car = cars[0];
+    const { data: items } = await supabase
+      .from('maintenance_items')
+      .select('*')
+      .eq('car_id', car.id);
+    if (!items || items.length === 0) return;
+
+    await scheduleMaintenceNotifications(items as MaintenanceItem[], car.current_mileage_km ?? 0);
+    await AsyncStorage.setItem(RESCHEDULE_KEY, String(Date.now()));
+  } catch {
+    // non-critical — silently skip
+  }
 }
 
 export async function cancelMileageReminder() {

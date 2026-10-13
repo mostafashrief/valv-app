@@ -16,9 +16,13 @@ import {
 import {
   SpaceMono_400Regular,
 } from '@expo-google-fonts/space-mono';
-import { View } from 'react-native';
+import { View, AppState, AppStateStatus } from 'react-native';
 import { useEffect, useRef } from 'react';
-import { requestNotificationPermission } from '../lib/notifications';
+import * as Notifications from 'expo-notifications';
+import {
+  requestNotificationPermission,
+  rescheduleMaintenanceIfNeeded,
+} from '../lib/notifications';
 import { AuthProvider, useAuth } from '../lib/auth-context';
 import { OnboardingProvider } from '../lib/onboarding-context';
 import { CarProvider } from '../lib/car-context';
@@ -80,10 +84,37 @@ function AppProviders({ children }: { children: React.ReactNode }) {
   );
 }
 
+function routeFromNotification(response: Notifications.NotificationResponse) {
+  const type = (response.notification.request.content.data as any)?.type;
+  if (type === 'maintenance') {
+    router.push('/(tabs)/upcoming');
+  } else if (type === 'mileage') {
+    router.push('/(tabs)');
+  }
+}
+
 export default function RootLayout() {
   useEffect(() => {
     initLanguage();
     requestNotificationPermission();
+
+    // Gap 2: cold launch — app was closed and opened via notification tap
+    Notifications.getLastNotificationResponseAsync().then((response) => {
+      if (response) routeFromNotification(response);
+    });
+
+    // Gap 1: tap handler while app is running or backgrounded
+    const tapSub = Notifications.addNotificationResponseReceivedListener(routeFromNotification);
+
+    // Gap 3: reschedule maintenance notifications when app returns to foreground
+    const appStateSub = AppState.addEventListener('change', (state: AppStateStatus) => {
+      if (state === 'active') rescheduleMaintenanceIfNeeded();
+    });
+
+    return () => {
+      tapSub.remove();
+      appStateSub.remove();
+    };
   }, []);
 
   const [fontsLoaded] = useFonts({
