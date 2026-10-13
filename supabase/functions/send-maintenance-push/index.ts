@@ -95,7 +95,7 @@ Deno.serve(async (req) => {
 
     const body = overdue.length > 0
       ? overdue.slice(0, 3).map((i) => i.name).join(', ') + (overdue.length > 3 ? ' and more.' : '.')
-      : 'Open VALV to see your maintenance timeline.';
+      : 'Open Carvalv to see your maintenance timeline.';
 
     messages.push({
       to: profile.push_token,

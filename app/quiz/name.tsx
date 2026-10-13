@@ -224,7 +224,7 @@ export default function QuizName() {
           />
 
           <ChipRow
-            label="How did you hear about VALV? (optional)"
+            label="How did you hear about Carvalv? (optional)"
             options={ACQUISITION_OPTIONS}
             selected={acquisitionSource}
             onSelect={setAcquisitionSource}
