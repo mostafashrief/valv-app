@@ -13,9 +13,13 @@ export default function Welcome() {
       <View style={styles.content}>
         <Text style={styles.wordmark}>carvalv</Text>
         <Text style={styles.tagline}>{t('onboarding.welcomeHeadline')}</Text>
+        <Text style={styles.sub}>{t('onboarding.welcomeSubheadline')}</Text>
       </View>
       <View style={styles.footer}>
-        <Text style={styles.sub}>{t('onboarding.welcomeSubheadline')}</Text>
+        <View style={styles.trustRow}>
+          <Text style={styles.trustDot}>●</Text>
+          <Text style={styles.trustText}>{t('onboarding.welcomeTrust')}</Text>
+        </View>
         <Button label={t('onboarding.welcomeCta')} onPress={() => router.push('/auth')} style={styles.btn} />
       </View>
     </SafeAreaView>
@@ -27,18 +31,32 @@ const styles = StyleSheet.create({
   content: { flex: 1, justifyContent: 'center', paddingHorizontal: spacing.lg },
   wordmark: {
     fontFamily: 'ChakraPetch_700Bold',
-    fontSize: 42,
+    fontSize: 36,
     color: colors.orange,
     letterSpacing: -1,
+    marginBottom: spacing.lg,
   },
   tagline: {
     fontFamily: 'ChakraPetch_700Bold',
-    fontSize: 30,
+    fontSize: 32,
     color: colors.iconWhite,
-    marginTop: spacing.md,
-    lineHeight: 38,
+    lineHeight: 40,
+    marginBottom: spacing.md,
+  },
+  sub: {
+    ...typography.body,
+    color: colors.textMuted,
+    fontSize: 16,
+    lineHeight: 24,
   },
   footer: { paddingHorizontal: spacing.lg, paddingBottom: spacing.xl, gap: spacing.md },
-  sub: { ...typography.body, color: colors.textMuted },
-  btn: { marginTop: spacing.xs },
+  trustRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 6,
+  },
+  trustDot: { color: colors.healthy, fontSize: 8 },
+  trustText: { ...typography.label, color: colors.textMuted, fontSize: 12 },
+  btn: {},
 });

@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Pressable, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
+import {
+  View, Text, TextInput, Pressable, StyleSheet,
+  KeyboardAvoidingView, Platform, TouchableOpacity,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { useTranslation } from 'react-i18next';
@@ -19,6 +22,7 @@ export default function EmailAuth() {
   const [mode, setMode] = useState<'signup' | 'signin'>('signup');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -53,27 +57,44 @@ export default function EmailAuth() {
           <Text style={styles.title}>
             {mode === 'signup' ? t('auth.signUpTitle') : t('auth.signInTitle')}
           </Text>
+          <Text style={styles.sub}>
+            {mode === 'signup' ? t('auth.signUpSub') : t('auth.signInSub')}
+          </Text>
 
-          <TextInput
-            style={styles.input}
-            placeholder={t('auth.emailPlaceholder')}
-            placeholderTextColor={colors.textMuted}
-            value={email}
-            onChangeText={(v) => { setEmail(v); setError(null); }}
-            keyboardType="email-address"
-            autoCapitalize="none"
-            autoFocus
-          />
-          <TextInput
-            style={[styles.input, { marginTop: spacing.sm }]}
-            placeholder={t('auth.passwordPlaceholder')}
-            placeholderTextColor={colors.textMuted}
-            value={password}
-            onChangeText={(v) => { setPassword(v); setError(null); }}
-            secureTextEntry
-            returnKeyType="go"
-            onSubmitEditing={handleSubmit}
-          />
+          <View style={styles.fieldGroup}>
+            <TextInput
+              style={styles.input}
+              placeholder={t('auth.emailPlaceholder')}
+              placeholderTextColor={colors.textMuted}
+              value={email}
+              onChangeText={(v) => { setEmail(v); setError(null); }}
+              keyboardType="email-address"
+              autoCapitalize="none"
+              autoFocus
+              returnKeyType="next"
+            />
+
+            <View style={styles.passwordRow}>
+              <TextInput
+                style={styles.passwordInput}
+                placeholder={t('auth.passwordPlaceholder')}
+                placeholderTextColor={colors.textMuted}
+                value={password}
+                onChangeText={(v) => { setPassword(v); setError(null); }}
+                secureTextEntry={!showPassword}
+                returnKeyType="go"
+                onSubmitEditing={handleSubmit}
+              />
+              <TouchableOpacity
+                style={styles.eyeBtn}
+                onPress={() => setShowPassword((v) => !v)}
+                hitSlop={8}
+              >
+                <Text style={styles.eyeIcon}>{showPassword ? '🙈' : '👁'}</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+
           {error ? <Text style={styles.error}>{error}</Text> : null}
 
           <Pressable
@@ -102,11 +123,14 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.background },
   kav: { flex: 1 },
   content: { flex: 1, paddingHorizontal: spacing.lg, paddingTop: spacing.xl },
-  title: { ...typography.title, color: colors.text, marginBottom: spacing.xl },
+  title: { ...typography.title, color: colors.text, marginBottom: spacing.xs },
+  sub: { ...typography.body, color: colors.textMuted, fontSize: 14, marginBottom: spacing.xl },
+
+  fieldGroup: { gap: spacing.sm },
   input: {
     backgroundColor: colors.surface,
     borderRadius: radii.md,
-    borderWidth: 1,
+    borderWidth: 1.5,
     borderColor: colors.border,
     paddingVertical: spacing.md,
     paddingHorizontal: spacing.lg,
@@ -114,8 +138,27 @@ const styles = StyleSheet.create({
     color: colors.text,
     fontFamily: 'SpaceGrotesk_400Regular',
   },
-  error: { ...typography.body, color: colors.overdue, marginTop: spacing.sm },
+  passwordRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: colors.surface,
+    borderRadius: radii.md,
+    borderWidth: 1.5,
+    borderColor: colors.border,
+  },
+  passwordInput: {
+    flex: 1,
+    paddingVertical: spacing.md,
+    paddingHorizontal: spacing.lg,
+    fontSize: 16,
+    color: colors.text,
+    fontFamily: 'SpaceGrotesk_400Regular',
+  },
+  eyeBtn: { paddingHorizontal: spacing.md, paddingVertical: spacing.md },
+  eyeIcon: { fontSize: 18 },
+
+  error: { ...typography.body, color: colors.overdue, marginTop: spacing.sm, fontSize: 14 },
   switchRow: { marginTop: spacing.lg },
-  switchText: { ...typography.body, color: colors.orange },
+  switchText: { ...typography.body, color: colors.orange, fontSize: 14 },
   footer: { paddingHorizontal: spacing.lg, paddingBottom: spacing.xl },
 });

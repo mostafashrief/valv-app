@@ -10,9 +10,8 @@ import { useOnboarding } from '../../lib/onboarding-context';
 import { useQuiz } from '../../lib/quiz-context';
 import { supabase } from '../../lib/supabase';
 import { setPendingItems } from '../../lib/pending-items';
-import { colors, spacing, typography } from '../../constants/theme';
+import { colors, radii, spacing, typography } from '../../constants/theme';
 
-// Items that only apply to specific drivetrain configs
 const TIMING_BELT_NAMES = ['timing belt', 'coolant pump drive belt'];
 const DSG_NAMES   = ['dsg fluid', 's-tronic fluid', 'edc fluid'];
 const CVT_NAMES   = ['cvt fluid', 'cvt oil'];
@@ -35,7 +34,6 @@ export default function DoneStep() {
   const { session } = useAuth();
   const { setActiveCar } = useCar();
   const { draft: quizDraft } = useQuiz();
-  // If quiz profile data is in context, we're mid initial-setup → continue to quiz after saving car
   const isInitialQuiz = !!quizDraft.firstName;
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -69,7 +67,6 @@ export default function DoneStep() {
       return;
     }
 
-    // Immediately set active car so home screen loads without waiting for context reload
     await setActiveCar(car as any);
 
     const { data: schedule } = await supabase
@@ -102,23 +99,42 @@ export default function DoneStep() {
 
     setLoading(false);
     setPendingItems(itemsToInsert as any, currentKm);
-    // Initial quiz: continue to records step; adding extra car: go to services review
     router.replace(isInitialQuiz ? '/quiz/records' : '/onboarding/services');
   };
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
-        <Text style={styles.label}>{t('onboarding.doneTitle')}</Text>
-        <Text style={styles.title}>{t('onboarding.doneSubtitle')}</Text>
-        <Text style={styles.carSummary}>
-          {draft.brand} {draft.model} · {draft.year}
-        </Text>
+        {/* Car identity */}
+        <View style={styles.carBadge}>
+          <Text style={styles.carIcon}>🚗</Text>
+        </View>
+        <Text style={styles.carBrand}>{draft.brand}</Text>
+        <Text style={styles.carModel}>{draft.model} · {draft.year}</Text>
         <Text style={styles.mileage}>{draft.mileageKm?.toLocaleString()} km</Text>
+
+        {/* What's ready */}
+        <View style={styles.readyCard}>
+          <View style={styles.readyRow}>
+            <Text style={styles.readyCheck}>✓</Text>
+            <Text style={styles.readyText}>Maintenance schedule loaded</Text>
+          </View>
+          <View style={styles.readyRow}>
+            <Text style={styles.readyCheck}>✓</Text>
+            <Text style={styles.readyText}>Service intervals set for your car</Text>
+          </View>
+          <View style={styles.readyRow}>
+            <Text style={styles.readyCheck}>✓</Text>
+            <Text style={styles.readyText}>Reminders configured</Text>
+          </View>
+        </View>
+
         {error ? <Text style={styles.error}>{error}</Text> : null}
       </View>
+
       <View style={styles.footer}>
-        <Button label="Open my plan" onPress={handleFinish} loading={loading} />
+        <Button label={loading ? 'Setting up…' : 'Open my plan →'} onPress={handleFinish} loading={loading} />
+        <Text style={styles.hint}>Your car's full history starts now</Text>
       </View>
     </SafeAreaView>
   );
@@ -126,11 +142,50 @@ export default function DoneStep() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.background, justifyContent: 'space-between' },
-  content: { flex: 1, justifyContent: 'center', paddingHorizontal: spacing.lg },
-  label: { ...typography.label, color: colors.orange, marginBottom: spacing.sm },
-  title: { ...typography.title, color: colors.text },
-  carSummary: { ...typography.body, color: colors.textMuted, marginTop: spacing.lg },
-  mileage: { ...typography.monoLarge, color: colors.text, marginTop: spacing.xs },
-  error: { ...typography.body, color: colors.overdue, marginTop: spacing.md },
-  footer: { paddingHorizontal: spacing.lg, paddingBottom: spacing.xl },
+  content: { flex: 1, justifyContent: 'center', paddingHorizontal: spacing.lg, alignItems: 'center' },
+
+  carBadge: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    backgroundColor: colors.orange + '20',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: spacing.md,
+  },
+  carIcon: { fontSize: 36 },
+
+  carBrand: {
+    ...typography.label,
+    color: colors.orange,
+    fontSize: 12,
+    marginBottom: 4,
+  },
+  carModel: {
+    ...typography.title,
+    color: colors.text,
+    fontSize: 24,
+    marginBottom: spacing.sm,
+  },
+  mileage: {
+    ...typography.mono,
+    color: colors.textMuted,
+    fontSize: 18,
+    marginBottom: spacing.xl,
+  },
+
+  readyCard: {
+    backgroundColor: colors.surface,
+    borderRadius: radii.lg,
+    padding: spacing.md,
+    gap: spacing.sm,
+    width: '100%',
+  },
+  readyRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
+  readyCheck: { color: colors.healthy, fontSize: 16, fontWeight: '700', width: 24 },
+  readyText: { ...typography.body, color: colors.text, fontSize: 14, flex: 1 },
+
+  error: { ...typography.body, color: colors.overdue, marginTop: spacing.md, textAlign: 'center' },
+  footer: { paddingHorizontal: spacing.lg, paddingBottom: spacing.xl, gap: spacing.sm },
+  hint: { ...typography.label, color: colors.textMuted, textAlign: 'center', fontSize: 12 },
 });

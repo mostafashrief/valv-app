@@ -11,18 +11,21 @@
     "delete": "Delete"
   },
   "auth": {
-    "choiceTitle": "How do you want to sign in?",
+    "choiceTitle": "One tap to get started.",
+    "choiceSub": "Takes 30 seconds. Free for 6 months.",
     "withGoogle": "Continue with Google",
-    "withEmail": "Continue with email",
+    "withEmail": "Or use your email",
     "withPhone": "Continue with phone number",
     "signUpTitle": "Create your account.",
+    "signUpSub": "Free for 6 months — no card needed.",
     "signInTitle": "Welcome back.",
+    "signInSub": "Good to see you again.",
     "emailPlaceholder": "your@email.com",
     "passwordPlaceholder": "Password (min. 6 characters)",
     "signUp": "Create account",
     "signIn": "Sign in",
-    "switchToSignIn": "Already have an account? Sign in.",
-    "switchToSignUp": "No account yet? Create one.",
+    "switchToSignIn": "Already have an account? Sign in",
+    "switchToSignUp": "No account? Create one",
     "errorInvalidEmail": "That doesn't look like a valid email.",
     "errorShortPassword": "Password must be at least 6 characters.",
     "phoneTitle": "What's your number?",
@@ -35,21 +38,23 @@
     "codePlaceholder": "6-digit code",
     "verify": "Verify",
     "resend": "Resend code",
-    "withApple": "Continue with Apple"
+    "withApple": "Continue with Apple",
+    "privacy": "🔒 We never sell your data."
   },
   "onboarding": {
-    "welcomeHeadline": "Your car's past and future, documented and planned.",
-    "welcomeSubheadline": "Track every maintenance. Get smart reminders. Protect your resale value.",
-    "welcomeCta": "Let's get started",
+    "welcomeHeadline": "Never get caught off guard by your car again.",
+    "welcomeSubheadline": "Exact service schedules, smart reminders, and full history — built for your car.",
+    "welcomeTrust": "Free for 6 months · No card needed",
+    "welcomeCta": "Start for free →",
     "welcomeSkip": "Skip for now",
     "brandStep": "Who made your car?",
     "brandTitle": "Let's add your car.",
     "brandSubtitle": "We'll show you exactly when your car needs service.",
     "modelTitle": "Which model?",
     "yearTitle": "What year is it?",
-    "mileageTitle": "How many kilometers has your car done?",
-    "mileageSubtitle": "We'll use this to calculate your service schedule.",
-    "mileagePlaceholder": "e.g., 125,000",
+    "mileageTitle": "What's your odometer reading?",
+    "mileageSubtitle": "Check your dashboard — this is what your service intervals are based on.",
+    "mileagePlaceholder": "e.g., 125,000 km",
     "mileageError": "We need your car's info to get started.",
     "notificationsTitle": "Never miss a service.",
     "notificationsSubtitle": "Get alerts when your car needs maintenance — by mileage or time.",
@@ -57,8 +62,10 @@
     "notificationsEnable": "Enable notifications",
     "notificationsSkip": "Skip",
     "notificationsNote": "You can change this anytime in Settings.",
-    "doneTitle": "You're all set.",
-    "doneSubtitle": "Your maintenance schedule is ready. We'll remind you when something's due."
+    "doneTitle": "Your car is set up.",
+    "doneSubtitle": "Maintenance schedule loaded. We'll ping you before anything is due.",
+    "brandStep": "Who made your car?",
+    "brandHint": "Pick your brand — we'll load its exact service schedule."
   },
   "home": {
     "title": "Your car's status",
@@ -278,10 +285,11 @@
       "next": "Almost done →"
     },
     "done": {
-      "titleWithName": "{{name}}, your car is in good hands.",
-      "title": "Your car is in good hands.",
-      "saving": "Setting up…",
-      "cta": "Open my plan"
+      "titleWithName": "Almost there, {{name}}.",
+      "title": "Almost there.",
+      "subtitle": "One last thing before we show you your car's schedule.",
+      "saving": "Building your schedule…",
+      "cta": "See my schedule →"
     },
     "booklet": {
       "title": "Upload your service booklet",

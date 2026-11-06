@@ -11,12 +11,15 @@
     "delete": "احذف"
   },
   "auth": {
-    "choiceTitle": "هتسجّل إزاي؟",
+    "choiceTitle": "دقيقة وتكون جوّا.",
+    "choiceSub": "30 ثانية. مجاني 6 شهور.",
     "withGoogle": "استمر بـ Google",
-    "withEmail": "استمر بالبريد الإلكتروني",
+    "withEmail": "أو استخدم البريد الإلكتروني",
     "withPhone": "استمر برقم الموبايل",
     "signUpTitle": "إنشاء حساب.",
+    "signUpSub": "مجاني 6 شهور — من غير كارت.",
     "signInTitle": "أهلاً بعودتك.",
+    "signInSub": "وحشتنا.",
     "emailPlaceholder": "بريدك الإلكتروني",
     "passwordPlaceholder": "كلمة المرور (6 أحرف على الأقل)",
     "signUp": "إنشاء حساب",
@@ -35,12 +38,14 @@
     "codePlaceholder": "الكود المكون من 6 أرقام",
     "verify": "تأكيد",
     "resend": "إعادة إرسال الكود",
-    "withApple": "المتابعة مع Apple"
+    "withApple": "المتابعة مع Apple",
+    "privacy": "🔒 بياناتك مش هتتباع لحد."
   },
   "onboarding": {
-    "welcomeHeadline": "ماضي سيارتك ومستقبلها، معروف ومخطط.",
-    "welcomeSubheadline": "تابع كل صيانة. اتنبه قبل ما تتأخر. احمي قيمة سيارتك.",
-    "welcomeCta": "يلا نبدأ",
+    "welcomeHeadline": "خلي سيارتك ما تفاجئكش تاني.",
+    "welcomeSubheadline": "جدول صيانة دقيق، تذكيرات ذكية، وسجل كامل — لسيارتك بالظبط.",
+    "welcomeTrust": "مجاني 6 شهور · من غير كارت",
+    "welcomeCta": "ابدأ مجاناً →",
     "welcomeSkip": "تخطي",
     "brandStep": "مين عمل سيارتك؟",
     "brandTitle": "نضيف سيارتك.",
@@ -57,8 +62,10 @@
     "notificationsEnable": "فعّل التنبيهات",
     "notificationsSkip": "تخطي",
     "notificationsNote": "تقدر تغيره أي وقت في Settings.",
-    "doneTitle": "خلصنا كده.",
-    "doneSubtitle": "جدول الصيانة بتاعتك جاهز. هنفكرك لما يجي موعد أي حاجة."
+    "doneTitle": "سيارتك جاهزة.",
+    "doneSubtitle": "الجدول اتحمل. هنفكرك قبل أي موعد.",
+    "brandStep": "مين صنع سيارتك؟",
+    "brandHint": "اختار الماركة — هنحمّل جدول الصيانة بتاعها."
   },
   "home": {
     "title": "حالة سيارتك",
@@ -278,10 +285,11 @@
       "next": "تقريباً خلصنا →"
     },
     "done": {
-      "titleWithName": "{{name}}، سيارتك في إيدنا.",
-      "title": "سيارتك في إيدنا.",
-      "saving": "بنجهز…",
-      "cta": "افتح خطتي"
+      "titleWithName": "تقريباً خلصنا يا {{name}}.",
+      "title": "تقريباً خلصنا.",
+      "subtitle": "حاجة واحدة بس قبل ما نوريك جدول سيارتك.",
+      "saving": "بنجهز جدولك…",
+      "cta": "اشوف جدولي →"
     },
     "booklet": {
       "title": "رفّع كتيّب الصيانة",

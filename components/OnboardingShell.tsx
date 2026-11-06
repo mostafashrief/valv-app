@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.orange,
     borderRadius: radii.pill,
   },
-  stepCounter: { ...typography.label, color: colors.textMuted, fontSize: 11 },
+  stepCounter: { ...typography.label, color: colors.orange, fontSize: 11 },
   kav: { flex: 1 },
   content: { flex: 1, paddingHorizontal: spacing.lg, paddingTop: spacing.lg },
   title: { ...typography.title, color: colors.text },

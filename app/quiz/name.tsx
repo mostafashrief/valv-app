@@ -26,15 +26,15 @@ const GENDER_OPTIONS: { value: Gender; label: string }[] = [
 ];
 
 const ACQUISITION_OPTIONS: { value: AcquisitionSource; label: string }[] = [
-  { value: 'friend',       label: 'A friend told me' },
+  { value: 'friend',       label: 'A friend' },
   { value: 'social_media', label: 'Social media' },
-  { value: 'search',       label: 'Google / search' },
-  { value: 'app_store',    label: 'App Store / Play Store' },
+  { value: 'search',       label: 'Google' },
+  { value: 'app_store',    label: 'App Store' },
   { value: 'other',        label: 'Other' },
 ];
 
 function Field({
-  label, placeholder, value, onChangeText, keyboardType, autoCapitalize,
+  label, placeholder, value, onChangeText, keyboardType, autoCapitalize, optional,
 }: {
   label: string;
   placeholder: string;
@@ -42,10 +42,14 @@ function Field({
   onChangeText: (v: string) => void;
   keyboardType?: any;
   autoCapitalize?: 'none' | 'words' | 'sentences';
+  optional?: boolean;
 }) {
   return (
     <View style={styles.field}>
-      <Text style={styles.fieldLabel}>{label}</Text>
+      <View style={styles.fieldLabelRow}>
+        <Text style={styles.fieldLabel}>{label}</Text>
+        {optional && <Text style={styles.optionalTag}>optional</Text>}
+      </View>
       <TextInput
         style={styles.input}
         value={value}
@@ -64,15 +68,20 @@ function ChipRow<T extends string>({
   options,
   selected,
   onSelect,
+  optional,
 }: {
   label: string;
   options: { value: T; label: string }[];
   selected: T | undefined;
   onSelect: (v: T) => void;
+  optional?: boolean;
 }) {
   return (
     <View style={styles.field}>
-      <Text style={styles.fieldLabel}>{label}</Text>
+      <View style={styles.fieldLabelRow}>
+        <Text style={styles.fieldLabel}>{label}</Text>
+        {optional && <Text style={styles.optionalTag}>optional</Text>}
+      </View>
       <View style={styles.chips}>
         {options.map((o) => (
           <Pressable
@@ -100,7 +109,7 @@ function CityPicker({ value, onSelect }: { value: string; onSelect: (c: string) 
 
   return (
     <View style={styles.field}>
-      <Text style={styles.fieldLabel}>City *</Text>
+      <Text style={styles.fieldLabel}>City</Text>
       <TextInput
         style={styles.input}
         value={query}
@@ -149,8 +158,6 @@ export default function QuizName() {
   const ageNum = parseInt(age, 10);
   const isValid =
     firstName.trim().length > 0 &&
-    lastName.trim().length > 0 &&
-    !Number.isNaN(ageNum) && ageNum >= 16 && ageNum <= 100 &&
     city.trim().length > 0 &&
     gender != null;
 
@@ -158,8 +165,8 @@ export default function QuizName() {
     if (!isValid) return;
     setDraft({
       firstName:         firstName.trim(),
-      lastName:          lastName.trim(),
-      age:               ageNum,
+      lastName:          lastName.trim() || undefined,
+      age:               (!Number.isNaN(ageNum) && ageNum >= 16 && ageNum <= 100) ? ageNum : undefined,
       city:              city.trim(),
       phone:             phone.trim() || undefined,
       gender,
@@ -180,58 +187,74 @@ export default function QuizName() {
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         >
-          <Text style={styles.step}>1 / 5</Text>
-          <Text style={styles.title}>Tell us about yourself</Text>
-          <Text style={styles.sub}>We use this to personalise your experience and improve the app.</Text>
+          <Text style={styles.step}>1 of 5</Text>
+          <Text style={styles.title}>Quick — tell us your name.</Text>
+          <Text style={styles.sub}>We personalise the app to you. Takes a minute.</Text>
 
-          <Field
-            label="First name *"
-            placeholder="e.g. Ahmed"
-            value={firstName}
-            onChangeText={setFirstName}
-          />
-          <Field
-            label="Last name *"
-            placeholder="e.g. Hassan"
-            value={lastName}
-            onChangeText={setLastName}
-          />
-          <Field
-            label="Age *"
-            placeholder="e.g. 28"
-            value={age}
-            onChangeText={setAge}
-            keyboardType="number-pad"
-            autoCapitalize="none"
-          />
+          {/* Required fields */}
+          <View style={styles.section}>
+            <Field
+              label="First name"
+              placeholder="e.g. Ahmed"
+              value={firstName}
+              onChangeText={setFirstName}
+            />
 
-          <ChipRow
-            label="Gender *"
-            options={GENDER_OPTIONS}
-            selected={gender}
-            onSelect={setGender}
-          />
+            <ChipRow
+              label="Gender"
+              options={GENDER_OPTIONS}
+              selected={gender}
+              onSelect={setGender}
+            />
 
-          <CityPicker value={city} onSelect={setCity} />
+            <CityPicker value={city} onSelect={setCity} />
+          </View>
 
-          <Field
-            label="Phone number (optional)"
-            placeholder="e.g. 01012345678"
-            value={phone}
-            onChangeText={setPhone}
-            keyboardType="phone-pad"
-            autoCapitalize="none"
-          />
+          {/* Optional section */}
+          <View style={styles.optionalSection}>
+            <Text style={styles.optionalSectionLabel}>The more you tell us, the better we can help</Text>
 
-          <ChipRow
-            label="How did you hear about Carvalv? (optional)"
-            options={ACQUISITION_OPTIONS}
-            selected={acquisitionSource}
-            onSelect={setAcquisitionSource}
-          />
+            <Field
+              label="Last name"
+              placeholder="e.g. Hassan"
+              value={lastName}
+              onChangeText={setLastName}
+              optional
+            />
+            <Field
+              label="Age"
+              placeholder="e.g. 28"
+              value={age}
+              onChangeText={setAge}
+              keyboardType="number-pad"
+              autoCapitalize="none"
+              optional
+            />
+            <Field
+              label="Phone number"
+              placeholder="e.g. 01012345678"
+              value={phone}
+              onChangeText={setPhone}
+              keyboardType="phone-pad"
+              autoCapitalize="none"
+              optional
+            />
+
+            <ChipRow
+              label="How did you hear about Carvalv?"
+              options={ACQUISITION_OPTIONS}
+              selected={acquisitionSource}
+              onSelect={setAcquisitionSource}
+              optional
+            />
+          </View>
 
           <View style={styles.footer}>
-            <Button label="Next →" onPress={handleNext} disabled={!isValid} />
+            <Button
+              label={isValid ? 'Next — add your car →' : 'Fill in the required fields above'}
+              onPress={handleNext}
+              disabled={!isValid}
+            />
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
@@ -244,11 +267,37 @@ const styles = StyleSheet.create({
   kav:        { flex: 1 },
   scroll:     { paddingHorizontal: spacing.lg, paddingTop: spacing.sm, paddingBottom: spacing.xxl },
   step:       { ...typography.label, color: colors.orange, marginBottom: spacing.sm },
-  title:      { ...typography.title, color: colors.text, fontSize: 28, marginBottom: 6 },
-  sub:        { ...typography.body, color: colors.textMuted, fontSize: 14, marginBottom: spacing.xl, lineHeight: 20 },
+  title:      { ...typography.title, color: colors.text, fontSize: 26, marginBottom: 6 },
+  sub:        { ...typography.body, color: colors.textMuted, fontSize: 14, marginBottom: spacing.lg, lineHeight: 20 },
+
+  section:    { marginBottom: spacing.lg },
+  optionalSection: {
+    backgroundColor: colors.surface,
+    borderRadius: radii.lg,
+    padding: spacing.md,
+    gap: spacing.sm,
+    marginBottom: spacing.lg,
+  },
+  optionalSectionLabel: {
+    ...typography.label,
+    color: colors.textMuted,
+    fontSize: 11,
+    marginBottom: spacing.xs,
+  },
 
   field:      { marginBottom: spacing.md },
-  fieldLabel: { ...typography.label, color: colors.textMuted, marginBottom: 6, fontSize: 11 },
+  fieldLabelRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm, marginBottom: 6 },
+  fieldLabel: { ...typography.label, color: colors.textMuted, fontSize: 11 },
+  optionalTag: {
+    ...typography.label,
+    color: colors.textMuted,
+    fontSize: 10,
+    backgroundColor: colors.border,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 4,
+    overflow: 'hidden',
+  },
   input: {
     backgroundColor: colors.surface,
     borderRadius: radii.md,
@@ -291,5 +340,5 @@ const styles = StyleSheet.create({
   },
   cityOptionText: { ...typography.body, color: colors.text, fontSize: 15 },
 
-  footer: { marginTop: spacing.lg },
+  footer: { marginTop: spacing.sm },
 });

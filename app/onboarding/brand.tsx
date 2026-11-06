@@ -17,7 +17,7 @@ export default function BrandStep() {
   };
 
   return (
-    <OnboardingShell step={1} totalSteps={4} title={t('onboarding.brandStep')}>
+    <OnboardingShell step={1} totalSteps={4} title={t('onboarding.brandStep')} subtitle={t('onboarding.brandHint')}>
       <FlatList
         data={CAR_BRANDS_SEED}
         keyExtractor={(item) => item.brand}
