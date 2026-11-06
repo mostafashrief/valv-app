@@ -1,25 +1,33 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, Platform, TouchableOpacity, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { useTranslation } from 'react-i18next';
+import * as AppleAuthentication from 'expo-apple-authentication';
 import { Button } from '../../components/Button';
-import { useAuth } from '../../lib/auth-context';
 import { colors, spacing, typography } from '../../constants/theme';
+import { useAuth } from '../../lib/auth-context';
 
 export default function AuthChoice() {
   const { t } = useTranslation();
-  const { signInWithGoogle } = useAuth();
-  const [loading, setLoading] = useState(false);
+  const { signInWithApple, signInWithGoogle } = useAuth();
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  const handleApple = async () => {
+    setError(null);
+    setLoading(true);
+    const { error } = await signInWithApple();
+    setLoading(false);
+    if (error) setError(error);
+  };
 
   const handleGoogle = async () => {
-    setLoading(true);
     setError(null);
-    const { error: err } = await signInWithGoogle();
+    setLoading(true);
+    const { error } = await signInWithGoogle();
     setLoading(false);
-    if (err && err !== 'Google sign-in cancelled') { setError(err); return; }
-    // AuthGate in _layout.tsx handles routing on session change
+    if (error) setError(error);
   };
 
   return (
@@ -29,20 +37,23 @@ export default function AuthChoice() {
       </View>
       <View style={styles.footer}>
         {error ? <Text style={styles.error}>{error}</Text> : null}
-        <Button
-          label={loading ? t('common.loading') : t('auth.withGoogle')}
-          onPress={handleGoogle}
-          disabled={loading}
-        />
-        {loading && <ActivityIndicator color={colors.orange} style={{ marginTop: spacing.sm }} />}
-        <View style={styles.divider}>
-          <View style={styles.dividerLine} />
-          <Text style={styles.dividerText}>or</Text>
-          <View style={styles.dividerLine} />
-        </View>
+
+        {Platform.OS === 'ios' && (
+          <AppleAuthentication.AppleAuthenticationButton
+            buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
+            buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
+            cornerRadius={12}
+            style={styles.appleButton}
+            onPress={handleApple}
+          />
+        )}
+
+        <TouchableOpacity style={styles.googleButton} onPress={handleGoogle} disabled={loading}>
+          <Text style={styles.googleText}>Continue with Google</Text>
+        </TouchableOpacity>
+
         <Button
           label={t('auth.withEmail')}
-          variant="secondary"
           onPress={() => router.push('/auth/email')}
         />
       </View>
@@ -54,9 +65,21 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.background, justifyContent: 'space-between' },
   content: { flex: 1, justifyContent: 'center', paddingHorizontal: spacing.lg },
   title: { ...typography.title, color: colors.text },
-  footer: { paddingHorizontal: spacing.lg, paddingBottom: spacing.xl },
+  footer: { paddingHorizontal: spacing.lg, paddingBottom: spacing.xl, gap: spacing.sm },
+  appleButton: { width: '100%', height: 50 },
+  googleButton: {
+    width: '100%',
+    height: 50,
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
+  },
+  googleText: {
+    color: '#1A1410',
+    fontSize: 16,
+    fontWeight: '600',
+  },
   error: { ...typography.body, color: colors.overdue, marginBottom: spacing.sm },
-  divider: { flexDirection: 'row', alignItems: 'center', marginVertical: spacing.md },
-  dividerLine: { flex: 1, height: 1, backgroundColor: colors.border },
-  dividerText: { ...typography.label, color: colors.textMuted, marginHorizontal: spacing.sm },
 });
